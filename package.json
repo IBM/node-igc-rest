@@ -1,0 +1,46 @@
+{
+  "name": "ibm-igc-rest",
+  "version": "0.0.4",
+  "description": "Library to use IBM Information Governance Catalog REST API",
+  "main": "./index.js",
+  "files": [
+    "index.js",
+    "docs",
+    "utils",
+    "LICENSE"
+  ],
+  "dependencies": {
+  },
+  "engines": {
+    "node": ">=4.2.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ibm",
+    "igc",
+    "restapi",
+    "information server",
+    "information governance catalog",
+    "rest api"
+  ],
+  "author": {
+    "name": "IBM Corp."
+  },
+  "contributors": [
+    {
+      "name": "Christopher Grote",
+      "email": "christopher.grote@uk.ibm.com"
+    }
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/christopher-grote/ibm-igc-rest.git"
+  },
+  "bugs": {
+    "url": "https://github.ibm.com/christopher-grote/ibm-igc-rest/issues"
+  },
+  "homepage": "https://github.ibm.com/christopher-grote/ibm-igc-rest"
+}
