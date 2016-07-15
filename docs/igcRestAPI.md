@@ -1,13 +1,22 @@
 # Information Governance Catalog REST API
 
+
 ## `acl`
 
 - Displayed as: _"Acl"_
 - Path: [/ibm/iis/igc-rest/v1/types/acl](#acl)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | has_acl_entry | [aclentry](#aclentry) | _"Has Acl Entry"_ |
 | **of_common_object** | [information_asset](#information_asset) | _"Of Common Object"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | has_acl_entry | [aclentry](#aclentry) | _"Has Acl Entry"_ |
 | **of_common_object** | [information_asset](#information_asset) | _"Of Common Object"_ |
 | created_by | string | _"Created By"_ |
@@ -21,11 +30,19 @@
 - Displayed as: _"AclEntry"_
 - Path: [/ibm/iis/igc-rest/v1/types/aclentry](#aclentry)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | permissions | enum | _"Permissions"_: `READ`, `UPDATE`, `DELETE`, `VIEW`, `EXECUTE`, `OWNER` |
 | **used_by_acl** | [acl](#acl) | _"Used By Acl"_ |
 | has_system_role | [system_role](#system_role) | _"Has System Role"_ |
 | has_principal | [steward](#steward) | _"Has Principal"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | permissions | enum | _"Permissions"_: `READ`, `UPDATE`, `DELETE`, `VIEW`, `EXECUTE`, `OWNER` |
 | **used_by_acl** | [acl](#acl) | _"Used By Acl"_ |
 | has_system_role | [system_role](#system_role) | _"Has System Role"_ |
@@ -41,6 +58,10 @@
 - Displayed as: _"ActionDescriptor"_
 - Path: [/ibm/iis/igc-rest/v1/types/actiondescriptor](#actiondescriptor)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | instance_constraint_expression | string | _"Instance Constraint Expression"_ |
 | parameters | string | _"Parameters"_ |
 | has_privilege_system_role | [system_role](#system_role) | _"Has Privilege System Role"_ |
@@ -51,6 +72,10 @@
 | name | string | _"Name"_ |
 | operation | string | _"Operation"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | instance_constraint_expression | string | _"Instance Constraint Expression"_ |
 | parameters | string | _"Parameters"_ |
 | has_privilege_system_role | [system_role](#system_role) | _"Has Privilege System Role"_ |
@@ -71,6 +96,10 @@
 - Displayed as: _"Amazon S3 Bucket"_
 - Path: [/ibm/iis/igc-rest/v1/types/amazon_s3_bucket](#amazon_s3_bucket)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -82,6 +111,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -113,6 +146,10 @@
 - Displayed as: _"Amazon S3 Data File"_
 - Path: [/ibm/iis/igc-rest/v1/types/amazon_s3_data_file](#amazon_s3_data_file)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -124,6 +161,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -170,6 +211,10 @@
 - Displayed as: _"Amazon S3 Data File Field"_
 - Path: [/ibm/iis/igc-rest/v1/types/amazon_s3_data_file_field](#amazon_s3_data_file_field)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -181,6 +226,10 @@
 | selected_classification | [data_class](#data_class) | _"Selected Data Classification"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -229,6 +278,10 @@
 - Displayed as: _"Amazon S3 Data File Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/amazon_s3_data_file_folder](#amazon_s3_data_file_folder)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -240,6 +293,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -283,6 +340,10 @@
 - Displayed as: _"Amazon S3 Data File Record"_
 - Path: [/ibm/iis/igc-rest/v1/types/amazon_s3_data_file_record](#amazon_s3_data_file_record)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -295,6 +356,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -336,8 +401,16 @@
 - Displayed as: _"Analysis Project"_
 - Path: [/ibm/iis/igc-rest/v1/types/analysis_project](#analysis_project)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -353,6 +426,10 @@
 - Displayed as: _"AnalysisSummaryObject"_
 - Path: [/ibm/iis/igc-rest/v1/types/analysissummaryobject](#analysissummaryobject)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -366,6 +443,10 @@
 | project_name | string | _"Project Name"_ |
 | reviewed_by_principal | [steward](#steward) | _"Reviewed By Principal"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -386,6 +467,10 @@
 - Displayed as: _"Application"_
 - Path: [/ibm/iis/igc-rest/v1/types/application](#application)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -397,6 +482,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -432,6 +521,10 @@
 - Displayed as: _"Application Install"_
 - Path: [/ibm/iis/igc-rest/v1/types/application_install](#application_install)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -450,6 +543,10 @@
 | installation_path | string | _"Installation Path"_ |
 | release_number | string | _"Release Number"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -475,10 +572,18 @@
 - Displayed as: _"ApplicationFunction"_
 - Path: [/ibm/iis/igc-rest/v1/types/applicationfunction](#applicationfunction)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | description | string | _"Description"_ |
 | uses_class_descriptor | [classdescriptor](#classdescriptor) | _"Uses Class Descriptor"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | description | string | _"Description"_ |
 | uses_class_descriptor | [classdescriptor](#classdescriptor) | _"Uses Class Descriptor"_ |
 | name | string | _"Name"_ |
@@ -493,10 +598,18 @@
 - Displayed as: _"ApplicationSetting"_
 - Path: [/ibm/iis/igc-rest/v1/types/applicationsetting](#applicationsetting)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value | string | _"Value"_ |
 | description | string | _"Description"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value | string | _"Value"_ |
 | description | string | _"Description"_ |
 | name | string | _"Name"_ |
@@ -511,12 +624,20 @@
 - Displayed as: _"ArchivedTask"_
 - Path: [/ibm/iis/igc-rest/v1/types/archivedtask](#archivedtask)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | status | string | _"Status"_ |
 | message | string | _"Status Message"_ |
 | requested_on | datetime | _"Date Requested"_ |
 | completion_date | datetime | _"Date Completed"_ |
 | name | string | _"Asset Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | status | string | _"Status"_ |
 | message | string | _"Status Message"_ |
 | requested_on | datetime | _"Date Requested"_ |
@@ -529,6 +650,10 @@
 - Displayed as: _"Array"_
 - Path: [/ibm/iis/igc-rest/v1/types/array](#array)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -543,6 +668,10 @@
 | maximum_size | number | _"Maximum Size"_ |
 | minimum_size | number | _"Minimum Size"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -564,9 +693,17 @@
 - Displayed as: _"Steward"_
 - Path: [/ibm/iis/igc-rest/v1/types/ascl_steward](#ascl_steward)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | managed_assets | [information_asset](#information_asset) | _"Managed Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | email_address | string | _"Email Address"_ |
 | organization | string | _"Organization"_ |
 | managed_assets | [information_asset](#information_asset) | _"Managed Assets"_ |
@@ -585,8 +722,16 @@
 - Displayed as: _"AssociativeObject"_
 - Path: [/ibm/iis/igc-rest/v1/types/associativeobject](#associativeobject)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | sequence | number | _"Sequence"_ |
 | created_by | string | _"Created By"_ |
 | created_on | datetime | _"Created On"_ |
@@ -599,6 +744,10 @@
 - Displayed as: _"Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/attribute](#attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -610,6 +759,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -648,6 +801,10 @@
 - Displayed as: _"Attribute Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/attribute_type](#attribute_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -659,6 +816,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -686,6 +847,10 @@
 - Displayed as: _"Attribute Type Field"_
 - Path: [/ibm/iis/igc-rest/v1/types/attribute_type_field](#attribute_type_field)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -697,6 +862,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -725,6 +894,10 @@
 - Displayed as: _"BI Collection"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_collection](#bi_collection)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -735,6 +908,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -788,6 +965,10 @@
 - Displayed as: _"BI Collection Dimension"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_collection_dimension](#bi_collection_dimension)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | **bi_cube** | [bi_cube](#bi_cube) | _"BI Cube"_ |
@@ -800,6 +981,10 @@
 | uses_olap_hierarchy | [bi_hierarchy](#bi_hierarchy) | _"Uses OLAP Hierarchy"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -820,6 +1005,10 @@
 - Displayed as: _"BI Collection Fact"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_collection_fact](#bi_collection_fact)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | **bi_cube** | [bi_cube](#bi_cube) | _"BI Cube"_ |
@@ -831,6 +1020,10 @@
 | references_bi_member | [bi_collection_member](#bi_collection_member) | _"References BI Member"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -850,6 +1043,10 @@
 - Displayed as: _"BI Collection Member"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_collection_member](#bi_collection_member)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -859,6 +1056,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -902,6 +1103,10 @@
 - Displayed as: _"BI Cube"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_cube](#bi_cube)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -912,6 +1117,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -954,9 +1163,17 @@
 - Displayed as: _"BI Filter"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_filter](#bi_filter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -975,9 +1192,17 @@
 - Displayed as: _"BI Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_folder](#bi_folder)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -996,11 +1221,19 @@
 - Displayed as: _"BI Hierarchy"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_hierarchy](#bi_hierarchy)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1024,10 +1257,18 @@
 - Displayed as: _"BI Hierarchy Member"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_hierarchy_member](#bi_hierarchy_member)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **bi_level** | [bi_level](#bi_level) | _"BI Level"_ |
 | sorting_order | enum | _"Sorting Order"_: `ASCENDING`, `DESCENDING`, `NONE` |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **bi_level** | [bi_level](#bi_level) | _"BI Level"_ |
 | child_level | [bi_level](#bi_level) | _"Child Level"_ |
 | sorting_order | enum | _"Sorting Order"_: `ASCENDING`, `DESCENDING`, `NONE` |
@@ -1039,11 +1280,19 @@
 - Displayed as: _"BI Level"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_level](#bi_level)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1065,6 +1314,10 @@
 - Displayed as: _"BI Model"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_model](#bi_model)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1076,6 +1329,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1126,12 +1383,20 @@
 - Displayed as: _"BI OLAP Level Element"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_olap_level_element](#bi_olap_level_element)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Element Name"_ |
 | short_description | string | _"Short Description"_ |
 | **defined_in_level** | [bi_level](#bi_level) | _"Defined in Level"_ |
 | key_level | [bi_level](#bi_level) | _"Key Level"_ |
 | **defined_as_an_olap_member** | [bi_collection_member](#bi_collection_member) | _"Defined as an OLAP Member"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Element Name"_ |
 | business_name | string | _"Business Name"_ |
 | short_description | string | _"Short Description"_ |
@@ -1145,6 +1410,10 @@
 - Displayed as: _"BI Report"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report](#bi_report)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1156,6 +1425,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1208,8 +1481,16 @@
 - Displayed as: _"BI Report Data Item Source"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_data_item_source](#bi_report_data_item_source)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | defined_by_olap_member | [bi_collection_member](#bi_collection_member) | _"Defined by OLAP Member"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | defined_of_report_field | [reportobject](#reportobject) | _"Defined of Report Field"_ |
 | **defined_in_report_data_item** | [reportobject](#reportobject) | _"Defined in Report Data Item"_ |
 | defined_by_data_field | [data_item](#data_item) | _"Defined by Data Field"_ |
@@ -1221,6 +1502,10 @@
 - Displayed as: _"BI Report Query"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_query](#bi_report_query)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1230,6 +1515,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1276,12 +1565,20 @@
 - Displayed as: _"Detail Filter"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_detail_filter](#bi_report_query_detail_filter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | expression_in_title | string | _"Expression"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1318,6 +1615,10 @@
 - Displayed as: _"BI Report Query Item"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_item](#bi_report_query_item)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1327,6 +1628,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1366,12 +1671,20 @@
 - Displayed as: _"Summary Filter"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_summary_filter](#bi_report_query_summary_filter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | expression_in_title | string | _"Expression"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1408,6 +1721,10 @@
 - Displayed as: _"BI Report Query Usage"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_usage](#bi_report_query_usage)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1417,6 +1734,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1463,9 +1784,17 @@
 - Displayed as: _"BI Report Section"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_report_section](#bi_report_section)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | type | enum | _"Type"_: `CHART`, `LIST`, `MATRIX`, `TABLE`, `PAGE`, `PAGEBODY`, `PAGEFOOTER`, `PAGEHEADER`, `RECTANGLE`, `TEXT` |
@@ -1483,9 +1812,17 @@
 - Displayed as: _"BI Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_root_folder](#bi_root_folder)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1504,6 +1841,10 @@
 - Displayed as: _"BI Server"_
 - Path: [/ibm/iis/igc-rest/v1/types/bi_server](#bi_server)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1514,6 +1855,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1538,6 +1883,10 @@
 - Displayed as: _"Blueprint"_
 - Path: [/ibm/iis/igc-rest/v1/types/blueprint](#blueprint)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -1547,6 +1896,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1569,8 +1922,16 @@
 - Displayed as: _"Blueprint Element Link"_
 - Path: [/ibm/iis/igc-rest/v1/types/blueprint_element_link](#blueprint_element_link)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | element_name | string | _"Element Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | element_name | string | _"Element Name"_ |
 
 
@@ -1579,9 +1940,17 @@
 - Displayed as: _"Candidate Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/candidate_key](#candidate_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1600,10 +1969,18 @@
 - Displayed as: _"Category"_
 - Path: [/ibm/iis/igc-rest/v1/types/category](#category)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | parent_category | [category](#category) | _"Parent Category"_ |
 | short_description | string | _"Short Description"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1619,6 +1996,10 @@
 | references_business_term | [term](#term) | _"References Business Terms"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1646,8 +2027,16 @@
 - Displayed as: _"CDC Mapping"_
 - Path: [/ibm/iis/igc-rest/v1/types/cdc_mapping](#cdc_mapping)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 | cdc_mapping_document | [cdc_mapping_document](#cdc_mapping_document) | _"CDC Mapping Document"_ |
@@ -1665,6 +2054,10 @@
 - Displayed as: _"CDC Mapping Document"_
 - Path: [/ibm/iis/igc-rest/v1/types/cdc_mapping_document](#cdc_mapping_document)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -1672,6 +2065,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1693,9 +2090,17 @@
 - Displayed as: _"Changed Properties"_
 - Path: [/ibm/iis/igc-rest/v1/types/changed_properties](#changed_properties)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | property_name | string | _"Property Name"_ |
 | previous_value | string | _"Previous Value"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | term_history | [term_history](#term_history) | _"Term History"_ |
 | property_name | string | _"Property Name"_ |
 | previous_value | string | _"Previous Value"_ |
@@ -1710,6 +2115,10 @@
 - Displayed as: _"ClassDescriptor"_
 - Path: [/ibm/iis/igc-rest/v1/types/classdescriptor](#classdescriptor)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | identifier_attribute | string | _"Identifier Attribute"_ |
 | class_name | string | _"Class Name"_ |
 | used_in_application_function | [applicationfunction](#applicationfunction) | _"Used In Application Function"_ |
@@ -1722,6 +2131,10 @@
 | short_description_attribute | string | _"Short Description Attribute"_ |
 | has_action_descriptor | [actiondescriptor](#actiondescriptor) | _"Has Action Descriptor"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | identifier_attribute | string | _"Identifier Attribute"_ |
 | class_name | string | _"Class Name"_ |
 | used_in_application_function | [applicationfunction](#applicationfunction) | _"Used In Application Function"_ |
@@ -1744,6 +2157,10 @@
 - Displayed as: _"Classification"_
 - Path: [/ibm/iis/igc-rest/v1/types/classification](#classification)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **data_class** | [data_class](#data_class) | _"Data Class"_ |
 | **classifies_asset** | [main_object](#main_object) | _"Asset"_ |
 | **detectedState** | enum | _"Type"_: `Candidate`, `Inferred` |
@@ -1751,6 +2168,10 @@
 | threshold | number | _"Threshold"_ |
 | null | number | _"Value Frequency"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **data_class** | [data_class](#data_class) | _"Data Class"_ |
 | **classifies_asset** | [main_object](#main_object) | _"Asset"_ |
 | selected | boolean | _"Selected"_ |
@@ -1780,12 +2201,20 @@
 - Displayed as: _"Collection"_
 - Path: [/ibm/iis/igc-rest/v1/types/collection](#collection)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | owners | [steward](#steward) | _"Owners"_ |
 | visibility | boolean | _"Visibility"_ |
 | viewers | [steward](#steward) | _"Viewers"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1796,6 +2225,10 @@
 | assets | [information_asset](#information_asset) | _"Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1818,9 +2251,17 @@
 - Displayed as: _"Column Analysis"_
 - Path: [/ibm/iis/igc-rest/v1/types/column_analysis](#column_analysis)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | **table_analysis** | [main_object](#main_object) | _"Table Analysis"_ |
 | project | string | _"Project"_ |
@@ -1867,6 +2308,10 @@
 - Displayed as: _"Column Analysis Summary"_
 - Path: [/ibm/iis/igc-rest/v1/types/column_analysis_summary](#column_analysis_summary)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | steward | [steward](#steward) | _"Steward"_ |
@@ -1897,6 +2342,10 @@
 | inferred_precision | number | _"Inferred Precision"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1940,6 +2389,10 @@
 - Displayed as: _"Column Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/column_definition](#column_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -1948,6 +2401,10 @@
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1978,6 +2435,10 @@
 - Displayed as: _"Composite View"_
 - Path: [/ibm/iis/igc-rest/v1/types/composite_view](#composite_view)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -1989,6 +2450,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2015,9 +2480,17 @@
 - Displayed as: _"Connector"_
 - Path: [/ibm/iis/igc-rest/v1/types/connector](#connector)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2039,6 +2512,10 @@
 - Displayed as: _"Credential"_
 - Path: [/ibm/iis/igc-rest/v1/types/credential](#credential)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | password | string | _"Password"_ |
 | username | string | _"Username"_ |
 | for_application_install | [application_install](#application_install) | _"For Application Install"_ |
@@ -2046,6 +2523,10 @@
 | of_user_credentials | [credentials](#credentials) | _"Of User Credentials"_ |
 | default_for_application_install | [application_install](#application_install) | _"Default For Application Install"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | password | string | _"Password"_ |
 | username | string | _"Username"_ |
 | for_application_install | [application_install](#application_install) | _"For Application Install"_ |
@@ -2063,9 +2544,17 @@
 - Displayed as: _"Credentials"_
 - Path: [/ibm/iis/igc-rest/v1/types/credentials](#credentials)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_user** | [user](#user) | _"Of User"_ |
 | external_credential | [credential](#credential) | _"External Credential"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | asb_credential | [credential](#credential) | _"Asb Credential"_ |
 | **of_user** | [user](#user) | _"Of User"_ |
 | external_credential | [credential](#credential) | _"External Credential"_ |
@@ -2080,8 +2569,16 @@
 - Displayed as: _"Custom Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/custom_attribute](#custom_attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | custom_attribute_type | enum | _"Custom Attribute Type"_: `BOOLEAN`, `INTEGER`, `DOUBLE`, `STRING`, `DATE`, `TEXT`, `REFERENCE` |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | custom_attribute_type | enum | _"Custom Attribute Type"_: `BOOLEAN`, `INTEGER`, `DOUBLE`, `STRING`, `DATE`, `TEXT`, `REFERENCE` |
 | applies_to | string | _"Applies To"_ |
 
@@ -2091,6 +2588,10 @@
 - Displayed as: _"CustomAttributeDef"_
 - Path: [/ibm/iis/igc-rest/v1/types/customattributedef](#customattributedef)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | has_valid_values | [validvalues](#validvalues) | _"Has Valid Values"_ |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | has_custom_attribute_val | [customattributeval](#customattributeval) | _"Has Custom Attribute Val"_ |
@@ -2099,6 +2600,10 @@
 | has_data_values | [data_item_value](#data_item_value) | _"Has Data Values"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | has_valid_values | [validvalues](#validvalues) | _"Has Valid Values"_ |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | has_custom_attribute_val | [customattributeval](#customattributeval) | _"Has Custom Attribute Val"_ |
@@ -2117,8 +2622,16 @@
 - Displayed as: _"CustomAttributeVal"_
 - Path: [/ibm/iis/igc-rest/v1/types/customattributeval](#customattributeval)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value | string | _"Value"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | x_custom_attribute_name | string | _"X Custom Attribute Name"_ |
 | value | string | _"Value"_ |
 
@@ -2128,12 +2641,20 @@
 - Displayed as: _"Data Class"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_class](#data_class)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | parent_data_class | [data_class](#data_class) | _"Parent Data Class"_ |
 | short_description | string | _"Short Description"_ |
 | **data_class_type_single** | enum | _"Type"_: `Undefined`, `Regex`, `ValidValues` |
 | **class_code** | string | _"Class Code"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2156,6 +2677,10 @@
 | **class_code** | string | _"Class Code"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2193,6 +2718,10 @@
 - Displayed as: _"Data Class"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_class_old](#data_class_old)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2205,6 +2734,10 @@
 | inferred_by_df_analysis_summary | [column_analysis_summary](#column_analysis_summary) | _"Inferred By DF Analysis Summary"_ |
 | is_user_defined | boolean | _"Is User Defined"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2226,9 +2759,17 @@
 - Displayed as: _"Data Connection"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_connection](#data_connection)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2248,10 +2789,18 @@
 - Displayed as: _"Data Connection Mapping"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_connection_mapping](#data_connection_mapping)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | same_as_data_connections | [data_connection_mapping](#data_connection_mapping) | _"Same as Data Connections"_ |
 | preferred_data_connection | [data_connection_mapping](#data_connection_mapping) | _"Preferred Data Connection"_ |
 | bound_to_database | [database](#database) | _"Bound to Database"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | host_(engine)_name | string | _"Host (Engine) Name"_ |
 | type | string | _"Type"_ |
@@ -2266,6 +2815,10 @@
 - Displayed as: _"Data Element"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_element](#data_element)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2287,6 +2840,10 @@
 - Displayed as: _"Data File"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file](#data_file)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2299,6 +2856,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2343,6 +2904,10 @@
 - Displayed as: _"Data File Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_definition](#data_file_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2353,6 +2918,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2379,6 +2948,10 @@
 - Displayed as: _"Data File Definition Field"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_definition_field](#data_file_definition_field)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2389,6 +2962,10 @@
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2422,6 +2999,10 @@
 - Displayed as: _"Data File Definition Record"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_definition_record](#data_file_definition_record)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2433,6 +3014,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2459,6 +3044,10 @@
 - Displayed as: _"Data File Field"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_field](#data_file_field)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2470,6 +3059,10 @@
 | selected_classification | [data_class](#data_class) | _"Selected Data Classification"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2519,6 +3112,10 @@
 - Displayed as: _"Data File Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_folder](#data_file_folder)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2530,6 +3127,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2575,6 +3176,10 @@
 - Displayed as: _"Data File Record"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_file_record](#data_file_record)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2587,6 +3192,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2629,6 +3238,10 @@
 - Displayed as: _"Data Item"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_item](#data_item)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2638,6 +3251,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | has_dimension | [array](#array) | _"Has Dimension"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2675,6 +3292,10 @@
 - Displayed as: _"Data Item Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_item_definition](#data_item_definition)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | database_schema | [database_schema](#database_schema) | _"Database Schema"_ |
 | short_description | string | _"Short Description"_ |
@@ -2695,6 +3316,10 @@
 - Displayed as: _"Data Item Properties"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_item_properties](#data_item_properties)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | belonging_to_parameter_definition | [parameter](#parameter) | _"Belonging to Parameter Definition"_ |
 | flow_variable | [data_item](#data_item) | _"Flow Variable"_ |
 | column_definition | [column_definition](#column_definition) | _"Column Definition"_ |
@@ -2715,6 +3340,10 @@
 | sign_option | number | _"Sign Option"_ |
 | pad_char | string | _"Pad Char"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | belonging_to_parameter_definition | [parameter](#parameter) | _"Belonging to Parameter Definition"_ |
 | flow_variable | [data_item](#data_item) | _"Flow Variable"_ |
 | column_definition | [column_definition](#column_definition) | _"Column Definition"_ |
@@ -2741,11 +3370,19 @@
 - Displayed as: _"Data Item Value"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_item_value](#data_item_value)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | valid_value_list | [valid_value_list](#valid_value_list) | _"Valid Value List"_ |
 | design_column | [data_item](#data_item) | _"Design Column"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | valid_value_list | [valid_value_list](#valid_value_list) | _"Valid Value List"_ |
@@ -2757,8 +3394,16 @@
 - Displayed as: _"Data Policy"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_policy](#data_policy)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | long_description | string | _"Policy Text"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Title"_ |
 | policy_number | string | _"Policy Number"_ |
 | long_description | string | _"Policy Text"_ |
@@ -2777,6 +3422,10 @@
 - Displayed as: _"Data Rule"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_rule](#data_rule)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2786,6 +3435,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2817,6 +3470,10 @@
 - Displayed as: _"Data Rule Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_rule_definition](#data_rule_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2826,6 +3483,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2857,6 +3518,10 @@
 - Displayed as: _"Data Rule Results"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_rule_results](#data_rule_results)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | start_time | datetime | _"Start Time"_ |
 | end_time | datetime | _"End Time"_ |
@@ -2875,6 +3540,10 @@
 - Displayed as: _"Data Rule Set"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_rule_set](#data_rule_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2884,6 +3553,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2914,6 +3587,10 @@
 - Displayed as: _"Data Rule Set Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/data_rule_set_definition](#data_rule_set_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2923,6 +3600,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2952,6 +3633,10 @@
 - Displayed as: _"Database"_
 - Path: [/ibm/iis/igc-rest/v1/types/database](#database)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2962,6 +3647,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3010,9 +3699,17 @@
 - Displayed as: _"Database Alias"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_alias](#database_alias)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3034,6 +3731,10 @@
 - Displayed as: _"Database Column"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_column](#database_column)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3044,6 +3745,10 @@
 | selected_classification | [data_class](#data_class) | _"Selected Data Classification"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3118,9 +3823,17 @@
 - Displayed as: _"Database Domain"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_domain](#database_domain)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3141,9 +3854,17 @@
 - Displayed as: _"Database Index"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_index](#database_index)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3166,6 +3887,10 @@
 - Displayed as: _"Database Schema"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_schema](#database_schema)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3179,6 +3904,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3227,6 +3956,10 @@
 - Displayed as: _"Database Table"_
 - Path: [/ibm/iis/igc-rest/v1/types/database_table](#database_table)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3238,6 +3971,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3295,6 +4032,10 @@
 - Displayed as: _"DataGroup"_
 - Path: [/ibm/iis/igc-rest/v1/types/datagroup](#datagroup)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3304,6 +4045,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | name_quoting_char | string | _"Name Quoting Char"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3323,10 +4068,18 @@
 - Displayed as: _"DataSourceAliasGroup"_
 - Path: [/ibm/iis/igc-rest/v1/types/datasourcealiasgroup](#datasourcealiasgroup)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | same_as_data_connections | [data_connection_mapping](#data_connection_mapping) | _"Same as Data Connections"_ |
 | preferred_data_connection | [data_connection_mapping](#data_connection_mapping) | _"Preferred Data Connection"_ |
 | bound_to_database | [database](#database) | _"Bound To Database"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | same_as_data_connections | [data_connection_mapping](#data_connection_mapping) | _"Same as Data Connections"_ |
 | preferred_data_connection | [data_connection_mapping](#data_connection_mapping) | _"Preferred Data Connection"_ |
 | bound_to_database | [database](#database) | _"Bound To Database"_ |
@@ -3337,11 +4090,19 @@
 - Displayed as: _"DataStage Item"_
 - Path: [/ibm/iis/igc-rest/v1/types/datastage_item](#datastage_item)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | repository_id | string | _"Repository ID"_ |
 | name | string | _"Name"_ |
 | class_name | string | _"Class Name"_ |
 | reference_item | boolean | _"Reference Item"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | repository_id | string | _"Repository ID"_ |
 | name | string | _"Name"_ |
 | class_name | string | _"Class Name"_ |
@@ -3357,8 +4118,16 @@
 - Displayed as: _"Derivation"_
 - Path: [/ibm/iis/igc-rest/v1/types/derivation](#derivation)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | expression | string | _"Expression"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | expression | string | _"Expression"_ |
 
 
@@ -3367,6 +4136,10 @@
 - Displayed as: _"Design Column"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_column](#design_column)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3378,6 +4151,10 @@
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3419,9 +4196,17 @@
 - Displayed as: _"Design Foreign Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_foreign_key](#design_foreign_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3439,9 +4224,17 @@
 - Displayed as: _"Design Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_key](#design_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3460,6 +4253,10 @@
 - Displayed as: _"Design Stored Procedure"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_stored_procedure](#design_stored_procedure)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3470,6 +4267,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3500,6 +4301,10 @@
 - Displayed as: _"Design Stored Procedure Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_stored_procedure_parameter](#design_stored_procedure_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3509,6 +4314,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3535,6 +4344,10 @@
 - Displayed as: _"Design Table"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_table](#design_table)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3546,6 +4359,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3579,6 +4396,10 @@
 - Displayed as: _"Design View"_
 - Path: [/ibm/iis/igc-rest/v1/types/design_view](#design_view)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3589,6 +4410,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3622,11 +4447,19 @@
 - Displayed as: _"DevelopmentLog"_
 - Path: [/ibm/iis/igc-rest/v1/types/development_log](#development_log)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | workflow_task | string | _"Workflow Task"_ |
 | activity | string | _"Activity"_ |
 | new_state | string | _"New State"_ |
 | comment | string | _"Comment"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | date | datetime | _"Date"_ |
 | workflow_task | string | _"Workflow Task"_ |
 | activity | string | _"Activity"_ |
@@ -3640,6 +4473,10 @@
 - Displayed as: _"Directory"_
 - Path: [/ibm/iis/igc-rest/v1/types/directory](#directory)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3650,6 +4487,10 @@
 | **has_directory_provider_configuration** | [directoryproviderconfiguration](#directoryproviderconfiguration) | _"Has Directory Provider Configuration"_ |
 | has_principal | [steward](#steward) | _"Has Principal"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3667,11 +4508,19 @@
 - Displayed as: _"DirectoryProviderConfiguration"_
 - Path: [/ibm/iis/igc-rest/v1/types/directoryproviderconfiguration](#directoryproviderconfiguration)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | provider_name | string | _"Provider Name"_ |
 | of_directory | [directory](#directory) | _"Of Directory"_ |
 | description | string | _"Description"_ |
 | has_directory_provider_property | [directoryproviderproperty](#directoryproviderproperty) | _"Has Directory Provider Property"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | provider_name | string | _"Provider Name"_ |
 | of_directory | [directory](#directory) | _"Of Directory"_ |
 | description | string | _"Description"_ |
@@ -3687,11 +4536,19 @@
 - Displayed as: _"DirectoryProviderProperty"_
 - Path: [/ibm/iis/igc-rest/v1/types/directoryproviderproperty](#directoryproviderproperty)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value | string | _"Value"_ |
 | **of_provider_property_type** | [providerpropertytype](#providerpropertytype) | _"Of Provider Property Type"_ |
 | **of_provider_property_info** | [providerpropertyinfo](#providerpropertyinfo) | _"Of Provider Property Info"_ |
 | of_directory_provider_configuration | [directoryproviderconfiguration](#directoryproviderconfiguration) | _"Of Directory Provider Configuration"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value | string | _"Value"_ |
 | **of_provider_property_type** | [providerpropertytype](#providerpropertytype) | _"Of Provider Property Type"_ |
 | **of_provider_property_info** | [providerpropertyinfo](#providerpropertyinfo) | _"Of Provider Property Info"_ |
@@ -3707,6 +4564,10 @@
 - Displayed as: _"Stage Column"_
 - Path: [/ibm/iis/igc-rest/v1/types/ds_stage_column](#ds_stage_column)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -3714,6 +4575,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3755,8 +4620,16 @@
 - Displayed as: _"DSArgumentMap"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsargumentmap](#dsargumentmap)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | argument_map | string | _"Argument Map"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
 | argument_map | string | _"Argument Map"_ |
 | created_by | string | _"Created By"_ |
@@ -3770,6 +4643,10 @@
 - Displayed as: _"Data Connection"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsdata_connection](#dsdata_connection)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3791,6 +4668,10 @@
 - Displayed as: _"Design View"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsdesign_view](#dsdesign_view)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3817,6 +4698,10 @@
 | stage_x_size | string | _"Stage X Size"_ |
 | internal_id | string | _"Internal ID"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3850,6 +4735,10 @@
 - Displayed as: _"DSExternalDependency"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsexternaldependency](#dsexternaldependency)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | of_ds_job_def | [dsjob](#dsjob) | _"Of DS Job Def"_ |
 | of_ds_routine | [routine](#routine) | _"Of DS Routine"_ |
 | calls_ds_routine | [routine](#routine) | _"Calls DS Routine"_ |
@@ -3858,6 +4747,10 @@
 | name | string | _"Name"_ |
 | runs_ds_job | [dsjob](#dsjob) | _"Runs DS Job"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | of_ds_job_def | [dsjob](#dsjob) | _"Of DS Job Def"_ |
 | of_ds_routine | [routine](#routine) | _"Of DS Routine"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -3877,6 +4770,10 @@
 - Displayed as: _"Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsfolder](#dsfolder)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | transformation_project | [transformation_project](#transformation_project) | _"Transformation Project"_ |
 | parent_folder | [dsfolder](#dsfolder) | _"Parent Folder"_ |
@@ -3893,6 +4790,10 @@
 - Displayed as: _"DSJCLTemplate"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsjcltemplate](#dsjcltemplate)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -3906,6 +4807,10 @@
 | platform_type | string | _"Platform Type"_ |
 | code_template | string | _"Code Template"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3926,6 +4831,10 @@
 - Displayed as: _"Job"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsjob](#dsjob)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -3934,6 +4843,10 @@
 | include_for_lineage__edit | enum | _"Include for Lineage"_: `setToTrue`, `setToFalse`, `defaultToProject` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -3990,6 +4903,10 @@
 - Displayed as: _"DSMetaBag"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsmetabag](#dsmetabag)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | of_ds_table_definition | [table_definition](#table_definition) | _"Of DS Table Definition"_ |
 | of_ds_job_def | [dsjob](#dsjob) | _"Of DS Job Def"_ |
 | of_ds_routine | [routine](#routine) | _"Of DS Routine"_ |
@@ -4008,6 +4925,10 @@
 | of_ds_output_pin | [job_output_pin](#job_output_pin) | _"Of DS Output Pin"_ |
 | conditions | string | _"Conditions"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | of_ds_table_definition | [table_definition](#table_definition) | _"Of DS Table Definition"_ |
 | of_ds_job_def | [dsjob](#dsjob) | _"Of DS Job Def"_ |
 | of_ds_routine | [routine](#routine) | _"Of DS Routine"_ |
@@ -4036,6 +4957,10 @@
 - Displayed as: _"DSMFColumnInfo"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsmfcolumninfo](#dsmfcolumninfo)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | column_value | string | _"Column Value"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
 | of_ds_stage | [stage](#stage) | _"Of DS Stage"_ |
@@ -4045,6 +4970,10 @@
 | aggregation | string | _"Aggregation"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | column_value | string | _"Column Value"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
 | of_ds_stage | [stage](#stage) | _"Of DS Stage"_ |
@@ -4064,6 +4993,10 @@
 - Displayed as: _"Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsparameter](#dsparameter)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4080,6 +5013,10 @@
 - Displayed as: _"Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsparameter_job](#dsparameter_job)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | long_description | string | _"Long Description"_ |
 | of_job_def | [jobdef](#jobdef) | _"Job"_ |
@@ -4097,6 +5034,10 @@
 - Displayed as: _"Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsparameter_set](#dsparameter_set)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4116,6 +5057,10 @@
 - Displayed as: _"Stage Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/dsstage_type](#dsstage_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -4123,6 +5068,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4153,6 +5102,10 @@
 - Displayed as: _"Endpoint"_
 - Path: [/ibm/iis/igc-rest/v1/types/endpoint](#endpoint)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4163,6 +5116,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4200,6 +5157,10 @@
 - Displayed as: _"Entity Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/entity_attribute](#entity_attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4209,6 +5170,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4247,6 +5212,10 @@
 - Displayed as: _"Entity Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/entity_type](#entity_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4258,6 +5227,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4284,8 +5257,16 @@
 - Displayed as: _"Extension Mapping"_
 - Path: [/ibm/iis/igc-rest/v1/types/extension_mapping](#extension_mapping)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 | extension_mapping_document | [main_object](#main_object) | _"Extension Mapping Document"_ |
@@ -4304,6 +5285,10 @@
 - Displayed as: _"Extension Mapping Document"_
 - Path: [/ibm/iis/igc-rest/v1/types/extension_mapping_document](#extension_mapping_document)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | **parent_folder** | [folder](#folder) | _"Parent Folder"_ |
@@ -4315,6 +5300,10 @@
 | type | string | _"Type"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4340,9 +5329,17 @@
 - Displayed as: _"Field Analysis"_
 - Path: [/ibm/iis/igc-rest/v1/types/field_analysis](#field_analysis)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | **table_analysis** | [main_object](#main_object) | _"Table Analysis"_ |
 | project | string | _"Project"_ |
@@ -4389,6 +5386,10 @@
 - Displayed as: _"File"_
 - Path: [/ibm/iis/igc-rest/v1/types/file](#file)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4400,6 +5401,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4434,9 +5439,17 @@
 - Displayed as: _"Record Analysis"_
 - Path: [/ibm/iis/igc-rest/v1/types/file_record_analysis](#file_record_analysis)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | project | string | _"Project"_ |
 | data_file_record | [data_file_record](#data_file_record) | _"Data File Record"_ |
@@ -4463,6 +5476,10 @@
 - Displayed as: _"FilterConstraint"_
 - Path: [/ibm/iis/igc-rest/v1/types/filterconstraint](#filterconstraint)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4474,6 +5491,10 @@
 | usage | enum | _"Usage"_: `IN`, `OUT`, `INOUT`, `LINK` |
 | filter_expression | string | _"Filter Expression"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4494,9 +5515,17 @@
 - Displayed as: _"Folder"_
 - Path: [/ibm/iis/igc-rest/v1/types/folder](#folder)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 | **parent_folder** | [folder](#folder) | _"Parent Folder"_ |
@@ -4513,6 +5542,10 @@
 - Displayed as: _"Foreign Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/foreign_key](#foreign_key)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | included_database_columns | [data_item](#data_item) | _"Included Database Columns"_ |
 | database_table | [datagroup](#datagroup) | _"Database Table"_ |
 | sorting | enum | _"Sorting"_: `ASCENDING`, `DESCENDING`, `NONE` |
@@ -4523,6 +5556,10 @@
 - Displayed as: _"Foreign Key Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/foreign_key_definition](#foreign_key_definition)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | column | string | _"Column"_ |
 | **table_definition** | [table_definition](#table_definition) | _"Table Definition"_ |
 | references_tables | string | _"References Tables"_ |
@@ -4538,6 +5575,10 @@
 - Displayed as: _"Function"_
 - Path: [/ibm/iis/igc-rest/v1/types/function](#function)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4556,6 +5597,10 @@
 | executed_by_function_call | [functioncall](#functioncall) | _"Executed By Function Call"_ |
 | has_parameter_def | [parameter](#parameter) | _"Has Parameter Def"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4585,6 +5630,10 @@
 - Displayed as: _"Function Call"_
 - Path: [/ibm/iis/igc-rest/v1/types/function_call](#function_call)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | function_name | string | _"Function Name"_ |
 | for_transforms | boolean | _"For Transforms"_ |
 | stage_trigger | boolean | _"Stage Trigger"_ |
@@ -4592,6 +5641,10 @@
 | used_in_function | [function](#function) | _"Used In Function"_ |
 | used_in_filter_constraint | [filterconstraint](#filterconstraint) | _"Used In Filter Constraint"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | function_name | string | _"Function Name"_ |
 | for_transforms | boolean | _"For Transforms"_ |
 | stage_trigger | boolean | _"Stage Trigger"_ |
@@ -4606,10 +5659,18 @@
 - Displayed as: _"FunctionCall"_
 - Path: [/ibm/iis/igc-rest/v1/types/functioncall](#functioncall)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | executes_function | [function](#function) | _"Executes Function"_ |
 | used_in_function | [function](#function) | _"Used In Function"_ |
 | used_in_filter_constraint | [filterconstraint](#filterconstraint) | _"Used In Filter Constraint"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | call_context | enum | _"Call Context"_: `BEFORE`, `AFTER`, `DEFAULT` |
 | executes_function | [function](#function) | _"Executes Function"_ |
 | used_in_function | [function](#function) | _"Used In Function"_ |
@@ -4621,6 +5682,10 @@
 - Displayed as: _"Group"_
 - Path: [/ibm/iis/igc-rest/v1/types/group](#group)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | group_name | string | _"Group Name"_ |
 | type | string | _"Type"_ |
 | email_address | string | _"Email Address"_ |
@@ -4639,6 +5704,10 @@
 - Displayed as: _"Host"_
 - Path: [/ibm/iis/igc-rest/v1/types/host](#host)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4648,6 +5717,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4680,6 +5753,10 @@
 - Displayed as: _"Host (Engine)"_
 - Path: [/ibm/iis/igc-rest/v1/types/host_(engine)](#host_(engine))
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4689,6 +5766,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4715,6 +5796,10 @@
 - Displayed as: _"IDoc Field"_
 - Path: [/ibm/iis/igc-rest/v1/types/idoc_field](#idoc_field)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4724,6 +5809,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4760,6 +5849,10 @@
 - Displayed as: _"IDoc Segment Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/idoc_segment_type](#idoc_segment_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4769,6 +5862,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4808,6 +5905,10 @@
 - Displayed as: _"IDoc Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/idoc_type](#idoc_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4819,6 +5920,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4854,6 +5959,10 @@
 - Displayed as: _"In Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/in_parameter](#in_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -4863,6 +5972,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4895,10 +6008,18 @@
 - Displayed as: _"Index Member"_
 - Path: [/ibm/iis/igc-rest/v1/types/index_member](#index_member)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | uses_data_field | [data_item](#data_item) | _"Uses Data Field"_ |
 | **of_index** | [database_index](#database_index) | _"Of Index"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | uses_data_field | [data_item](#data_item) | _"Uses Data Field"_ |
 | **of_index** | [database_index](#database_index) | _"Of Index"_ |
 | sequence | number | _"Sequence"_ |
@@ -4913,9 +6034,17 @@
 - Displayed as: _"Inferred Foreign Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/inferred_foreign_key](#inferred_foreign_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4934,9 +6063,17 @@
 - Displayed as: _"Inferred Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/inferred_key](#inferred_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4956,6 +6093,10 @@
 - Displayed as: _"Information Asset"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_asset](#information_asset)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | created_by | string | _"Created By"_ |
 | created_on | datetime | _"Created On"_ |
 | modified_by | string | _"Modified By"_ |
@@ -4967,10 +6108,18 @@
 - Displayed as: _"Information Governance Policy"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_governance_policy](#information_governance_policy)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | parent_policy | [information_governance_policy](#information_governance_policy) | _"Parent Policy"_ |
 | short_description | string | _"Short Description"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -4985,6 +6134,10 @@
 | information_governance_rules | [information_governance_rule](#information_governance_rule) | _"Information Governance Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5011,10 +6164,18 @@
 - Displayed as: _"Information Governance Rule"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_governance_rule](#information_governance_rule)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | referencing_policies | [information_governance_policy](#information_governance_policy) | _"Referencing Policies"_ |
 | short_description | string | _"Short Description"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5036,6 +6197,10 @@
 | governs_external_assets | external_asset_reference | _"Governs External Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5069,6 +6234,10 @@
 - Displayed as: _"Information Server Report"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report](#information_server_report)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5085,6 +6254,10 @@
 - Displayed as: _"Information Server Report (Analysis Project)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(analysis_project)](#information_server_report_(analysis_project))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5105,6 +6278,10 @@
 - Displayed as: _"Information Server Report (Database)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(database)](#information_server_report_(database))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5121,6 +6298,10 @@
 - Displayed as: _"Information Server Report (Job)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(job)](#information_server_report_(job))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5139,6 +6320,10 @@
 - Displayed as: _"Information Server Report (Mapping Project)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(mapping_project)](#information_server_report_(mapping_project))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5155,6 +6340,10 @@
 - Displayed as: _"Information Server Report (Mapping Specification)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(mapping_specification)](#information_server_report_(mapping_specification))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5171,6 +6360,10 @@
 - Displayed as: _"Information Server Report (Steward)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_(steward)](#information_server_report_(steward))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5187,6 +6380,10 @@
 - Displayed as: _"Information Server Report (Job)"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_param_(job)](#information_server_report_param_(job))
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | creator | string | _"Creator"_ |
@@ -5203,6 +6400,10 @@
 - Displayed as: _"Information Server Report Parameters"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_server_report_parameters](#information_server_report_parameters)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | value | string | _"Value"_ |
 | created_by | string | _"Created By"_ |
@@ -5216,6 +6417,10 @@
 - Displayed as: _"Information Services Application"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_services_application](#information_services_application)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -5223,6 +6428,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | information_services_project | [information_services_project](#information_services_project) | _"Information Services Project"_ |
@@ -5244,6 +6453,10 @@
 - Displayed as: _"Information Services Argument"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_services_argument](#information_services_argument)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | information_services_operation | [information_services_operation](#information_services_operation) | _"Information Services Operation"_ |
@@ -5262,10 +6475,18 @@
 - Displayed as: _"Information Services Operation"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_services_operation](#information_services_operation)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | information_services_service | [information_services_service](#information_services_service) | _"Information Services Service"_ |
@@ -5283,6 +6504,10 @@
 - Displayed as: _"Information Services Project"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_services_project](#information_services_project)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -5290,6 +6515,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | deployment_status | boolean | _"Deployment Status"_ |
@@ -5311,10 +6540,18 @@
 - Displayed as: _"Information Services Service"_
 - Path: [/ibm/iis/igc-rest/v1/types/information_services_service](#information_services_service)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | information_services_application | [information_services_application](#information_services_application) | _"Information Services Application"_ |
@@ -5332,6 +6569,10 @@
 - Displayed as: _"InOut Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/inout_parameter](#inout_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5341,6 +6582,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5373,6 +6618,10 @@
 - Displayed as: _"Input Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/input_parameter](#input_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5382,6 +6631,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5414,10 +6667,18 @@
 - Displayed as: _"InputPin"_
 - Path: [/ibm/iis/igc-rest/v1/types/inputpin](#inputpin)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_job_component** | [main_object](#main_object) | _"Of Job Component"_ |
 | **is_target_of_link** | [main_object](#main_object) | _"Is Target Of Link"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_job_component** | [main_object](#main_object) | _"Of Job Component"_ |
 | **is_target_of_link** | [main_object](#main_object) | _"Is Target Of Link"_ |
 | sequence | number | _"Sequence"_ |
@@ -5432,8 +6693,16 @@
 - Displayed as: _"Data Rule"_
 - Path: [/ibm/iis/igc-rest/v1/types/inv_data_rule](#inv_data_rule)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -5455,8 +6724,16 @@
 - Displayed as: _"Data Rule Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/inv_data_rule_definition](#inv_data_rule_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -5480,8 +6757,16 @@
 - Displayed as: _"Data Rule Set"_
 - Path: [/ibm/iis/igc-rest/v1/types/inv_data_rule_set](#inv_data_rule_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -5502,8 +6787,16 @@
 - Displayed as: _"Data Rule Set Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/inv_data_rule_set_definition](#inv_data_rule_set_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -5526,6 +6819,10 @@
 - Displayed as: _"Job"_
 - Path: [/ibm/iis/igc-rest/v1/types/job](#job)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5537,6 +6834,10 @@
 | has_job_def | [jobdef](#jobdef) | _"Has Job Def"_ |
 | release_status | string | _"Release Status"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5555,6 +6856,10 @@
 - Displayed as: _"Job Constraint"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_constraint](#job_constraint)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | **of_link** | [main_object](#main_object) | _"Link"_ |
 | expression | string | _"Expression"_ |
@@ -5570,6 +6875,10 @@
 - Displayed as: _"Job Fail Event"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_fail_event](#job_fail_event)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **job_run_activity** | [information_asset](#information_asset) | _"Job Run Activity"_ |
 | time | datetime | _"Time"_ |
 | message | string | _"Message"_ |
@@ -5585,6 +6894,10 @@
 - Displayed as: _"Job Input Pin"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_input_pin](#job_input_pin)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | condition_not_met | string | _"Condition Not Met"_ |
 | partner | string | _"Partner"_ |
 | has_ds_meta_bag | [dsmetabag](#dsmetabag) | _"Has DS Meta Bag"_ |
@@ -5600,6 +6913,10 @@
 | **is_target_of_link** | [main_object](#main_object) | _"Is Target Of Link"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | condition_not_met | string | _"Condition Not Met"_ |
 | partner | string | _"Partner"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -5626,6 +6943,10 @@
 - Displayed as: _"Job Output Pin"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_output_pin](#job_output_pin)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | left_text_pos | number | _"Left Text Pos"_ |
 | partner | string | _"Partner"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -5638,6 +6959,10 @@
 | **is_source_of_link** | [main_object](#main_object) | _"Is Source Of Link"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | left_text_pos | number | _"Left Text Pos"_ |
 | partner | string | _"Partner"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -5660,6 +6985,10 @@
 - Displayed as: _"Job Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_parameter](#job_parameter)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | job_run | [job_run](#job_run) | _"Job Run"_ |
 | value | string | _"Value"_ |
@@ -5674,6 +7003,10 @@
 - Displayed as: _"Job Read Event"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_read_event](#job_read_event)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | reads_from | string | _"Reads From"_ |
 | **job_run_activity** | [information_asset](#information_asset) | _"Job Run Activity"_ |
 | row_count | number | _"Rows Processed"_ |
@@ -5689,11 +7022,19 @@
 - Displayed as: _"Job Run"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_run](#job_run)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | translated_summary | string | _"Name"_ |
 | wave_number | string | _"Wave Number"_ |
 | omd_file_name | string | _"OMD File Name"_ |
 | translated_status_code | string | _"Status"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | translated_summary | string | _"Name"_ |
 | job | [dsjob](#dsjob) | _"Job"_ |
 | invocation_id | string | _"Invocation ID"_ |
@@ -5714,6 +7055,10 @@
 - Displayed as: _"Job Run Activity"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_run_activity](#job_run_activity)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | **job_run** | [job_run](#job_run) | _"Job Run"_ |
 | x_emits_read_event_display_name | string | _"X Emits Read Event Display Name"_ |
@@ -5730,6 +7075,10 @@
 - Displayed as: _"Job Stage Parameters"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_stage_parameters](#job_stage_parameters)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | transaction_groupable | number | _"Transaction Groupable"_ |
 | **of_ds_parameter_def** | [parameter](#parameter) | _"Of DS Parameter Def"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -5743,6 +7092,10 @@
 | display_style | number | _"Display Style"_ |
 | view_data | number | _"View Data"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | transaction_groupable | number | _"Transaction Groupable"_ |
 | **of_ds_parameter_def** | [parameter](#parameter) | _"Of DS Parameter Def"_ |
 | a_xmeta_locking_root | string | _"A XMeta Locking Root"_ |
@@ -5766,6 +7119,10 @@
 - Displayed as: _"Job Stage Record"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_stage_record](#job_stage_record)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5783,6 +7140,10 @@
 | record_name | string | _"Record Name"_ |
 | record_id_name_value_relation | string | _"Record ID Name Value Relation"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5807,6 +7168,10 @@
 - Displayed as: _"Job Write Event"_
 - Path: [/ibm/iis/igc-rest/v1/types/job_write_event](#job_write_event)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **job_run_activity** | [information_asset](#information_asset) | _"Emitted By Activity"_ |
 | time | datetime | _"Time"_ |
 | writes_to | string | _"Writes To"_ |
@@ -5822,6 +7187,10 @@
 - Displayed as: _"JobDef"_
 - Path: [/ibm/iis/igc-rest/v1/types/jobdef](#jobdef)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5831,6 +7200,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Annotation"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5848,12 +7221,20 @@
 - Displayed as: _"KeyComponent"_
 - Path: [/ibm/iis/igc-rest/v1/types/keycomponent](#keycomponent)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | sorting_order | enum | _"Sorting Order"_: `ASCENDING`, `DESCENDING`, `NONE` |
 | **of_key** | [main_object](#main_object) | _"Of Key"_ |
 | **uses_data_field** | [data_item](#data_item) | _"Uses Data Field"_ |
 | references_data_field | [data_item](#data_item) | _"References Data Field"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | sorting_order | enum | _"Sorting Order"_: `ASCENDING`, `DESCENDING`, `NONE` |
 | **of_key** | [main_object](#main_object) | _"Of Key"_ |
 | **uses_data_field** | [data_item](#data_item) | _"Uses Data Field"_ |
@@ -5870,12 +7251,24 @@
 - Displayed as: _"Label"_
 - Path: [/ibm/iis/igc-rest/v1/types/label](#label)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 | labeled_assets | [information_asset](#information_asset) | _"Labeled Assets"_ |
@@ -5886,11 +7279,19 @@
 - Displayed as: _"Lineage Report Template"_
 - Path: [/ibm/iis/igc-rest/v1/types/lineage_report_template](#lineage_report_template)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | long_description | string | _"Description"_ |
 | uses_lineage_filter | [lineagefilter](#lineagefilter) | _"Uses Lineage Filter"_ |
 | asset_display_properties | [information_asset](#information_asset) | _"Asset Type Properties"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | long_description | string | _"Description"_ |
 | uses_lineage_filter | [lineagefilter](#lineagefilter) | _"Uses Lineage Filter"_ |
@@ -5902,8 +7303,16 @@
 - Displayed as: _"LineageFilter"_
 - Path: [/ibm/iis/igc-rest/v1/types/lineagefilter](#lineagefilter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 
 
@@ -5912,6 +7321,10 @@
 - Displayed as: _"Link"_
 - Path: [/ibm/iis/igc-rest/v1/types/link](#link)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5930,9 +7343,17 @@
 - Displayed as: _"LinkType"_
 - Path: [/ibm/iis/igc-rest/v1/types/linktype](#linktype)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 
@@ -5942,6 +7363,10 @@
 - Displayed as: _"Local Container"_
 - Path: [/ibm/iis/igc-rest/v1/types/local_container](#local_container)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -5963,6 +7388,10 @@
 - Displayed as: _"Logical Data Model"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_data_model](#logical_data_model)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -5973,6 +7402,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6011,9 +7444,17 @@
 - Displayed as: _"Logical Domain"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_domain](#logical_domain)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6038,6 +7479,10 @@
 - Displayed as: _"Logical Entity"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_entity](#logical_entity)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6048,6 +7493,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6084,9 +7533,17 @@
 - Displayed as: _"Logical Foreign Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_foreign_key](#logical_foreign_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6105,9 +7562,17 @@
 - Displayed as: _"Logical Inversion Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_inversion_key](#logical_inversion_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6126,9 +7591,17 @@
 - Displayed as: _"Logical Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_key](#logical_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6149,9 +7622,17 @@
 - Displayed as: _"Logical Validation List"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_validation_list](#logical_validation_list)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6169,9 +7650,17 @@
 - Displayed as: _"Logical Validation Range"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_validation_range](#logical_validation_range)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6190,9 +7679,17 @@
 - Displayed as: _"Logical Validation Rule"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_validation_rule](#logical_validation_rule)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6212,9 +7709,17 @@
 - Displayed as: _"Logical Variable"_
 - Path: [/ibm/iis/igc-rest/v1/types/logical_variable](#logical_variable)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -6236,6 +7741,10 @@
 - Displayed as: _"Machine Profile"_
 - Path: [/ibm/iis/igc-rest/v1/types/machine_profile](#machine_profile)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -6243,6 +7752,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6269,10 +7782,18 @@
 - Displayed as: _"Main Object"_
 - Path: [/ibm/iis/igc-rest/v1/types/main_object](#main_object)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6288,6 +7809,10 @@
 - Displayed as: _"Mapping"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping](#mapping)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | mapping_specification | [main_object](#main_object) | _"Mapping Specification"_ |
@@ -6313,9 +7838,17 @@
 - Displayed as: _"Mapping Component"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping_component](#mapping_component)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6332,6 +7865,10 @@
 - Displayed as: _"Mapping Filter"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping_filter](#mapping_filter)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | rule_expression | string | _"Rule Expression"_ |
@@ -6346,6 +7883,10 @@
 - Displayed as: _"Mapping Join"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping_join](#mapping_join)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | primary_key_columns | [database_column](#database_column) | _"Primary Key Columns"_ |
@@ -6361,6 +7902,10 @@
 - Displayed as: _"Mapping Project"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping_project](#mapping_project)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6370,6 +7915,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6395,6 +7944,10 @@
 - Displayed as: _"Mapping Specification"_
 - Path: [/ibm/iis/igc-rest/v1/types/mapping_specification](#mapping_specification)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -6403,6 +7956,10 @@
 | include_for_lineage | enum | _"Include for Lineage"_: `setToTrue`, `setToFalse` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | mapping_project | [mapping_project](#mapping_project) | _"Mapping Project"_ |
@@ -6434,6 +7991,10 @@
 - Displayed as: _"Match Specification"_
 - Path: [/ibm/iis/igc-rest/v1/types/match_specification](#match_specification)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -6441,6 +8002,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | transformation_project | [transformation_project](#transformation_project) | _"Transformation Project"_ |
@@ -6467,6 +8032,10 @@
 - Displayed as: _"MDM Model"_
 - Path: [/ibm/iis/igc-rest/v1/types/mdm_model](#mdm_model)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6477,6 +8046,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6515,6 +8088,10 @@
 - Displayed as: _"Member Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/member_type](#member_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6526,6 +8103,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6565,6 +8146,10 @@
 - Displayed as: _"Method"_
 - Path: [/ibm/iis/igc-rest/v1/types/method](#method)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6574,6 +8159,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6608,6 +8197,10 @@
 - Displayed as: _"Metric"_
 - Path: [/ibm/iis/igc-rest/v1/types/metric](#metric)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -6615,6 +8208,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6643,6 +8240,10 @@
 - Displayed as: _"Database Alias"_
 - Path: [/ibm/iis/igc-rest/v1/types/mwb_database_alias](#mwb_database_alias)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | type | string | _"Type"_ |
 | database | [database](#database) | _"Database"_ |
@@ -6658,12 +8259,20 @@
 - Displayed as: _"NavigationDescriptor"_
 - Path: [/ibm/iis/igc-rest/v1/types/navigationdescriptor](#navigationdescriptor)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | description | string | _"Description"_ |
 | expression | string | _"Expression"_ |
 | display_name | string | _"Display Name"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | description | string | _"Description"_ |
 | expression | string | _"Expression"_ |
@@ -6680,6 +8289,10 @@
 - Displayed as: _"Data Rule Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/non_published_data_rule_definition](#non_published_data_rule_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6689,6 +8302,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6719,6 +8336,10 @@
 - Displayed as: _"Data Rule Set Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/non_published_data_rule_set](#non_published_data_rule_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6728,6 +8349,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6757,6 +8382,10 @@
 - Displayed as: _"User"_
 - Path: [/ibm/iis/igc-rest/v1/types/non_steward_user](#non_steward_user)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | full_name | string | _"Full Name"_ |
 | job_title | string | _"Job Title"_ |
 | email_address | string | _"Email Address"_ |
@@ -6784,6 +8413,10 @@
 - Displayed as: _"Object Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/object_type](#object_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6793,6 +8426,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6826,9 +8463,17 @@
 - Displayed as: _"OLAP Join"_
 - Path: [/ibm/iis/igc-rest/v1/types/olap_join](#olap_join)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Join Name"_ |
 | short_description | string | _"Short Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Join Name"_ |
 | business_name | string | _"Business Name"_ |
 | short_description | string | _"Short Description"_ |
@@ -6844,9 +8489,17 @@
 - Displayed as: _"OLAP Member Source"_
 - Path: [/ibm/iis/igc-rest/v1/types/olap_member_source](#olap_member_source)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **olap_member** | [bi_collection_member](#bi_collection_member) | _"OLAP Member"_ |
 | data_field | [data_item](#data_item) | _"Data Field"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **olap_member** | [bi_collection_member](#bi_collection_member) | _"OLAP Member"_ |
 | data_field | [data_item](#data_item) | _"Data Field"_ |
 
@@ -6856,6 +8509,10 @@
 - Displayed as: _"OLAPAssociation"_
 - Path: [/ibm/iis/igc-rest/v1/types/olapassociation](#olapassociation)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6865,6 +8522,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6882,6 +8543,10 @@
 - Displayed as: _"OLAPHierarchyAssociation"_
 - Path: [/ibm/iis/igc-rest/v1/types/olaphierarchyassociation](#olaphierarchyassociation)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6894,6 +8559,10 @@
 | **has_child_olap_level** | [bi_level](#bi_level) | _"Has Child OLAP Level"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6915,11 +8584,19 @@
 - Displayed as: _"OLAPJoinRef"_
 - Path: [/ibm/iis/igc-rest/v1/types/olapjoinref](#olapjoinref)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | joins_database_table | [datagroup](#datagroup) | _"Joins Database Table"_ |
 | alias | [main_object](#main_object) | _"Alias"_ |
 | cardinality | enum | _"Cardinality"_: `ONE_TO_ONE`, `ONE_TO_MANY`, `MANY_TO_ONE`, `MANY_TO_MANY` |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | joins_olap_collection | [bi_collection](#bi_collection) | _"Joins OLAP Collection"_ |
 | joins_database_table | [datagroup](#datagroup) | _"Joins Database Table"_ |
 | alias | [main_object](#main_object) | _"Alias"_ |
@@ -6932,6 +8609,10 @@
 - Displayed as: _"OLAPModelGroup"_
 - Path: [/ibm/iis/igc-rest/v1/types/olapmodelgroup](#olapmodelgroup)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6940,6 +8621,10 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6957,6 +8642,10 @@
 - Displayed as: _"OLAPObject"_
 - Path: [/ibm/iis/igc-rest/v1/types/olapobject](#olapobject)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -6965,6 +8654,10 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -6981,12 +8674,20 @@
 - Displayed as: _"Link"_
 - Path: [/ibm/iis/igc-rest/v1/types/oslc_link](#oslc_link)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **url** | string | _"Url"_ |
 | **link_type** | [linktype](#linktype) | _"Link Type"_ |
 | description | string | _"Description"_ |
 | of_main_object | [main_object](#main_object) | _"Of Main Object"_ |
 | **of_provider_connection** | [information_asset](#information_asset) | _"Of Provider Connection"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **url** | string | _"Url"_ |
 | **link_type** | [linktype](#linktype) | _"Link Type"_ |
 | description | string | _"Description"_ |
@@ -6999,6 +8700,10 @@
 - Displayed as: _"Out Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/out_parameter](#out_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7008,6 +8713,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7040,6 +8749,10 @@
 - Displayed as: _"Output Value"_
 - Path: [/ibm/iis/igc-rest/v1/types/output_value](#output_value)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7049,6 +8762,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7081,10 +8798,18 @@
 - Displayed as: _"OutputPin"_
 - Path: [/ibm/iis/igc-rest/v1/types/outputpin](#outputpin)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_job_component** | [main_object](#main_object) | _"Of Job Component"_ |
 | **is_source_of_link** | [main_object](#main_object) | _"Is Source Of Link"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_job_component** | [main_object](#main_object) | _"Of Job Component"_ |
 | **is_source_of_link** | [main_object](#main_object) | _"Is Source Of Link"_ |
 | sequence | number | _"Sequence"_ |
@@ -7099,6 +8824,10 @@
 - Displayed as: _"Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/parameter](#parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7116,6 +8845,10 @@
 | of_function | [function](#function) | _"Of Function"_ |
 | has_dimension | [array](#array) | _"Has Dimension"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7165,6 +8898,10 @@
 - Displayed as: _"Parameter Set"_
 - Path: [/ibm/iis/igc-rest/v1/types/parameter_set](#parameter_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -7172,6 +8909,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7196,6 +8937,10 @@
 - Displayed as: _"Parameter Set Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/parameter_set_definition](#parameter_set_definition)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7216,6 +8961,10 @@
 - Displayed as: _"ParameterSet"_
 - Path: [/ibm/iis/igc-rest/v1/types/parameterset](#parameterset)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7224,6 +8973,10 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7241,11 +8994,19 @@
 - Displayed as: _"ParameterVal"_
 - Path: [/ibm/iis/igc-rest/v1/types/parameterval](#parameterval)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | has_function_call | [functioncall](#functioncall) | _"Has Function Call"_ |
 | for_function_call | [functioncall](#functioncall) | _"For Function Call"_ |
 | for_data_connection | [data_connection](#data_connection) | _"For Data Connection"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | parameter_name | string | _"Parameter Name"_ |
 | value_expression | string | _"Value Expression"_ |
 | binds_parameter_def | [parameter](#parameter) | _"Binds Parameter Def"_ |
@@ -7266,6 +9027,10 @@
 - Displayed as: _"Physical Data Model"_
 - Path: [/ibm/iis/igc-rest/v1/types/physical_data_model](#physical_data_model)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7277,6 +9042,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7316,6 +9085,10 @@
 - Displayed as: _"Physical Domain"_
 - Path: [/ibm/iis/igc-rest/v1/types/physical_domain](#physical_domain)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
@@ -7337,6 +9110,10 @@
 - Displayed as: _"Physical Object"_
 - Path: [/ibm/iis/igc-rest/v1/types/physical_object](#physical_object)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7348,6 +9125,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7387,6 +9168,10 @@
 - Displayed as: _"Physical Object Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/physical_object_attribute](#physical_object_attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7398,6 +9183,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7434,11 +9223,19 @@
 - Displayed as: _"PrimaryCategory"_
 - Path: [/ibm/iis/igc-rest/v1/types/primarycategory](#primarycategory)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | color | string | _"Color"_ |
 | icon | string | _"Icon"_ |
 | **uses_business_category** | [main_object](#main_object) | _"Uses Business Category"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | color | string | _"Color"_ |
 | icon | string | _"Icon"_ |
 | **uses_business_category** | [main_object](#main_object) | _"Uses Business Category"_ |
@@ -7454,6 +9251,10 @@
 - Displayed as: _"PropDescriptor"_
 - Path: [/ibm/iis/igc-rest/v1/types/propdescriptor](#propdescriptor)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value_expression | string | _"Value Expression"_ |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | description | string | _"Description"_ |
@@ -7463,6 +9264,10 @@
 | display_name | string | _"Display Name"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | value_expression | string | _"Value Expression"_ |
 | **of_class_descriptor** | [classdescriptor](#classdescriptor) | _"Of Class Descriptor"_ |
 | description | string | _"Description"_ |
@@ -7482,6 +9287,10 @@
 - Displayed as: _"ProviderPropertyInfo"_
 - Path: [/ibm/iis/igc-rest/v1/types/providerpropertyinfo](#providerpropertyinfo)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | property_data_type | string | _"Property Data Type"_ |
 | has_provider_property_info_extended | [providerpropertyinfoextended](#providerpropertyinfoextended) | _"Has Provider Property Info Extended"_ |
 | is_searchable | boolean | _"Is Searchable"_ |
@@ -7495,6 +9304,10 @@
 | is_editable | boolean | _"Is Editable"_ |
 | default_value | string | _"Default Value"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | property_data_type | string | _"Property Data Type"_ |
 | has_provider_property_info_extended | [providerpropertyinfoextended](#providerpropertyinfoextended) | _"Has Provider Property Info Extended"_ |
 | is_searchable | boolean | _"Is Searchable"_ |
@@ -7518,10 +9331,18 @@
 - Displayed as: _"ProviderPropertyInfoExtended"_
 - Path: [/ibm/iis/igc-rest/v1/types/providerpropertyinfoextended](#providerpropertyinfoextended)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | str_value | string | _"Str Value"_ |
 | **of_provider_property_info** | [providerpropertyinfo](#providerpropertyinfo) | _"Of Provider Property Info"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | str_value | string | _"Str Value"_ |
 | **of_provider_property_info** | [providerpropertyinfo](#providerpropertyinfo) | _"Of Provider Property Info"_ |
 | name | string | _"Name"_ |
@@ -7536,11 +9357,19 @@
 - Displayed as: _"ProviderPropertyType"_
 - Path: [/ibm/iis/igc-rest/v1/types/providerpropertytype](#providerpropertytype)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | description | string | _"Description"_ |
 | name | string | _"Name"_ |
 | property_type | enum | _"Property Type"_: `USER`, `USER_GROUP`, `ROLE`, `CONNECTION` |
 | has_directory_provider_property | [directoryproviderproperty](#directoryproviderproperty) | _"Has Directory Provider Property"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | description | string | _"Description"_ |
 | name | string | _"Name"_ |
 | property_type | enum | _"Property Type"_: `USER`, `USER_GROUP`, `ROLE`, `CONNECTION` |
@@ -7556,6 +9385,10 @@
 - Displayed as: _"Data Rule Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/published_data_rule_definition](#published_data_rule_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7565,6 +9398,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7594,6 +9431,10 @@
 - Displayed as: _"Data Rule Set Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/published_data_rule_set](#published_data_rule_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7603,6 +9444,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7630,6 +9475,10 @@
 - Displayed as: _"Quality Score Problem"_
 - Path: [/ibm/iis/igc-rest/v1/types/quality_problem](#quality_problem)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | data_quality_score | [information_asset](#information_asset) | _"Data Quality Score"_ |
 | details | string | _"Details"_ |
 | confidence | number | _"Confidence"_ |
@@ -7637,6 +9486,10 @@
 | percent_occurrences | number | _"Percent Occurrences"_ |
 | **problem_type** | [information_asset](#information_asset) | _"Problem Type"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | data_quality_score | [information_asset](#information_asset) | _"Data Quality Score"_ |
 | details | string | _"Details"_ |
 | confidence | number | _"Confidence"_ |
@@ -7654,9 +9507,17 @@
 - Displayed as: _"Reference Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/reference_key](#reference_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7674,9 +9535,17 @@
 - Displayed as: _"Referenced Container"_
 - Path: [/ibm/iis/igc-rest/v1/types/referenced_container](#referenced_container)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | type | enum | _"Type"_: `SERVER`, `MAINFRAME`, `SEQUENCE`, `PARALLEL` |
 | version | string | _"Version"_ |
 | name | string | _"Name"_ |
@@ -7696,6 +9565,10 @@
 - Displayed as: _"ReportObject"_
 - Path: [/ibm/iis/igc-rest/v1/types/reportobject](#reportobject)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7704,6 +9577,10 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7720,6 +9597,10 @@
 - Displayed as: _"Result Column"_
 - Path: [/ibm/iis/igc-rest/v1/types/result_column](#result_column)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -7729,6 +9610,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7761,10 +9646,18 @@
 - Displayed as: _"Role Assignment"_
 - Path: [/ibm/iis/igc-rest/v1/types/role_assignment](#role_assignment)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **defined_by_system_role** | [system_role](#system_role) | _"Defined By System Role"_ |
 | **has_role_context** | [role_context](#role_context) | _"Has Role Context"_ |
 | sequence | number | _"Sequence"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigns_principal | [steward](#steward) | _"Assigns Principal"_ |
 | **defined_by_system_role** | [system_role](#system_role) | _"Defined By System Role"_ |
 | **has_role_context** | [role_context](#role_context) | _"Has Role Context"_ |
@@ -7780,9 +9673,17 @@
 - Displayed as: _"Role Context"_
 - Path: [/ibm/iis/igc-rest/v1/types/role_context](#role_context)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | context_id | string | _"Context Id"_ |
 | defines_role_assignment | [role_assignment](#role_assignment) | _"Defines Role Assignment"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | context_id | string | _"Context Id"_ |
 | defines_role_assignment | [role_assignment](#role_assignment) | _"Defines Role Assignment"_ |
 | created_by | string | _"Created By"_ |
@@ -7796,9 +9697,17 @@
 - Displayed as: _"Tuple"_
 - Path: [/ibm/iis/igc-rest/v1/types/root_tuple](#root_tuple)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7814,6 +9723,10 @@
 - Displayed as: _"Routine"_
 - Path: [/ibm/iis/igc-rest/v1/types/routine](#routine)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -7821,6 +9734,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7849,6 +9766,10 @@
 - Displayed as: _"Routine Argument"_
 - Path: [/ibm/iis/igc-rest/v1/types/routine_argument](#routine_argument)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7864,9 +9785,17 @@
 - Displayed as: _"SAP Connection"_
 - Path: [/ibm/iis/igc-rest/v1/types/sap_connection](#sap_connection)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7885,6 +9814,10 @@
 - Displayed as: _"Sequence Job"_
 - Path: [/ibm/iis/igc-rest/v1/types/sequence_job](#sequence_job)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -7893,6 +9826,10 @@
 | include_for_lineage__edit | enum | _"Include for Lineage"_: `setToTrue`, `setToFalse`, `defaultToProject` |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7928,11 +9865,19 @@
 - Displayed as: _"Session Configuration"_
 - Path: [/ibm/iis/igc-rest/v1/types/session_configuration](#session_configuration)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | max_sessions | number | _"Max Sessions"_ |
 | time_to_live | number | _"Time To Live"_ |
 | wake_up_interval | number | _"Wake Up Interval"_ |
 | name | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | max_sessions | number | _"Max Sessions"_ |
 | time_to_live | number | _"Time To Live"_ |
 | wake_up_interval | number | _"Wake Up Interval"_ |
@@ -7948,6 +9893,10 @@
 - Displayed as: _"Shared Container"_
 - Path: [/ibm/iis/igc-rest/v1/types/shared_container](#shared_container)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -7955,6 +9904,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -7989,6 +9942,10 @@
 - Displayed as: _"Stage"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage](#stage)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -7997,6 +9954,10 @@
 | manually_bound_to | [main_object](#main_object) | _"Manually Bound To"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8060,6 +10021,10 @@
 - Displayed as: _"Stage Column"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage_column](#stage_column)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -8067,6 +10032,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8108,6 +10077,10 @@
 - Displayed as: _"Stage Data Rule Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage_data_rule_definition](#stage_data_rule_definition)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | **stage** | [stage](#stage) | _"Stage"_ |
 | stage_logic | string | _"Stage Logic"_ |
@@ -8123,10 +10096,18 @@
 - Displayed as: _"Stage Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage_type](#stage_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | long_description | string | _"Description"_ |
 | steward | [steward](#steward) | _"Steward"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | long_description | string | _"Description"_ |
 | steward | [steward](#steward) | _"Steward"_ |
@@ -8141,6 +10122,10 @@
 - Displayed as: _"Stage Type Detail"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage_type_detail](#stage_type_detail)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8158,6 +10143,10 @@
 - Displayed as: _"Stage Variable"_
 - Path: [/ibm/iis/igc-rest/v1/types/stage_variable](#stage_variable)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -8165,6 +10154,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8193,8 +10186,16 @@
 - Displayed as: _"Standardization Object"_
 - Path: [/ibm/iis/igc-rest/v1/types/standardization_object](#standardization_object)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | fields | string | _"Data Fields"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8220,6 +10221,10 @@
 - Displayed as: _"Standardization Rule Set"_
 - Path: [/ibm/iis/igc-rest/v1/types/standardization_rule_set](#standardization_rule_set)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -8227,6 +10232,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | help_text | string | _"Long Description"_ |
@@ -8253,8 +10262,16 @@
 - Displayed as: _"Steward"_
 - Path: [/ibm/iis/igc-rest/v1/types/steward](#steward)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_by_contact_assignment | [associativeobject](#associativeobject) | _"Assigned By Contact Assignment"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_by_contact_assignment | [associativeobject](#associativeobject) | _"Assigned By Contact Assignment"_ |
 | created_by | string | _"Created By"_ |
 | created_on | datetime | _"Created On"_ |
@@ -8267,9 +10284,17 @@
 - Displayed as: _"Steward Group"_
 - Path: [/ibm/iis/igc-rest/v1/types/steward_group](#steward_group)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | managed_assets | [information_asset](#information_asset) | _"Managed Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | group_name | string | _"Group Name"_ |
 | type | string | _"Type"_ |
 | email_address | string | _"Email Address"_ |
@@ -8291,9 +10316,17 @@
 - Displayed as: _"Steward User"_
 - Path: [/ibm/iis/igc-rest/v1/types/steward_user](#steward_user)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | managed_assets | [information_asset](#information_asset) | _"Managed Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | full_name | string | _"Full Name"_ |
 | job_title | string | _"Job Title"_ |
 | email_address | string | _"Email Address"_ |
@@ -8324,6 +10357,10 @@
 - Displayed as: _"Stored Procedure"_
 - Path: [/ibm/iis/igc-rest/v1/types/stored_procedure](#stored_procedure)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8334,6 +10371,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8374,6 +10415,10 @@
 - Displayed as: _"Stored Procedure Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/stored_procedure_definition](#stored_procedure_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8385,6 +10430,10 @@
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8423,6 +10472,10 @@
 - Displayed as: _"Stored Procedure Parameter"_
 - Path: [/ibm/iis/igc-rest/v1/types/stored_procedure_parameter](#stored_procedure_parameter)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8432,6 +10485,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8468,6 +10525,10 @@
 - Displayed as: _"Subject Area"_
 - Path: [/ibm/iis/igc-rest/v1/types/subject_area](#subject_area)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8477,6 +10538,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8503,6 +10568,10 @@
 - Displayed as: _"System Role"_
 - Path: [/ibm/iis/igc-rest/v1/types/system_role](#system_role)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8517,6 +10586,10 @@
 | role_id | string | _"Role Id"_ |
 | defines_role_assignment | [role_assignment](#role_assignment) | _"Defines Role Assignment"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8538,9 +10611,17 @@
 - Displayed as: _"Table Analysis"_
 - Path: [/ibm/iis/igc-rest/v1/types/table_analysis](#table_analysis)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | project | string | _"Project"_ |
 | database_table_or_view | [datagroup](#datagroup) | _"Database Table or View"_ |
@@ -8567,6 +10648,10 @@
 - Displayed as: _"Table Analysis Summary"_
 - Path: [/ibm/iis/igc-rest/v1/types/table_analysis_summary](#table_analysis_summary)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | steward | [steward](#steward) | _"Steward"_ |
 | **analyzed_table** | [datagroup](#datagroup) | _"Analyzed Table"_ |
@@ -8582,6 +10667,10 @@
 | foreign_key_violations | number | _"Foreign Key Violations"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_&_long_description | string | _"Short & Long Description"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8610,6 +10699,10 @@
 - Displayed as: _"Table Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/table_definition](#table_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -8617,6 +10710,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8657,6 +10754,10 @@
 - Displayed as: _"Table Definition Properties"_
 - Path: [/ibm/iis/igc-rest/v1/types/table_definition_properties](#table_definition_properties)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_ds_table_definition** | [table_definition](#table_definition) | _"Of DS Table Definition"_ |
 | seq_col_space | number | _"SEQ Col Space"_ |
 | seq_fixed_width | boolean | _"SEQ Fixed Width"_ |
@@ -8679,6 +10780,10 @@
 | multivalued | boolean | _"Multivalued"_ |
 | pad_char | string | _"Pad Char"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **of_ds_table_definition** | [table_definition](#table_definition) | _"Of DS Table Definition"_ |
 | seq_col_space | number | _"SEQ Col Space"_ |
 | seq_fixed_width | boolean | _"SEQ Fixed Width"_ |
@@ -8711,11 +10816,19 @@
 - Displayed as: _"Term"_
 - Path: [/ibm/iis/igc-rest/v1/types/term](#term)
 
+#### Properties valid for creation:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | **parent_category** | [category](#category) | _"Parent Category"_ |
 | short_description | string | _"Short Description"_ |
 | **status** | enum | _"Status"_: `CANDIDATE`, `ACCEPTED`, `STANDARD`, `DEPRECATED` |
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8759,6 +10872,10 @@
 | assigned_external_assets | external_asset_reference | _"Assigned External Assets"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8817,8 +10934,16 @@
 - Displayed as: _"Term History"_
 - Path: [/ibm/iis/igc-rest/v1/types/term_history](#term_history)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | term | [information_asset](#information_asset) | _"Term"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | term | [information_asset](#information_asset) | _"Term"_ |
 | date | datetime | _"Date"_ |
 | comment | string | _"Comment"_ |
@@ -8831,6 +10956,10 @@
 - Displayed as: _"Transform Argument"_
 - Path: [/ibm/iis/igc-rest/v1/types/transform_argument](#transform_argument)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8847,10 +10976,18 @@
 - Displayed as: _"Transformation Project"_
 - Path: [/ibm/iis/igc-rest/v1/types/transformation_project](#transformation_project)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | include_for_lineage | enum | _"Include for Lineage"_: `setToTrue`, `setToFalse` |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | host_(engine) | [host_(engine)](#host_(engine)) | _"Host (Engine)"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
@@ -8880,6 +11017,10 @@
 - Displayed as: _"Transforms Function"_
 - Path: [/ibm/iis/igc-rest/v1/types/transforms_function](#transforms_function)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8897,9 +11038,17 @@
 - Displayed as: _"Tuple"_
 - Path: [/ibm/iis/igc-rest/v1/types/tuple](#tuple)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8915,6 +11064,10 @@
 - Displayed as: _"Tuple Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/tuple_attribute](#tuple_attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -8924,6 +11077,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -8958,8 +11115,16 @@
 - Displayed as: _"User"_
 - Path: [/ibm/iis/igc-rest/v1/types/user](#user)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | full_name | string | _"Full Name"_ |
 | job_title | string | _"Job Title"_ |
 | email_address | string | _"Email Address"_ |
@@ -8988,8 +11153,16 @@
 - Displayed as: _"User Group"_
 - Path: [/ibm/iis/igc-rest/v1/types/user_group](#user_group)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | group_name | string | _"Group Name"_ |
 | type | string | _"Type"_ |
 | email_address | string | _"Email Address"_ |
@@ -9009,8 +11182,16 @@
 - Displayed as: _"User Role"_
 - Path: [/ibm/iis/igc-rest/v1/types/user_role](#user_role)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Role"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Role"_ |
 | system_role | boolean | _"System Role"_ |
 | users | [steward](#steward) | _"Users"_ |
@@ -9021,6 +11202,10 @@
 - Displayed as: _"Valid Value"_
 - Path: [/ibm/iis/igc-rest/v1/types/valid_value](#valid_value)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | rule_component | string | _"Rule Component"_ |
 | rule_type | string | _"Rule Type"_ |
 | **name** | string | _"Name"_ |
@@ -9028,6 +11213,10 @@
 | valid_value_list | [valid_value_list](#valid_value_list) | _"Valid Value List"_ |
 | design_column | [data_item](#data_item) | _"Design Column"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | rule_component | string | _"Rule Component"_ |
 | rule_type | string | _"Rule Type"_ |
 | **name** | string | _"Name"_ |
@@ -9041,12 +11230,20 @@
 - Displayed as: _"Valid Value List"_
 - Path: [/ibm/iis/igc-rest/v1/types/valid_value_list](#valid_value_list)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | valid_values | [data_item_value](#data_item_value) | _"Valid Values"_ |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | valid_value_list | [valid_value_list](#valid_value_list) | _"Valid Value List"_ |
 | design_column | [data_item](#data_item) | _"Design Column"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | valid_values | [data_item_value](#data_item_value) | _"Valid Values"_ |
 | **name** | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
@@ -9059,6 +11256,10 @@
 - Displayed as: _"Valid Value Range"_
 - Path: [/ibm/iis/igc-rest/v1/types/valid_value_range](#valid_value_range)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | is_max_inclusive | boolean | _"Is Max Inclusive"_ |
 | minimum_value | string | _"Minimum Value"_ |
 | is_min_inclusive | boolean | _"Is Min Inclusive"_ |
@@ -9068,6 +11269,10 @@
 | valid_value_list | [valid_value_list](#valid_value_list) | _"Valid Value List"_ |
 | design_column | [data_item](#data_item) | _"Design Column"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | is_max_inclusive | boolean | _"Is Max Inclusive"_ |
 | minimum_value | string | _"Minimum Value"_ |
 | is_min_inclusive | boolean | _"Is Min Inclusive"_ |
@@ -9083,9 +11288,17 @@
 - Displayed as: _"Validity Table"_
 - Path: [/ibm/iis/igc-rest/v1/types/validity_table](#validity_table)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9102,6 +11315,10 @@
 - Displayed as: _"ValidValueList"_
 - Path: [/ibm/iis/igc-rest/v1/types/validvaluelist](#validvaluelist)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | contains_valid_values | [validvalues](#validvalues) | _"Contains Valid Values"_ |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
 | is_not | boolean | _"Is Not"_ |
@@ -9109,6 +11326,10 @@
 | is_case_sensitive | boolean | _"Is Case Sensitive"_ |
 | custom_attribute_def_of_has_valid_values_inverse | [customattributedef](#customattributedef) | _"Custom Attribute Def Of Has Valid Values Inverse"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | contains_valid_values | [validvalues](#validvalues) | _"Contains Valid Values"_ |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
 | is_not | boolean | _"Is Not"_ |
@@ -9126,6 +11347,10 @@
 - Displayed as: _"ValidValueRange"_
 - Path: [/ibm/iis/igc-rest/v1/types/validvaluerange](#validvaluerange)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | is_max_inclusive | boolean | _"Is Max Inclusive"_ |
 | minimum_value | string | _"Minimum Value"_ |
 | is_min_inclusive | boolean | _"Is Min Inclusive"_ |
@@ -9136,6 +11361,10 @@
 | is_case_sensitive | boolean | _"Is Case Sensitive"_ |
 | custom_attribute_def_of_has_valid_values_inverse | [customattributedef](#customattributedef) | _"Custom Attribute Def Of Has Valid Values Inverse"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | is_max_inclusive | boolean | _"Is Max Inclusive"_ |
 | minimum_value | string | _"Minimum Value"_ |
 | is_min_inclusive | boolean | _"Is Min Inclusive"_ |
@@ -9156,6 +11385,10 @@
 - Displayed as: _"ValidValueRule"_
 - Path: [/ibm/iis/igc-rest/v1/types/validvaluerule](#validvaluerule)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | rule_code | string | _"Rule Code"_ |
 | rule_type | string | _"Rule Type"_ |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
@@ -9164,6 +11397,10 @@
 | is_case_sensitive | boolean | _"Is Case Sensitive"_ |
 | custom_attribute_def_of_has_valid_values_inverse | [customattributedef](#customattributedef) | _"Custom Attribute Def Of Has Valid Values Inverse"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | rule_code | string | _"Rule Code"_ |
 | rule_type | string | _"Rule Type"_ |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
@@ -9182,12 +11419,20 @@
 - Displayed as: _"ValidValues"_
 - Path: [/ibm/iis/igc-rest/v1/types/validvalues](#validvalues)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
 | is_not | boolean | _"Is Not"_ |
 | sequence | number | _"Sequence"_ |
 | is_case_sensitive | boolean | _"Is Case Sensitive"_ |
 | custom_attribute_def_of_has_valid_values_inverse | [customattributedef](#customattributedef) | _"Custom Attribute Def Of Has Valid Values Inverse"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | valid_value_list_of_contains_valid_values_inverse | [validvaluelist](#validvaluelist) | _"Valid Value List Of Contains Valid Values Inverse"_ |
 | is_not | boolean | _"Is Not"_ |
 | sequence | number | _"Sequence"_ |
@@ -9204,6 +11449,10 @@
 - Displayed as: _"View"_
 - Path: [/ibm/iis/igc-rest/v1/types/view](#view)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9214,6 +11463,10 @@
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9275,8 +11528,16 @@
 - Displayed as: _"Warehouse Mapping"_
 - Path: [/ibm/iis/igc-rest/v1/types/warehouse_mapping](#warehouse_mapping)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | description | string | _"Description"_ |
 | warehouse_mapping_document | [warehouse_mapping_document](#warehouse_mapping_document) | _"Warehouse Mapping Document"_ |
@@ -9294,6 +11555,10 @@
 - Displayed as: _"Warehouse Mapping Document"_
 - Path: [/ibm/iis/igc-rest/v1/types/warehouse_mapping_document](#warehouse_mapping_document)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -9301,6 +11566,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9322,6 +11591,10 @@
 - Displayed as: _"XML Schema Definition"_
 - Path: [/ibm/iis/igc-rest/v1/types/xml_schema_definition](#xml_schema_definition)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9331,6 +11604,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9369,10 +11646,18 @@
 - Displayed as: _"XML Schema Library"_
 - Path: [/ibm/iis/igc-rest/v1/types/xml_schema_library](#xml_schema_library)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | description | string | _"Description"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | description | string | _"Description"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
@@ -9391,6 +11676,10 @@
 - Displayed as: _"XSD Attribute"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_attribute](#xsd_attribute)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9400,6 +11689,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9446,6 +11739,10 @@
 - Displayed as: _"XSD Attribute Group"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_attribute_group](#xsd_attribute_group)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9455,6 +11752,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9483,6 +11784,10 @@
 - Displayed as: _"XSD Attribute Reference"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_attribute_reference](#xsd_attribute_reference)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | usage | string | _"Usage"_ |
 | xsd_element | [main_object](#main_object) | _"XSD Element"_ |
 | xsd_attribute_group | [xsd_attribute_group](#xsd_attribute_group) | _"Attribute Group"_ |
@@ -9495,6 +11800,10 @@
 - Displayed as: _"XSD Choice"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_choice](#xsd_choice)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9504,6 +11813,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9566,6 +11879,10 @@
 - Displayed as: _"XSD Complex Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_complex_type](#xsd_complex_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9575,6 +11892,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9617,6 +11938,10 @@
 - Displayed as: _"XSD Element"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_element](#xsd_element)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9626,6 +11951,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9688,6 +12017,10 @@
 - Displayed as: _"XSD Element Group"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_element_group](#xsd_element_group)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9697,6 +12030,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9725,6 +12062,10 @@
 - Displayed as: _"XSD Element Group Reference"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_element_group_reference](#xsd_element_group_reference)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | min_occurs | number | _"Minimum Occurrence"_ |
 | max_occurs | number | _"Maximum Occurrence"_ |
 | xsd_element | [main_object](#main_object) | _"XSD Element"_ |
@@ -9738,6 +12079,10 @@
 - Displayed as: _"XSD Element Reference"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_element_reference](#xsd_element_reference)
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | min_occurs | number | _"Minimum Occurrence"_ |
 | max_occurs | number | _"Maximum Occurrence"_ |
 | xsd_element | [main_object](#main_object) | _"XSD Element"_ |
@@ -9751,12 +12096,20 @@
 - Displayed as: _"XSD Foreign Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_foreign_key](#xsd_foreign_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | namespace | string | _"Namespace"_ |
 | selector | string | _"Selector"_ |
 | xsd_elements_or_attributes | [main_object](#main_object) | _"XSD Elements or Attributes"_ |
 | referenced_xsd_keys | [xsd_unique_key](#xsd_unique_key) | _"References XSD Keys"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | **xsd_element** | [main_object](#main_object) | _"XSD Element"_ |
 | namespace | string | _"Namespace"_ |
@@ -9774,12 +12127,20 @@
 - Displayed as: _"XSD Primary Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_primary_key](#xsd_primary_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | namespace | string | _"Namespace"_ |
 | selector | string | _"Selector"_ |
 | xsd_elements_or_attributes | [main_object](#main_object) | _"XSD Elements or Attributes"_ |
 | referenced_by_xsd_keys | [xsd_foreign_key](#xsd_foreign_key) | _"Referenced by XSD Keys"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | **xsd_element** | [main_object](#main_object) | _"XSD Element"_ |
 | namespace | string | _"Namespace"_ |
@@ -9797,6 +12158,10 @@
 - Displayed as: _"XSD Sequence"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_sequence](#xsd_sequence)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9806,6 +12171,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9868,6 +12237,10 @@
 - Displayed as: _"XSD Simple Type"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_simple_type](#xsd_simple_type)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -9877,6 +12250,10 @@
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | notes | note | _"Notes"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -9923,12 +12300,20 @@
 - Displayed as: _"XSD Unique Key"_
 - Path: [/ibm/iis/igc-rest/v1/types/xsd_unique_key](#xsd_unique_key)
 
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | namespace | string | _"Namespace"_ |
 | selector | string | _"Selector"_ |
 | xsd_elements_or_attributes | [main_object](#main_object) | _"XSD Elements or Attributes"_ |
 | referenced_by_xsd_keys | [xsd_foreign_key](#xsd_foreign_key) | _"Referenced by XSD Keys"_ |
 
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
 | **name** | string | _"Name"_ |
 | **xsd_element** | [main_object](#main_object) | _"XSD Element"_ |
 | namespace | string | _"Namespace"_ |

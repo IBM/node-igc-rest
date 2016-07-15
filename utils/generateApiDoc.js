@@ -154,11 +154,7 @@ function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
 
 function parseTableForProperties(sValidity, aProps) {
 
-  var text = "\n";
-            + "#### " + sValidity + "\n"
-            + "\n"
-            + "| Name | Type | Details |\n"
-            + "| ---- | ---- | ---- |\n";
+  var text = "";
   for (var i = 0; i < aProps.length; i++) {
     var propName = aProps[i].name;
     var propType = aProps[i].type.name;
@@ -171,7 +167,12 @@ function parseTableForProperties(sValidity, aProps) {
     text = text + parsePropertyRow(propName, propDisplay, propType, aProps[i].type, maxNum, required);
   }
 
-  return text;
+  return "\n"
+        + "#### " + sValidity + "\n"
+        + "\n"
+        + "| Name | Type | Details |\n"
+        + "| ---- | ---- | ---- |\n"
+        + text;
 
 }
 
