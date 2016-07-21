@@ -1,4 +1,4 @@
-/**
+/***
  * Copyright 2016 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+
+/**
+ * @file Re-usable functions for interacting with IGC's REST API
+ * @license Apache-2.0
+ * @example
+ * // retrieves all of the "types" from IGC's REST API
+ * var igcrest = require('ibm-igc-rest');
+ * igcrest.setAuth("isadmin", "isadmin");
+ * igcrest.setServer("hostname", "9445");
+ * igcrest.getTypes(function(err, resTypes) {
+ *   // do something with the types within resTypes object
+ * });
  */
 
 const https = require('https');
@@ -100,10 +113,10 @@ exports.prepValue = function(value) {
 
 /**
  * Verify that one and only one item was returned by a query
- * - throws errors in any other case (no items or more than 1 item)
  *
  * @param {Object} json - the data returned from a query (as a JSON object)
  * @returns {Object} the single item returned
+ * @throws will throw an error if either no item or multiple items are found
  */
 exports.verifySingleItem = function(json) {
   if (json.items.length == 0) {
@@ -116,10 +129,10 @@ exports.verifySingleItem = function(json) {
 
 /**
  * Retrieve the first item returned by a query
- * - throws error if no items
  *
  * @param {Object} json - the data returned from a query (as a JSON object)
  * @returns {Object}
+ * @throws will throw an error if no items are found
  */
 exports.getSingleItem = function(json) {
   if (json.items.length == 0) {
@@ -185,7 +198,7 @@ exports.getAssetContainerId = function(assetObj) {
  *
  * @param {Object} assetCtx - the context object for the asset
  * @param {Object} containerId - the RID of the asset's container
- * @param {Function} callback - returns via callback in form (err, identity), since further requests may be needed
+ * @param {identityCallback} callback - callback that handles the response, since further requests may be needed
  */
 exports.getContainerIdentity = function(assetCtx, containerId, callback) {
 
@@ -240,11 +253,14 @@ exports.getAssetIdentity = function(assetObj, containerIdentities) {
 /**
  * Make a request against IGC's REST API
  *
+ * @see setServer
+ * @see setAuth
  * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
  * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
  * @param {string} [input] - any input for the request, i.e. for PUT, POST
  * @param {string} [drillDown] - the key into which to drill-down within the response
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
  */
 exports.makeRequest = function(method, path, input, drillDown, callback) {
 
@@ -308,7 +324,8 @@ exports.makeRequest = function(method, path, input, drillDown, callback) {
  *
  * @param {string} rid - the RID of the asset to update
  * @param {Object} value - the set of data with which to update the asset
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
  */
 exports.update = function(rid, value, callback) {
   this.makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
@@ -328,7 +345,8 @@ exports.update = function(rid, value, callback) {
  * Search IGC
  *
  * @param {Object} query - the search to run against IGC (as a JSON object)
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
  */
 exports.search = function(query, callback) {
   this.makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
@@ -347,7 +365,8 @@ exports.search = function(query, callback) {
 /**
  * Get a list of all of the IGC asset types
  *
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
  */
 exports.getTypes = function(callback) {
   this.makeRequest('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
@@ -367,7 +386,7 @@ exports.getTypes = function(callback) {
  * Make a general GET request against IGC's REST API
  *
  * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
  */
 exports.getOther = function(path, callback) {
   this.makeRequest('GET', path, null, null, callback);
@@ -377,7 +396,8 @@ exports.getOther = function(path, callback) {
  * Delete a specific asset from IGC
  *
  * @param {string} rid - the RID of the asset to delete
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
  */
 exports.deleteAssetById = function(rid, callback) {
   this.makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
@@ -398,7 +418,8 @@ exports.deleteAssetById = function(rid, callback) {
  * - Actual status comes from the "message" within the callback results: starts with SUCCESS, WARNING or FAILURE
  *
  * @param {string} rid - the RID of the job for which to detect lineage
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
  */
 exports.detectLineageForJob = function(rid, callback) {
   this.getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
@@ -420,7 +441,7 @@ exports.detectLineageForJob = function(rid, callback) {
  *
  * @param {string} collectionName
  * @param {integer} maxItems - maximum number of items to retrieve
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
  */
 exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
   // The pageSize here seems to be for collections that are found -- not assets
@@ -468,7 +489,7 @@ exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
  *
  * @see getAssetPropertiesById
  * @param {string} rid - the RID of the asset
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
  */
 exports.getAssetById = function(rid, callback) {
   this.getOther("/ibm/iis/igc-rest/v1/assets/" + rid, callback);
@@ -480,10 +501,10 @@ exports.getAssetById = function(rid, callback) {
  * @see getTypes
  * @param {string} rid - the RID of the asset
  * @param {string} type - the type of the asset
- * @param {[]} properties - array of properties to retrieve for the asset
+ * @param {string[]} properties - array of properties to retrieve for the asset
  * @param {integer} maxItems - maximum number of detailed properties
  * @param {boolean} bIncludeContext - whether to include contextual information (true) or drill-down just to the resulting properties (false)
- * @param {Function} callback - returns via callback in form (err, results)
+ * @param {requestCallback} callback - callback that handles the response
  */
 exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncludeContext, callback) {
   
@@ -551,4 +572,16 @@ exports.getDataContainerChildTypes = function(type) {
   return hmDataContainerTypesToChildren[type];
 }
 
-//exports.FlowHandler = require('./lineage').FlowHandler;
+/**
+ * This callback is invoked as the result of an IGC REST API call, providing the response of that request.
+ * @callback requestCallback
+ * @param {string} errorMessage - any error message, or null if no errors
+ * @param {Object} responseObject - the JSON object containing the response
+ */
+
+/**
+ * This callback is invoked as the result of obtaining an object's identity, providing the response of that request.
+ * @callback identityCallback
+ * @param {string} errorMessage - any error message, or null if no errors
+ * @param {Object} identityObject - the JSON object containing the identity
+ */
