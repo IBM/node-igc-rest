@@ -5,6 +5,6 @@
   "opts": {
     "package": "package.json",
     "recurse": true,
-    "destination": "./doc/"
+    "destination": "./docs/"
   }
 }
