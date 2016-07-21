@@ -16,12 +16,15 @@
  * limitations under the License.
  */
 
-//-------------------------------------------------------------------------------------------
-//
-// This script will create documentation on the various types and URLs available within the
-// Information Governance Catalog REST API
-//
-//-------------------------------------------------------------------------------------------
+/**
+ * @file This script will create documentation on the various types and URLs available within the Information Governance Catalog REST API
+ * @license Apache-2.0
+ * @requires underscore
+ * @requires ibm-igc-rest
+ * @example
+ * // creates a markdown file containing documentation on all of the data types and their properties
+ * ./generateApiDoc.js -f ../docs/igcRestAPI.md -d hostname:9445 -u isadmin -p isadmin
+ */
 
 const fs = require('fs');
 const os = require('os');
@@ -75,7 +78,7 @@ function readyForOutput(numTypes) {
   return (Object.keys(documentation).length == numTypes);
 }
 
-var fd = fs.openSync(filename, 'w', 0644);
+var fd = fs.openSync(filename, 'w', 0o644);
 outputIt("# Information Governance Catalog REST API");
 
 igcrest.getTypes(function(err, resTypes) {
