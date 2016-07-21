@@ -27,6 +27,10 @@
  * });
  */
 
+/**
+ * @module ibm-igc-rest
+ */
+
 const https = require('https');
 
 const hmDataContainerTypesToChildren = {
@@ -253,8 +257,8 @@ exports.getAssetIdentity = function(assetObj, containerIdentities) {
 /**
  * Make a request against IGC's REST API
  *
- * @see setServer
- * @see setAuth
+ * @see module:ibm-igc-rest.setServer
+ * @see module:ibm-igc-rest.setAuth
  * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
  * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
  * @param {string} [input] - any input for the request, i.e. for PUT, POST
@@ -487,7 +491,7 @@ exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
  * can be measurably slower (> 5x) than explicitly defining the properties and searching
  * using 'getAssetPropertiesById' instead
  *
- * @see getAssetPropertiesById
+ * @see module:ibm-igc-rest.getAssetPropertiesById
  * @param {string} rid - the RID of the asset
  * @param {requestCallback} callback - callback that handles the response
  */
@@ -498,7 +502,7 @@ exports.getAssetById = function(rid, callback) {
 /**
  * Retrieve only the specified details of an asset
  *
- * @see getTypes
+ * @see module:ibm-igc-rest.getTypes
  * @param {string} rid - the RID of the asset
  * @param {string} type - the type of the asset
  * @param {string[]} properties - array of properties to retrieve for the asset
