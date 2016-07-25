@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/**
+/***
  * Copyright 2016 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@
  * @license Apache-2.0
  * @requires underscore
  * @requires ibm-igc-rest
+ * @requires yargs
  * @example
  * // creates a markdown file containing documentation on all of the data types and their properties
  * ./generateApiDoc.js -f ../docs/igcRestAPI.md -d hostname:9445 -u isadmin -p isadmin
