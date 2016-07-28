@@ -54,9 +54,12 @@ var port = "";
  * @returns {string} authentication in the form of 'user:password'
  */
 exports.setAuth = function(user, password) {
+  if (user === undefined || user === "" || password === undefined || password === "") {
+    throw new Error("Incomplete authentication information -- missing username or password (or both).");
+  }
   this.auth = user + ":" + password;
   return this.auth;
-};
+}
 
 /**
  * Set access details for the REST API
