@@ -258,6 +258,26 @@ exports.getAssetIdentity = function(assetObj, containerIdentities) {
 }
 
 /**
+ * Constructs an asset identity string provide a REST API item (which must include '_context')
+ *
+ * @param {Object} restItem - a single entry from the 'items' array of a REST API response, including '_context' member
+ * @param {string} [delimiter] - a delimiter to use for separating the components of the identity (default: '::')
+ * @returns {string}
+ */
+exports.getItemIdentityString = function(restItem, delimiter) {
+  var identity = "";
+  if (delimiter === undefined || delimiter === "") {
+    delimiter = "::";
+  }
+  var aCtx = restItem._context;
+  for (var i = 0; i < aCtx.length; i++) {
+    identity = identity + delimiter + aCtx[i]._name;
+  }
+  identity = identity + delimiter + restItem._name;
+  return identity.substring(delimiter.length);
+}
+
+/**
  * Make a request against IGC's REST API
  *
  * @see module:ibm-igc-rest.setServer
@@ -324,6 +344,30 @@ exports.makeRequest = function(method, path, input, drillDown, callback) {
     throw new Error(e);
   });
 
+}
+
+/**
+ * Create an asset
+ *
+ * @param {string} type - the type of asset to create
+ * @param {Object} value - the set of values with which to create the asset
+ * @param {requestCallback} callback - callback that handles the response
+ * @throws will throw an error if the status code does not indicate success
+ */
+exports.create = function(type, value, callback) {
+  value._type = type;
+  this.makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res, resCreate) {
+    var err = null;
+    if (res.statusCode != 200) {
+      err = "Unsuccessful request " + res.statusCode;
+      console.error(err);
+      console.error('headers: ', res.headers);
+      throw new Error(err);
+    }
+    var rid = res.headers["Location"].substring(res.headers["Location"].lastIndexOf("/"));
+    callback(err, rid);
+    return rid;
+  });
 }
 
 /**
