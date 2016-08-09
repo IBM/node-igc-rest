@@ -434,6 +434,25 @@ exports.getTypes = function(callback) {
 }
 
 /**
+ * Get a mapping of all asset types from display name to unique type id
+ *
+ * @param {requestCallback} callback - callback that handles the response, with an object keyed by display name and each value the unique type id for that display name
+ * @throws will throw an error if the status code does not indicate success
+ */
+exports.getAssetTypeNamesToIds = function(callback) {
+  exports.getTypes(function(err, resTypes) {
+    var typesToIds = {};
+    for (var i = 0; i < resTypes.length; i++) {
+      var name = resTypes[i]._name;
+      var id = resTypes[i]._id;
+      typesToIds[name] = id;
+    }
+    callback(err, typesToIds);
+    return typesToIds;
+  });
+}
+
+/**
  * Make a general GET request against IGC's REST API
  *
  * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
@@ -562,9 +581,9 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
   if (!(properties instanceof Array)) {
     properties = [ properties ];
   }
-  if (bIncludeContext) {
+/*  if (bIncludeContext) {
     properties.push("_context");
-  }
+  } */
 
   var json = {
     "pageSize": maxItems,
@@ -583,7 +602,6 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
       "operator" : "and"
     }
   }
-
   this.search(json, function(err, results) {
     var toReturn = {};
     if (results.items.length > 1) {
