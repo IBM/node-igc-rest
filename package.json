@@ -10,6 +10,7 @@
     "LICENSE"
   ],
   "dependencies": {
+    "underscore": ">=1.8.3"
   },
   "devDependencies": {
     "jsdoc": "^3.4.0",
