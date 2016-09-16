@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+"use strict";
+
 /**
  * @file This script will create documentation on the various types and URLs available within the Information Governance Catalog REST API
  * @license Apache-2.0
@@ -29,12 +31,12 @@
 
 const fs = require('fs');
 const os = require('os');
-var igcrest = require('../');
-var _ = require('underscore');
+const igcrest = require('../');
+const _ = require('underscore');
 
 // Command-line setup
-var yargs = require('yargs');
-var argv = yargs
+const yargs = require('yargs');
+const argv = yargs
     .usage('Usage: $0 -f <path> -d <host>:<port> -u <user> -p <password>')
     .option('f', {
       alias: 'file',
@@ -46,7 +48,6 @@ var argv = yargs
     .option('d', {
       alias: 'domain',
       describe: 'Host and port for invoking IGC REST',
-      default: 'datalake:9445',
       demand: true, requiresArg: true, type: 'string'
     })
     .option('u', {
@@ -66,47 +67,51 @@ var argv = yargs
     .wrap(yargs.terminalWidth())
     .argv;
 
-var filename = argv.file;
-var host_port = argv.domain.split(":");
+const filename = argv.file;
+const host_port = argv.domain.split(":");
 igcrest.setAuth(argv.deploymentUser, argv.deploymentUserPassword);
 igcrest.setServer(host_port[0], host_port[1]);
 
 const basicTypes = { 'string':0, 'boolean':0, 'datetime':0, 'number':0, 'note':0, 'external_asset_reference':0 };
 
-var documentation = {}
+const documentation = {};
+let numTypes = -1;
 
 function readyForOutput(numTypes) {
-  return (Object.keys(documentation).length == numTypes);
+  return (Object.keys(documentation).length === numTypes);
 }
 
-var fd = fs.openSync(filename, 'w', 0o644);
+const fd = fs.openSync(filename, 'w', 0o644);
 outputIt("# Information Governance Catalog REST API");
 
+function processTypeDetails(res, resProps) {
+  let err = null;
+  if (res.statusCode !== 200) {
+    err = "Unsuccessful request " + res.statusCode;
+    console.error(err);
+    console.error('headers: ', res.headers);
+    throw new Error(err);
+  }
+  let type = resProps._id;
+  documentation[type] = parsePropertiesForType(resProps);
+  if (readyForOutput(numTypes)) {
+    outputDocumentation();
+  }
+}
+
 igcrest.getTypes(function(err, resTypes) {
-  var types = _.pluck(resTypes, "_id");
-  for (var i = 0; i < types.length; i++) {
-    var type = types[i];
-    igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + type + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", function(res, resProps) {
-      var err = null;
-      if (res.statusCode != 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        throw new Error(err);
-      }
-      var type = resProps._id;
-      documentation[type] = parsePropertiesForType(resProps);
-      if (readyForOutput(types.length)) {
-        outputDocumentation();
-      }
-    });
+  const types = _.pluck(resTypes, "_id");
+  numTypes = types.length;
+  for (let i = 0; i < types.length; i++) {
+    const type = types[i];
+    igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + type + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
   }
 });
 
 function outputDocumentation() {
-  var aAlphaKeys = Object.keys(documentation).sort();
-  for (var i = 0; i < aAlphaKeys.length; i++) {
-    var type = aAlphaKeys[i];
+  const aAlphaKeys = Object.keys(documentation).sort();
+  for (let i = 0; i < aAlphaKeys.length; i++) {
+    const type = aAlphaKeys[i];
     outputIt(documentation[type]);
   }
   wrapUp(0);
@@ -122,15 +127,15 @@ function wrapUp(rc) {
 }
 
 function getSubURL(type, url) {
-  var strippedURL = url.substring(21, url.length);
+  const strippedURL = url.substring(21, url.length);
   return "[" + strippedURL + "](#" + type.toLowerCase() + ")";
 }
 
 function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
 
-  var outputName = name;
-  var outputType = type;
-  var outputDetails = "_\"" + displayName + "\"_";
+  let outputName = name;
+  let outputType = type;
+  let outputDetails = "_\"" + displayName + "\"_";
 
   if (maxNum > 1) {
     outputName = "_" + outputName + "_";
@@ -139,11 +144,11 @@ function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
     outputName = "**" + outputName + "**";
   }
 
-  if (type == "enum") {
-    var valuesString = "";
-    var validVals = typeObj.validValues;
-    for (var i = 0; i < validVals.length; i++) {
-      var valueId = validVals[i].id;
+  if (type === "enum") {
+    let valuesString = "";
+    const validVals = typeObj.validValues;
+    for (let i = 0; i < validVals.length; i++) {
+      const valueId = validVals[i].id;
       valuesString += "`" + valueId + "`, ";
     }
     outputDetails = outputDetails + ": " + valuesString.substring(0, valuesString.length - 2);
@@ -158,43 +163,43 @@ function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
 
 function parseTableForProperties(sValidity, aProps) {
 
-  var text = "";
-  for (var i = 0; i < aProps.length; i++) {
-    var propName = aProps[i].name;
-    var propType = aProps[i].type.name;
-    var required = aProps[i].hasOwnProperty("minCardinality");
-    var maxNum   = 1;
+  let text = "";
+  for (let i = 0; i < aProps.length; i++) {
+    const propName = aProps[i].name;
+    const propType = aProps[i].type.name;
+    const required = aProps[i].hasOwnProperty("minCardinality");
+    let maxNum   = 1;
     if (aProps[i].hasOwnProperty("maxCardinality")) {
       maxNum = aProps[i].maxCardinality;
     }
-    var propDisplay = aProps[i].displayName;
+    const propDisplay = aProps[i].displayName;
     text = text + parsePropertyRow(propName, propDisplay, propType, aProps[i].type, maxNum, required);
   }
 
-  return "\n"
-        + "#### " + sValidity + "\n"
-        + "\n"
-        + "| Name | Type | Details |\n"
-        + "| ---- | ---- | ---- |\n"
-        + text;
+  return "\n" +
+    "#### " + sValidity + "\n" +
+    "\n" +
+    "| Name | Type | Details |\n" +
+    "| ---- | ---- | ---- |\n" +
+    text;
 
 }
 
 function parsePropertiesForType(jsonProps) {
   
-  var id   = jsonProps._id;
-  var name = jsonProps._name;
-  var url  = jsonProps._url;
+  const id   = jsonProps._id;
+  const name = jsonProps._name;
+  const url  = jsonProps._url;
 
-  var text = "\n"
-            + "## `" + id + "`\n"
-            + "\n"
-            + "- Displayed as: _\"" + name + "\"_\n"
-            + "- Path: " + getSubURL(id, url) + "\n";
+  let text = "\n" +
+    "## `" + id + "`\n" +
+    "\n" +
+    "- Displayed as: _\"" + name + "\"_\n" +
+    "- Path: " + getSubURL(id, url) + "\n";
 
-  var create = [];
-  var edit = [];
-  var view = [];
+  let create = [];
+  let edit = [];
+  let view = [];
   if (jsonProps.hasOwnProperty("createInfo") && jsonProps.createInfo.hasOwnProperty("properties")) {
     create = jsonProps.createInfo.properties;
   }
