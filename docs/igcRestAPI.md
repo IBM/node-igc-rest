@@ -106,6 +106,8 @@
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -128,6 +130,8 @@
 | source_creation_date | datetime | _"Source Creation Date"_ |
 | source_modification_date | datetime | _"Source Modification Date"_ |
 | data_connection | [data_connection](#data_connection) | _"Data Connection"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | in_collections | [collection](#collection) | _"In Collections"_ |
 | notes | note | _"Notes"_ |
 | created_by | string | _"Created By"_ |
@@ -284,6 +288,8 @@
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -318,6 +324,8 @@
 | written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
 | impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
 | impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | in_collections | [collection](#collection) | _"In Collections"_ |
 | notes | note | _"Notes"_ |
 | created_by | string | _"Created By"_ |
@@ -1068,7 +1076,7 @@
 | details | [bi_collection_member](#bi_collection_member) | _"Details"_ |
 | references_bi_members | [bi_collection_member](#bi_collection_member) | _"References BI Members"_ |
 | referenced_by_bi_members | [bi_collection_member](#bi_collection_member) | _"Referenced by BI Members"_ |
-| used_by_bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"Used by BI Report Query Items"_ |
+| used_by_bi_report_query_items | [reportobject](#reportobject) | _"Used by BI Report Query Items"_ |
 | used_by_bi_cubes | [bi_cube](#bi_cube) | _"Used by BI Cubes"_ |
 | uses_database_columns | [database_column](#database_column) | _"Uses Database Columns"_ |
 | read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
@@ -1483,7 +1491,7 @@
 | Name | Type | Details |
 | ---- | ---- | ---- |
 | defined_of_report_field | [reportobject](#reportobject) | _"Defined of Report Field"_ |
-| **defined_in_report_data_item** | [bi_report_query_item](#bi_report_query_item) | _"Defined in Report Data Item"_ |
+| **defined_in_report_data_item** | [reportobject](#reportobject) | _"Defined in Report Data Item"_ |
 | defined_by_data_field | [data_item](#data_item) | _"Defined by Data Field"_ |
 | defined_by_olap_member | [bi_collection_member](#bi_collection_member) | _"Defined by OLAP Member"_ |
 
@@ -1525,12 +1533,64 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"BI Report Query Items"_ |
+| bi_report_query_detail_filters | [bi_report_query_detail_filter](#bi_report_query_detail_filter) | _"BI Query Detail Filters"_ |
+| bi_report_query_summary_filters | [bi_report_query_summary_filter](#bi_report_query_summary_filter) | _"BI Query Summary Filters"_ |
 | imported_from | string | _"Imported From"_ |
 | condition | string | _"Condition"_ |
 | contains_bi_queries | [bi_report_query](#bi_report_query) | _"Contains BI Queries"_ |
 | contained_by_bi_report_queries | [bi_report_query](#bi_report_query) | _"Contained by BI Report Queries"_ |
 | uses_bi_collections | [bi_collection](#bi_collection) | _"Uses BI Collections"_ |
 | uses_database_tables_or_views | [datagroup](#datagroup) | _"Uses Database Tables or Views"_ |
+| read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
+| written_by_(static) | [information_asset](#information_asset) | _"Written by (Static)"_ |
+| read_by_(design) | [information_asset](#information_asset) | _"Read by (Design)"_ |
+| written_by_(design) | [information_asset](#information_asset) | _"Written by (Design)"_ |
+| read_by_(operational) | [information_asset](#information_asset) | _"Read by (Operational)"_ |
+| written_by_(operational) | [information_asset](#information_asset) | _"Written by (Operational)"_ |
+| read_by_(user_defined) | [information_asset](#information_asset) | _"Read by (User-Defined)"_ |
+| written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
+| impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
+| impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
+| in_collections | [collection](#collection) | _"In Collections"_ |
+| notes | note | _"Notes"_ |
+| created_by | string | _"Created By"_ |
+| created_on | datetime | _"Created On"_ |
+| modified_by | string | _"Modified By"_ |
+| modified_on | datetime | _"Modified On"_ |
+
+
+## `bi_report_query_detail_filter`
+
+- Displayed as: _"Detail Filter"_
+- Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_detail_filter](#bi_report_query_detail_filter)
+
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| short_description | string | _"Short Description"_ |
+| long_description | string | _"Long Description"_ |
+| implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
+| governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| notes | note | _"Notes"_ |
+
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| expression_in_title | string | _"Expression"_ |
+| short_description | string | _"Short Description"_ |
+| long_description | string | _"Long Description"_ |
+| **type** | string | _"Type"_ |
+| namespace | string | _"Namespace"_ |
+| **bi_report_query** | [bi_report_query](#bi_report_query) | _"BI Report Query"_ |
+| implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
+| governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| expression | string | _"Expression"_ |
+| contains_bi_report_query_items | [reportobject](#reportobject) | _"References BI Report Query Items"_ |
+| src_contains_bi_report_query_items | [reportobject](#reportobject) | _"Referenced by BI Report Query Item"_ |
+| uses_database_columns | [data_item](#data_item) | _"Uses Database Columns"_ |
+| uses_bi_collection_members | [bi_collection_member](#bi_collection_member) | _"Uses BI Collection Members"_ |
 | read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
 | written_by_(static) | [information_asset](#information_asset) | _"Written by (Static)"_ |
 | read_by_(design) | [information_asset](#information_asset) | _"Read by (Design)"_ |
@@ -1583,8 +1643,58 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | expression | string | _"Expression"_ |
-| contains_bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"References BI Report Query Items"_ |
-| src_contains_bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"Referenced by BI Report Query Item"_ |
+| contains_bi_report_query_items | [reportobject](#reportobject) | _"References BI Report Query Items"_ |
+| src_contains_bi_report_query_items | [reportobject](#reportobject) | _"Referenced by BI Report Query Item"_ |
+| uses_database_columns | [data_item](#data_item) | _"Uses Database Columns"_ |
+| uses_bi_collection_members | [bi_collection_member](#bi_collection_member) | _"Uses BI Collection Members"_ |
+| read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
+| written_by_(static) | [information_asset](#information_asset) | _"Written by (Static)"_ |
+| read_by_(design) | [information_asset](#information_asset) | _"Read by (Design)"_ |
+| written_by_(design) | [information_asset](#information_asset) | _"Written by (Design)"_ |
+| read_by_(operational) | [information_asset](#information_asset) | _"Read by (Operational)"_ |
+| written_by_(operational) | [information_asset](#information_asset) | _"Written by (Operational)"_ |
+| read_by_(user_defined) | [information_asset](#information_asset) | _"Read by (User-Defined)"_ |
+| written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
+| impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
+| impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
+| in_collections | [collection](#collection) | _"In Collections"_ |
+| notes | note | _"Notes"_ |
+| created_by | string | _"Created By"_ |
+| created_on | datetime | _"Created On"_ |
+| modified_by | string | _"Modified By"_ |
+| modified_on | datetime | _"Modified On"_ |
+
+
+## `bi_report_query_summary_filter`
+
+- Displayed as: _"Summary Filter"_
+- Path: [/ibm/iis/igc-rest/v1/types/bi_report_query_summary_filter](#bi_report_query_summary_filter)
+
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| short_description | string | _"Short Description"_ |
+| long_description | string | _"Long Description"_ |
+| implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
+| governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| notes | note | _"Notes"_ |
+
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| expression_in_title | string | _"Expression"_ |
+| short_description | string | _"Short Description"_ |
+| long_description | string | _"Long Description"_ |
+| **type** | string | _"Type"_ |
+| namespace | string | _"Namespace"_ |
+| **bi_report_query** | [bi_report_query](#bi_report_query) | _"BI Report Query"_ |
+| implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
+| governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| expression | string | _"Expression"_ |
+| contains_bi_report_query_items | [reportobject](#reportobject) | _"References BI Report Query Items"_ |
+| src_contains_bi_report_query_items | [reportobject](#reportobject) | _"Referenced by BI Report Query Item"_ |
 | uses_database_columns | [data_item](#data_item) | _"Uses Database Columns"_ |
 | uses_bi_collection_members | [bi_collection_member](#bi_collection_member) | _"Uses BI Collection Members"_ |
 | read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
@@ -1642,6 +1752,8 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"BI Report Query Items"_ |
+| bi_report_query_detail_filters | [bi_report_query_detail_filter](#bi_report_query_detail_filter) | _"BI Query Detail Filters"_ |
+| bi_report_query_summary_filters | [bi_report_query_summary_filter](#bi_report_query_summary_filter) | _"BI Query Summary Filters"_ |
 | imported_from | string | _"Imported From"_ |
 | condition | string | _"Condition"_ |
 | contains_bi_queries | [bi_report_query](#bi_report_query) | _"Contains BI Queries"_ |
@@ -2142,6 +2254,7 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
+| quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -2179,7 +2292,7 @@
 | selected_foreign_key_referenced | [database_column](#database_column) | _"User Selected Foreign Key Referenced"_ |
 | validation_type | string | _"Validation Type"_ |
 | validation_properties | string | _"Validation Properties"_ |
-| quality_score | number | _"Quality Score"_ |
+| quality_score_percent | string | _"Quality Score"_ |
 | nb_records_tested | number | _"Number of Records Tested"_ |
 | quality_score_problems | [quality_problem](#quality_problem) | _"Quality Score Problems"_ |
 | notes | note | _"Notes"_ |
@@ -2284,6 +2397,7 @@
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -2300,6 +2414,7 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | used_by_stage_columns | [data_item](#data_item) | _"Used by Stage Columns"_ |
+| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | key | boolean | _"Key"_ |
 | type | string | _"Type"_ |
 | length | number | _"Length"_ |
@@ -2887,7 +3002,6 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
-| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
 | labels | [label](#label) | _"Labels"_ |
@@ -2895,6 +3009,7 @@
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | notes | note | _"Notes"_ |
 
@@ -2902,7 +3017,6 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
-| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
@@ -2913,6 +3027,7 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | data_file_definition_fields | [data_file_definition_field](#data_file_definition_field) | _"Data File Definition Fields"_ |
+| custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
 | imported_from | string | _"Imported From"_ |
 | in_collections | [collection](#collection) | _"In Collections"_ |
@@ -2971,6 +3086,7 @@
 | level | number | _"Level"_ |
 | allows_null_values | boolean | _"Allow Null Values"_ |
 | unique | boolean | _"Unique Constraint"_ |
+| same_as_data_sources | [data_item](#data_item) | _"Same as Data Sources"_ |
 | analysis | [field_analysis](#field_analysis) | _"Analysis"_ |
 | read_by_(static) | [information_asset](#information_asset) | _"Read by (Static)"_ |
 | written_by_(static) | [information_asset](#information_asset) | _"Written by (Static)"_ |
@@ -3006,6 +3122,8 @@
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -3042,6 +3160,8 @@
 | written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
 | impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
 | impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
+| include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | in_collections | [collection](#collection) | _"In Collections"_ |
 | notes | note | _"Notes"_ |
 | created_by | string | _"Created By"_ |
@@ -3078,7 +3198,7 @@
 | name | string | _"Name"_ |
 | short_description | string | _"Short Description"_ |
 | long_description | string | _"Long Description"_ |
-| data_file | [main_object](#main_object) | _"Data File"_ |
+| data_file | [main_object](#main_object) | _"Default Data File"_ |
 | labels | [label](#label) | _"Labels"_ |
 | stewards | [ascl_steward](#ascl_steward) | _"Stewards"_ |
 | assigned_to_terms | [term](#term) | _"Assigned to Terms"_ |
@@ -3089,6 +3209,7 @@
 | implements_design_tables_or_views | [datagroup](#datagroup) | _"Implements Design Tables or Design Views"_ |
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
+| same_as_data_sources | [datagroup](#datagroup) | _"Same as Data Sources"_ |
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | imported_from | string | _"Imported From"_ |
 | analysis | [file_record_analysis](#file_record_analysis) | _"Analysis"_ |
@@ -3652,9 +3773,11 @@
 | fraction | number | _"Fraction"_ |
 | position | number | _"Position"_ |
 | level | number | _"Level"_ |
+| occurs | string | _"Occurs"_ |
+| start_end_columns | string | _"Starting .. Ending Columns"_ |
 | allows_null_values | boolean | _"Allow Null Values"_ |
 | unique | boolean | _"Unique Constraint"_ |
-| same_as_database_columns | [database_column](#database_column) | _"Same as Database Columns"_ |
+| same_as_data_sources | [data_item](#data_item) | _"Same as Data Sources"_ |
 | references_database_columns | [database_column](#database_column) | _"References Database Columns"_ |
 | defined_primary_key | [candidate_key](#candidate_key) | _"Defined Primary Key"_ |
 | selected_primary_key | boolean | _"User Selected Primary Key"_ |
@@ -3680,7 +3803,7 @@
 | written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
 | impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
 | impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
-| bi_report_query_items | [bi_report_query_item](#bi_report_query_item) | _"BI Report Query Items"_ |
+| bi_report_query_items | [reportobject](#reportobject) | _"BI Report Query Items"_ |
 | bi_collection_members | [bi_collection_member](#bi_collection_member) | _"BI Collection Members"_ |
 | data_rule_definitions | [non_published_data_rule_definition](#non_published_data_rule_definition) | _"Data Rule Definitions"_ |
 | data_rule_set_definitions | [non_published_data_rule_set](#non_published_data_rule_set) | _"Data Rule Set Definitions"_ |
@@ -3777,7 +3900,7 @@
 | implements_rules | [information_governance_rule](#information_governance_rule) | _"Implements Rules"_ |
 | governed_by_rules | [information_governance_rule](#information_governance_rule) | _"Governed by Rules"_ |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
-| same_as_database_schemas | [database_schema](#database_schema) | _"Same as Database Schemas"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
 | preferred_database_schema | [database_schema](#database_schema) | _"Preferred Database Schema"_ |
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | notes | note | _"Notes"_ |
@@ -3815,7 +3938,7 @@
 | written_by_(user_defined) | [information_asset](#information_asset) | _"Written by (User-Defined)"_ |
 | impacted_by | [information_asset](#information_asset) | _"Impacted by"_ |
 | impacts_on | [information_asset](#information_asset) | _"Impacts on"_ |
-| same_as_database_schemas | [database_schema](#database_schema) | _"Same as Database Schemas"_ |
+| same_as_data_sources | [main_object](#main_object) | _"Same as Data Sources"_ |
 | preferred_database_schema | [database_schema](#database_schema) | _"Preferred Database Schema"_ |
 | include_for_business_lineage | boolean | _"Include for Business Lineage"_ |
 | database_domains | [data_item_definition](#data_item_definition) | _"Database Domains"_ |
@@ -3867,7 +3990,7 @@
 | implements_design_tables_or_views | [datagroup](#datagroup) | _"Implements Design Tables or Design Views"_ |
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
-| same_as_database_tables | [database_table](#database_table) | _"Same as Database Tables"_ |
+| same_as_data_sources | [datagroup](#datagroup) | _"Same as Data Sources"_ |
 | referenced_by_views | [view](#view) | _"Referenced by Views"_ |
 | database_aliases | [datagroup](#datagroup) | _"Database Aliases"_ |
 | imported_from | string | _"Imported From"_ |
@@ -4320,6 +4443,32 @@
 | created_on | datetime | _"Created On"_ |
 | modified_by | string | _"Modified By"_ |
 | modified_on | datetime | _"Modified On"_ |
+
+
+## `development_log`
+
+- Displayed as: _"DevelopmentLog"_
+- Path: [/ibm/iis/igc-rest/v1/types/development_log](#development_log)
+
+#### Properties valid for editing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| workflow_task | string | _"Workflow Task"_ |
+| activity | string | _"Activity"_ |
+| new_state | string | _"New State"_ |
+| comment | string | _"Comment"_ |
+
+#### Properties valid for viewing:
+
+| Name | Type | Details |
+| ---- | ---- | ---- |
+| date | datetime | _"Date"_ |
+| workflow_task | string | _"Workflow Task"_ |
+| activity | string | _"Activity"_ |
+| new_state | string | _"New State"_ |
+| person | string | _"Person"_ |
+| comment | string | _"Comment"_ |
 
 
 ## `directory`
@@ -5187,6 +5336,7 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
+| quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -5224,7 +5374,7 @@
 | selected_foreign_key_referenced | [database_column](#database_column) | _"User Selected Foreign Key Referenced"_ |
 | validation_type | string | _"Validation Type"_ |
 | validation_properties | string | _"Validation Properties"_ |
-| quality_score | number | _"Quality Score"_ |
+| quality_score_percent | string | _"Quality Score"_ |
 | nb_records_tested | number | _"Number of Records Tested"_ |
 | quality_score_problems | [quality_problem](#quality_problem) | _"Quality Score Problems"_ |
 | notes | note | _"Notes"_ |
@@ -5296,6 +5446,7 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
+| quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -5313,7 +5464,7 @@
 | selected_primary_key | [database_column](#database_column) | _"User Selected Primary Key"_ |
 | selected_foreign_key | [database_column](#database_column) | _"User Selected Foreign Key"_ |
 | selected_natural_key | [database_column](#database_column) | _"User Selected Natural Key"_ |
-| quality_score | number | _"Quality Score"_ |
+| quality_score_percent | string | _"Quality Score"_ |
 | nb_record_tested | number | _"Number of Records Tested"_ |
 | quality_score_problems | [quality_problem](#quality_problem) | _"Quality Score Problems"_ |
 | notes | note | _"Notes"_ |
@@ -9856,6 +10007,12 @@
 | schema | string | _"Schema"_ |
 | table | string | _"Table"_ |
 | sql_statement | string | _"SQL Statement"_ |
+| insert_sql | string | _"Insert SQL"_ |
+| update_sql | string | _"Update SQL"_ |
+| delete_sql | string | _"Delete SQL"_ |
+| before_sql | string | _"Before SQL"_ |
+| after_sql | string | _"After SQL"_ |
+| all_sql_statements | string | _"All SQL Statements"_ |
 | standardization_rule_sets | [standardization_rule_set](#standardization_rule_set) | _"Standardization Rule Sets"_ |
 | match_specifications | [match_specification](#match_specification) | _"Match Specifications"_ |
 | data_rule_definition | [stage_data_rule_definition](#stage_data_rule_definition) | _"Data Rule Definition"_ |
@@ -10467,6 +10624,7 @@
 
 | Name | Type | Details |
 | ---- | ---- | ---- |
+| quality_score_percent | string | _"Quality Score"_ |
 | notes | note | _"Notes"_ |
 
 #### Properties valid for viewing:
@@ -10484,7 +10642,7 @@
 | selected_primary_key | [database_column](#database_column) | _"User Selected Primary Key"_ |
 | selected_foreign_key | [database_column](#database_column) | _"User Selected Foreign Key"_ |
 | selected_natural_key | [database_column](#database_column) | _"User Selected Natural Key"_ |
-| quality_score | number | _"Quality Score"_ |
+| quality_score_percent | string | _"Quality Score"_ |
 | nb_record_tested | number | _"Number of Records Tested"_ |
 | quality_score_problems | [quality_problem](#quality_problem) | _"Quality Score Problems"_ |
 | notes | note | _"Notes"_ |
@@ -11333,7 +11491,7 @@
 | implements_design_tables_or_views | [datagroup](#datagroup) | _"Implements Design Tables or Design Views"_ |
 | custom_Technical Or Business Use | enum | _"Technical Or Business Use"_: `Technical Only` |
 | alias_(business_name) | string | _"Alias (Business Name)"_ |
-| same_as_database_views | [view](#view) | _"Same as Database Views"_ |
+| same_as_data_sources | [datagroup](#datagroup) | _"Same as Data Sources"_ |
 | database_aliases | [datagroup](#datagroup) | _"Database Aliases"_ |
 | based_upon_database_tables | [datagroup](#datagroup) | _"Based upon Database Tables"_ |
 | referenced_by_views | [view](#view) | _"Referenced by Views"_ |
