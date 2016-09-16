@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+"use strict";
+
 /**
  * @file Re-usable functions for interacting with IGC's REST API
  * @license Apache-2.0
@@ -42,9 +44,9 @@ const hmDataChildrenToContainerTypes = {
   "data_file_field": "data_file_record"
 };
 
-var auth = "";
-var host = "";
-var port = "";
+let auth = "";
+let host = "";
+let port = "";
 
 /**
  * Set authentication details to access the REST API
@@ -59,7 +61,7 @@ exports.setAuth = function(user, password) {
   }
   this.auth = user + ":" + password;
   return this.auth;
-}
+};
 
 /**
  * Set access details for the REST API
@@ -70,7 +72,7 @@ exports.setAuth = function(user, password) {
 exports.setServer = function(host, port) {
   this.host = host;
   this.port = port;
-}
+};
 
 /**
  * Replace any variables (text that starts with '$') that show up in a query
@@ -80,15 +82,15 @@ exports.setServer = function(host, port) {
  * @returns {Object}
  */
 exports.replaceQueryVars = function(json, variables) {
-  for (var i = 0; i < json.where.conditions.length; i++ ) {
-    var value = json.where.conditions[i].value;
+  for (let i = 0; i < json.where.conditions.length; i++ ) {
+    let value = json.where.conditions[i].value;
     if (value.indexOf("$") === 0) {
       value = value.substring(1, value.length);
       json.where.conditions[i].value = variables[value];
     }
   }
   return json;
-}
+};
 
 /**
  * Replace '$relatedObjectRID' in the query with the provided RID
@@ -99,7 +101,7 @@ exports.replaceQueryVars = function(json, variables) {
  */
 exports.replaceRelatedUpdateVars = function(json, rid) {
   return JSON.parse(JSON.stringify(json).replace("$relatedObjectRID", rid));
-}
+};
 
 /**
  * Prepare the provided value for use via the REST API:
@@ -110,13 +112,13 @@ exports.replaceRelatedUpdateVars = function(json, rid) {
  * @returns {Object}
  */
 exports.prepValue = function(value) {
-  if (typeof(value) == "string") {
+  if (typeof(value) === "string") {
     value = "\"" + value + "\"";
   } else {
     value = JSON.stringify(value);
   }
   return value;
-}
+};
 
 /**
  * Verify that one and only one item was returned by a query
@@ -126,13 +128,13 @@ exports.prepValue = function(value) {
  * @throws will throw an error if either no item or multiple items are found
  */
 exports.verifySingleItem = function(json) {
-  if (json.items.length == 0) {
+  if (json.items.length === 0) {
     throw new Error("Did not find the entry to update.");
   } else if (json.items.length > 1) {
     throw new Error("Found multiple entries to update.");
   }
   return json.items[0];
-}
+};
 
 /**
  * Retrieve the first item returned by a query
@@ -142,11 +144,11 @@ exports.verifySingleItem = function(json) {
  * @throws will throw an error if no items are found
  */
 exports.getSingleItem = function(json) {
-  if (json.items.length == 0) {
+  if (json.items.length === 0) {
     throw new Error("Did not find the entry to update.");
   }
   return json.items[0];
-}
+};
 
 /**
  * Log to the console the results of an update
@@ -155,12 +157,12 @@ exports.getSingleItem = function(json) {
  */
 exports.logUpdateResults = function(results) {
   console.log("SUCCESS: The following updates were made -");
-  for (var key in results) {
+  for (const key in results) {
     if (results.hasOwnProperty(key)) {
       console.log("  - " + key + " = " + results[key]);
     }
   }
-}
+};
 
 /**
  * Compare two objects for sorting purposes
@@ -168,13 +170,14 @@ exports.logUpdateResults = function(results) {
  * @returns {integer} -1 (a<b), 0 (a=b), 1 (a>b)
  */
 exports.compareObjectsForSorting = function(a, b) {
-  if (a._id < b._id)
+  if (a._id < b._id) {
     return -1;
-  else if (a._id > b._id)
+  } else if (a._id > b._id) {
     return 1;
-  else
+  } else {
     return 0;
-}
+  }
+};
 
 /**
  * Retrieve the RID of the container of an asset (for example, the database table of a database column)
@@ -184,21 +187,18 @@ exports.compareObjectsForSorting = function(a, b) {
  */
 exports.getAssetContainerId = function(assetObj) {
 
-  var id = assetObj._id;
+  const ctx         = assetObj._context;
+  const assetType   = assetObj._type;
+  const containerType = hmDataChildrenToContainerTypes[assetType];
 
-  var ctx         = assetObj._context;
-  var assetType   = assetObj._type;
-  var containerType = hmDataChildrenToContainerTypes[assetType];
-  var containerId = "";
-
-  for (var i = 0; i < ctx.length; i++) {
-    var type = ctx[i]._type;
-    if (type == containerType) {
+  for (let i = 0; i < ctx.length; i++) {
+    const type = ctx[i]._type;
+    if (type === containerType) {
       return ctx[i]._id;
     }
   }
 
-}
+};
 
 /**
  * Get an identity object for the provided asset's container
@@ -209,25 +209,25 @@ exports.getAssetContainerId = function(assetObj) {
  */
 exports.getContainerIdentity = function(assetCtx, containerId, callback) {
 
-  var identity = {};
-  identity['_id'] = containerId;
+  const identity = {};
+  identity._id = containerId;
 
-  var dataFileId  = "";
+  let dataFileId  = "";
 
-  for (var i = 0; i < assetCtx.length; i++) {
-    var type = assetCtx[i]._type;
-    if (type == "data_file") {
+  for (let i = 0; i < assetCtx.length; i++) {
+    const type = assetCtx[i]._type;
+    if (type === "data_file") {
       dataFileId = assetCtx[i]._id;
     }
-    var name = assetCtx[i]._name;
+    const name = assetCtx[i]._name;
     identity[type] = name;
   }
 
   // Unfortunately with files we need a parent object, this non-blocking IO request
   // in one instance but not others could cause headaches...
-  if (dataFileId != "") {
+  if (dataFileId !== "") {
     this.getAssetPropertiesById(dataFileId, "data_file", ["path"], 1, false, function(err, resDataFile) {
-      identity['path'] = resDataFile.path;
+      identity.path = resDataFile.path;
       callback(err, identity);
       return identity;
     });
@@ -236,7 +236,7 @@ exports.getContainerIdentity = function(assetCtx, containerId, callback) {
     return identity;
   }
 
-}
+};
 
 /**
  * Get an identity object for the provided asset
@@ -246,16 +246,18 @@ exports.getContainerIdentity = function(assetCtx, containerId, callback) {
  * @returns {Object} the identity of this object
  */
 exports.getAssetIdentity = function(assetObj, containerIdentities) {
-  var containerId = this.getAssetContainerId(assetObj);
-  var containerIdentity = containerIdentities[containerId]; // this is a reference, not a copy!!!
-  var identity = {};
-  for (var key in containerIdentity) {
-    identity[key] = containerIdentity[key];
+  const containerId = this.getAssetContainerId(assetObj);
+  const containerIdentity = containerIdentities[containerId]; // this is a reference, not a copy!!!
+  const identity = {};
+  for (const key in containerIdentity) {
+    if (containerIdentity.hasOwnProperty(key)) {
+      identity[key] = containerIdentity[key];
+    }
   }
   identity._id = assetObj._id;
   identity[assetObj._type] = assetObj._name;
   return identity;
-}
+};
 
 /**
  * Constructs an asset identity string provide a REST API item (which must include '_context')
@@ -265,17 +267,17 @@ exports.getAssetIdentity = function(assetObj, containerIdentities) {
  * @returns {string}
  */
 exports.getItemIdentityString = function(restItem, delimiter) {
-  var identity = "";
+  let identity = "";
   if (delimiter === undefined || delimiter === "") {
     delimiter = "::";
   }
-  var aCtx = restItem._context;
-  for (var i = 0; i < aCtx.length; i++) {
+  const aCtx = restItem._context;
+  for (let i = 0; i < aCtx.length; i++) {
     identity = identity + delimiter + aCtx[i]._name;
   }
   identity = identity + delimiter + restItem._name;
   return identity.substring(delimiter.length);
-}
+};
 
 /**
  * Make a request against IGC's REST API
@@ -291,18 +293,18 @@ exports.getItemIdentityString = function(restItem, delimiter) {
  */
 exports.makeRequest = function(method, path, input, drillDown, callback) {
 
-  var bInput = (typeof input !== 'undefined' && input !== null);
-  var bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
+  const bInput = (typeof input !== 'undefined' && input !== null);
+  const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
   
   if (bInput) {
     input = this.prepValue(input);
   }
 
-  if (this.auth == "" || this.host == "" || this.port == "") {
+  if (this.auth === "" || this.host === "" || this.port === "") {
     throw new Error("Setup incomplete: auth = " + this.auth + ", host = " + this.host + ", port = " + this.port + ".");
   }
 
-  var opts = {
+  const opts = {
     auth: this.auth,
     hostname: this.host,
     port: this.port,
@@ -310,18 +312,18 @@ exports.makeRequest = function(method, path, input, drillDown, callback) {
     method: method,
     rejectUnauthorized: false,
     maxSockets: 1
-  }
+  };
   if (bInput) {
     opts.headers = {
       'Content-Type': 'application/json',
       'Content-Length': input.length
-    }
+    };
   }
   opts.agent = new https.Agent(opts);
 
-  var req = https.request(opts, (res) => {
+  const req = https.request(opts, (res) => {
 
-    var data = "";
+    let data = "";
     res.on('data', (d) => {
       data += d;
     });
@@ -344,7 +346,7 @@ exports.makeRequest = function(method, path, input, drillDown, callback) {
     throw new Error(e);
   });
 
-}
+};
 
 /**
  * Create an asset
@@ -356,19 +358,18 @@ exports.makeRequest = function(method, path, input, drillDown, callback) {
  */
 exports.create = function(type, value, callback) {
   value._type = type;
-  this.makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res, resCreate) {
-    var err = null;
-    if (res.statusCode != 200) {
+  this.makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
+    let err = null;
+    if (res.statusCode !== 200) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    var rid = res.headers["Location"].substring(res.headers["Location"].lastIndexOf("/"));
-    callback(err, rid);
-    return rid;
+    const rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
+    return callback(err, rid);
   });
-}
+};
 
 /**
  * Update a RID with a specific set of data
@@ -380,17 +381,16 @@ exports.create = function(type, value, callback) {
  */
 exports.update = function(rid, value, callback) {
   this.makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
-    var err = null;
-    if (res.statusCode != 200) {
+    let err = null;
+    if (res.statusCode !== 200) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    callback(err, resUpdate);
-    return resUpdate;
+    return callback(err, resUpdate);
   });
-}
+};
 
 /**
  * Search IGC
@@ -401,17 +401,16 @@ exports.update = function(rid, value, callback) {
  */
 exports.search = function(query, callback) {
   this.makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
-    var err = null;
-    if (res.statusCode != 200) {
+    let err = null;
+    if (res.statusCode !== 200) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    callback(err, resSearch);
-    return resSearch;
+    return callback(err, resSearch);
   });
-}
+};
 
 /**
  * Get a list of all of the IGC asset types
@@ -421,17 +420,16 @@ exports.search = function(query, callback) {
  */
 exports.getTypes = function(callback) {
   this.makeRequest('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
-    var err = null;
-    if (res.statusCode != 200) {
+    let err = null;
+    if (res.statusCode !== 200) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    callback(err, resTypes);
-    return resTypes;
+    return callback(err, resTypes);
   });
-}
+};
 
 /**
  * Get a mapping of all asset types from display name to unique type id
@@ -441,16 +439,15 @@ exports.getTypes = function(callback) {
  */
 exports.getAssetTypeNamesToIds = function(callback) {
   exports.getTypes(function(err, resTypes) {
-    var typesToIds = {};
-    for (var i = 0; i < resTypes.length; i++) {
-      var name = resTypes[i]._name;
-      var id = resTypes[i]._id;
+    const typesToIds = {};
+    for (let i = 0; i < resTypes.length; i++) {
+      const name = resTypes[i]._name;
+      const id = resTypes[i]._id;
       typesToIds[name] = id;
     }
-    callback(err, typesToIds);
-    return typesToIds;
+    return callback(err, typesToIds);
   });
-}
+};
 
 /**
  * Make a general GET request against IGC's REST API
@@ -460,7 +457,7 @@ exports.getAssetTypeNamesToIds = function(callback) {
  */
 exports.getOther = function(path, callback) {
   this.makeRequest('GET', path, null, null, callback);
-}
+};
 
 /**
  * Delete a specific asset from IGC
@@ -471,17 +468,16 @@ exports.getOther = function(path, callback) {
  */
 exports.deleteAssetById = function(rid, callback) {
   this.makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
-    var err = null;
-    if (res.statusCode != 200) {
+    let err = null;
+    if (res.statusCode !== 200) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    callback(err, resDelete);
-    return resDelete;
+    return callback(err, resDelete);
   });
-}
+};
 
 /**
  * Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or higher)
@@ -493,18 +489,17 @@ exports.deleteAssetById = function(rid, callback) {
  */
 exports.detectLineageForJob = function(rid, callback) {
   this.getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
-    var err = null;
+    let err = null;
     // Result code will always be 202, actual status only comes from "message"
-    if (res.statusCode != 202) {
+    if (res.statusCode !== 202) {
       err = "Unsuccessful request " + res.statusCode;
       console.error(err);
       console.error('headers: ', res.headers);
       throw new Error(err);
     }
-    callback(err, resLineage);
-    return resLineage;
+    return callback(err, resLineage);
   });
-}
+};
 
 /**
  * Get a listing of all of the assets in a collection
@@ -516,7 +511,7 @@ exports.detectLineageForJob = function(rid, callback) {
 exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
   // The pageSize here seems to be for collections that are found -- not assets
   // within the collection; may cause issues with larger collections?
-  var json = {
+  const json = {
     "pageSize": maxItems,
     "properties" : ["assets"],
     "types" : ["collection"],
@@ -534,7 +529,7 @@ exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
     }
   };
   this.search(json, function(err, resCollection) {
-    var assets = [];
+    let assets = [];
     if (resCollection.items.length > 1) {
       err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
       console.warn(err);
@@ -545,10 +540,9 @@ exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
       err = "WARN: No assets found in the collection '" + collectionName + "'.";
       console.warn(err);
     }
-    callback(err, assets);
-    return assets;
+    return callback(err, assets);
   });
-}
+};
 
 /**
  * Request all details of an asset
@@ -563,7 +557,7 @@ exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
  */
 exports.getAssetById = function(rid, callback) {
   this.getOther("/ibm/iis/igc-rest/v1/assets/" + rid, callback);
-}
+};
 
 /**
  * Retrieve only the specified details of an asset
@@ -585,7 +579,7 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
     properties.push("_context");
   } */
 
-  var json = {
+  const json = {
     "pageSize": maxItems,
     "properties" : properties,
     "types" : [ type ],
@@ -601,9 +595,9 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
       ],
       "operator" : "and"
     }
-  }
+  };
   this.search(json, function(err, results) {
-    var toReturn = {};
+    let toReturn = {};
     if (results.items.length > 1) {
       err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
       console.warn(err);
@@ -612,8 +606,8 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
       if (bIncludeContext) {
         toReturn = results.items[0];
       } else {
-        for (var i = 0; i < properties.length; i++) {
-          var prop = properties[i];
+        for (let i = 0; i < properties.length; i++) {
+          const prop = properties[i];
           toReturn[prop] = results.items[0][prop];
         }
       }
@@ -621,25 +615,24 @@ exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncl
       err = "WARN: No assets found with RID '" + rid + "'.";
       console.warn(err);
     }
-    callback(err, toReturn);
-    return toReturn;
+    return callback(err, toReturn);
   });
 
-}
+};
 
 /**
  * @returns true iff the provided type is a data container
  */
 exports.isDataContainer = function(type) {
   return hmDataContainerTypesToChildren.hasOwnProperty(type);
-}
+};
 
 /**
  * @returns the data type name for the child object of the provided container type
  */
 exports.getDataContainerChildTypes = function(type) {
   return hmDataContainerTypesToChildren[type];
-}
+};
 
 /**
  * This callback is invoked as the result of an IGC REST API call, providing the response of that request.
