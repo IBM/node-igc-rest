@@ -23,6 +23,7 @@
  * @license Apache-2.0
  * @requires underscore
  * @requires ibm-igc-rest
+ * @requires ibm-iis-commons
  * @requires yargs
  * @example
  * // creates a markdown file containing documentation on all of the data types and their properties
@@ -32,6 +33,7 @@
 const fs = require('fs');
 const os = require('os');
 const igcrest = require('../');
+const commons = require('ibm-iis-commons');
 const _ = require('underscore');
 
 // Command-line setup
@@ -69,8 +71,8 @@ const argv = yargs
 
 const filename = argv.file;
 const host_port = argv.domain.split(":");
-igcrest.setAuth(argv.deploymentUser, argv.deploymentUserPassword);
-igcrest.setServer(host_port[0], host_port[1]);
+const restConnect = new commons.RestConnection(argv.deploymentUser, argv.deploymentUserPassword, host_port[0], host_port[1]);
+igcrest.setConnection(restConnect);
 
 const basicTypes = { 'string':0, 'boolean':0, 'datetime':0, 'number':0, 'note':0, 'external_asset_reference':0 };
 
