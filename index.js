@@ -19,11 +19,13 @@
 /**
  * @file Re-usable functions for interacting with IGC's REST API
  * @license Apache-2.0
+ * @requires ibm-iis-commons
  * @example
  * // retrieves all of the "types" from IGC's REST API
  * var igcrest = require('ibm-igc-rest');
- * igcrest.setAuth("isadmin", "isadmin");
- * igcrest.setServer("hostname", "9445");
+ * var commons = require('ibm-iis-commons');
+ * var restConnect = new commons.RestConnection("isadmin", "isadmin", "hostname", "9445");
+ * igcrest.setConnection(restConnect);
  * igcrest.getTypes(function(err, resTypes) {
  *   // do something with the types within resTypes object
  * });
@@ -35,615 +37,630 @@
 
 const https = require('https');
 
-const hmDataContainerTypesToChildren = {
-  "database_table": "database_columns",
-  "data_file_record": "data_file_fields"
-};
-const hmDataChildrenToContainerTypes = {
-  "database_column": "database_table",
-  "data_file_field": "data_file_record"
-};
+const RestIGC = (function() {
 
-let auth = "";
-let host = "";
-let port = "";
-
-/**
- * Set authentication details to access the REST API
- *
- * @param {string} user - the username
- * @param {string} password - the user's password
- * @returns {string} authentication in the form of 'user:password'
- */
-exports.setAuth = function(user, password) {
-  if (user === undefined || user === "" || password === undefined || password === "") {
-    throw new Error("Incomplete authentication information -- missing username or password (or both).");
-  }
-  this.auth = user + ":" + password;
-  return this.auth;
-};
-
-/**
- * Set access details for the REST API
- *
- * @param {string} host - the hostname of the domain (services) tier of the IGC server
- * @param {string} port - the port number of the IGC server (e.g. 9445)
- */
-exports.setServer = function(host, port) {
-  this.host = host;
-  this.port = port;
-};
-
-/**
- * Replace any variables (text that starts with '$') that show up in a query
- *
- * @param {Object} json - the query (as a JSON object)
- * @param {Dict} variables - a dictionary indexed by variable name
- * @returns {Object}
- */
-exports.replaceQueryVars = function(json, variables) {
-  for (let i = 0; i < json.where.conditions.length; i++ ) {
-    let value = json.where.conditions[i].value;
-    if (value.indexOf("$") === 0) {
-      value = value.substring(1, value.length);
-      json.where.conditions[i].value = variables[value];
+  const hmDataContainerTypesToChildren = {
+    "database_table": "database_columns",
+    "data_file_record": "data_file_fields"
+  };
+  const hmDataChildrenToContainerTypes = {
+    "database_column": "database_table",
+    "data_file_field": "data_file_record"
+  };
+  
+  let _restConnect = null;
+  
+  /**
+   * Set the connection for the REST API
+   * 
+   * @param {RestConnection} restConnect - RestConnection object, from ibm-iis-commons
+   */
+  const setConnection = function(restConnect) {
+    _restConnect = restConnect;
+  };
+  
+  /**
+   * Replace any variables (text that starts with '$') that show up in a query
+   *
+   * @param {Object} json - the query (as a JSON object)
+   * @param {Dict} variables - a dictionary indexed by variable name
+   * @returns {Object}
+   */
+  const replaceQueryVars = function(json, variables) {
+    for (let i = 0; i < json.where.conditions.length; i++ ) {
+      let value = json.where.conditions[i].value;
+      if (value.indexOf("$") === 0) {
+        value = value.substring(1, value.length);
+        json.where.conditions[i].value = variables[value];
+      }
     }
-  }
-  return json;
-};
-
-/**
- * Replace '$relatedObjectRID' in the query with the provided RID
- *
- * @param {Object} json - the query (as a JSON object)
- * @param {string} rid - the RID to inject into the query
- * @returns {Object}
- */
-exports.replaceRelatedUpdateVars = function(json, rid) {
-  return JSON.parse(JSON.stringify(json).replace("$relatedObjectRID", rid));
-};
-
-/**
- * Prepare the provided value for use via the REST API:
- * - if a string, surround it in double-quotes
- * - if an object, convert to a JSON string
- *
- * @param {Object} value - the value to prepare
- * @returns {Object}
- */
-exports.prepValue = function(value) {
-  if (typeof(value) === "string") {
-    value = "\"" + value + "\"";
-  } else {
-    value = JSON.stringify(value);
-  }
-  return value;
-};
-
-/**
- * Verify that one and only one item was returned by a query
- *
- * @param {Object} json - the data returned from a query (as a JSON object)
- * @returns {Object} the single item returned
- * @throws will throw an error if either no item or multiple items are found
- */
-exports.verifySingleItem = function(json) {
-  if (json.items.length === 0) {
-    throw new Error("Did not find the entry to update.");
-  } else if (json.items.length > 1) {
-    throw new Error("Found multiple entries to update.");
-  }
-  return json.items[0];
-};
-
-/**
- * Retrieve the first item returned by a query
- *
- * @param {Object} json - the data returned from a query (as a JSON object)
- * @returns {Object}
- * @throws will throw an error if no items are found
- */
-exports.getSingleItem = function(json) {
-  if (json.items.length === 0) {
-    throw new Error("Did not find the entry to update.");
-  }
-  return json.items[0];
-};
-
-/**
- * Log to the console the results of an update
- *
- * @param {Object} results - the data returned from an update (as a JSON object)
- */
-exports.logUpdateResults = function(results) {
-  console.log("SUCCESS: The following updates were made -");
-  for (const key in results) {
-    if (results.hasOwnProperty(key)) {
-      console.log("  - " + key + " = " + results[key]);
+    return json;
+  };
+  
+  /**
+   * Replace '$relatedObjectRID' in the query with the provided RID
+   *
+   * @param {Object} json - the query (as a JSON object)
+   * @param {string} rid - the RID to inject into the query
+   * @returns {Object}
+   */
+  const replaceRelatedUpdateVars = function(json, rid) {
+    return JSON.parse(JSON.stringify(json).replace("$relatedObjectRID", rid));
+  };
+  
+  /**
+   * Prepare the provided value for use via the REST API:
+   * - if a string, surround it in double-quotes
+   * - if an object, convert to a JSON string
+   *
+   * @param {Object} value - the value to prepare
+   * @returns {Object}
+   */
+  const _prepValue = function(value) {
+    if (typeof(value) === "string") {
+      value = "\"" + value + "\"";
+    } else {
+      value = JSON.stringify(value);
     }
-  }
-};
-
-/**
- * Compare two objects for sorting purposes
- *
- * @returns {integer} -1 (a<b), 0 (a=b), 1 (a>b)
- */
-exports.compareObjectsForSorting = function(a, b) {
-  if (a._id < b._id) {
-    return -1;
-  } else if (a._id > b._id) {
-    return 1;
-  } else {
-    return 0;
-  }
-};
-
-/**
- * Retrieve the RID of the container of an asset (for example, the database table of a database column)
- *
- * @param {Object} assetObj - the asset object, as returned from REST API
- * @returns {string} the RID of assetObj's container
- */
-exports.getAssetContainerId = function(assetObj) {
-
-  const ctx         = assetObj._context;
-  const assetType   = assetObj._type;
-  const containerType = hmDataChildrenToContainerTypes[assetType];
-
-  for (let i = 0; i < ctx.length; i++) {
-    const type = ctx[i]._type;
-    if (type === containerType) {
-      return ctx[i]._id;
+    return value;
+  };
+  
+  /**
+   * Verify that one and only one item was returned by a query
+   *
+   * @param {Object} json - the data returned from a query (as a JSON object)
+   * @returns {Object} the single item returned
+   * @throws will throw an error if either no item or multiple items are found
+   */
+  const verifySingleItem = function(json) {
+    if (json.items.length === 0) {
+      throw new Error("Did not find the entry to update.");
+    } else if (json.items.length > 1) {
+      throw new Error("Found multiple entries to update.");
     }
-  }
-
-};
-
-/**
- * Get an identity object for the provided asset's container
- *
- * @param {Object} assetCtx - the context object for the asset
- * @param {Object} containerId - the RID of the asset's container
- * @param {identityCallback} callback - callback that handles the response, since further requests may be needed
- */
-exports.getContainerIdentity = function(assetCtx, containerId, callback) {
-
-  const identity = {};
-  identity._id = containerId;
-
-  let dataFileId  = "";
-
-  for (let i = 0; i < assetCtx.length; i++) {
-    const type = assetCtx[i]._type;
-    if (type === "data_file") {
-      dataFileId = assetCtx[i]._id;
+    return json.items[0];
+  };
+  
+  /**
+   * Retrieve the first item returned by a query
+   *
+   * @param {Object} json - the data returned from a query (as a JSON object)
+   * @returns {Object}
+   * @throws will throw an error if no items are found
+   */
+  const getSingleItem = function(json) {
+    if (json.items.length === 0) {
+      throw new Error("Did not find the entry to update.");
     }
-    const name = assetCtx[i]._name;
-    identity[type] = name;
-  }
-
-  // Unfortunately with files we need a parent object, this non-blocking IO request
-  // in one instance but not others could cause headaches...
-  if (dataFileId !== "") {
-    this.getAssetPropertiesById(dataFileId, "data_file", ["path"], 1, false, function(err, resDataFile) {
-      identity.path = resDataFile.path;
-      callback(err, identity);
+    return json.items[0];
+  };
+  
+  /**
+   * Log to the console the results of an update
+   *
+   * @param {Object} results - the data returned from an update (as a JSON object)
+   */
+  const logUpdateResults = function(results) {
+    console.log("SUCCESS: The following updates were made -");
+    for (const key in results) {
+      if (results.hasOwnProperty(key)) {
+        console.log("  - " + key + " = " + results[key]);
+      }
+    }
+  };
+  
+  /**
+   * Compare two objects for sorting purposes
+   *
+   * @returns {integer} -1 (a<b), 0 (a=b), 1 (a>b)
+   */
+  const compareObjectsForSorting = function(a, b) {
+    if (a._id < b._id) {
+      return -1;
+    } else if (a._id > b._id) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+  
+  /**
+   * Retrieve the RID of the container of an asset (for example, the database table of a database column)
+   *
+   * @param {Object} assetObj - the asset object, as returned from REST API
+   * @returns {string} the RID of assetObj's container
+   */
+  const getAssetContainerId = function(assetObj) {
+  
+    const ctx         = assetObj._context;
+    const assetType   = assetObj._type;
+    const containerType = hmDataChildrenToContainerTypes[assetType];
+  
+    for (let i = 0; i < ctx.length; i++) {
+      const type = ctx[i]._type;
+      if (type === containerType) {
+        return ctx[i]._id;
+      }
+    }
+  
+  };
+  
+  /**
+   * Get an identity object for the provided asset's container
+   *
+   * @param {Object} assetCtx - the context object for the asset
+   * @param {Object} containerId - the RID of the asset's container
+   * @param {identityCallback} callback - callback that handles the response, since further requests may be needed
+   */
+  const getContainerIdentity = function(assetCtx, containerId, callback) {
+  
+    const identity = {};
+    identity._id = containerId;
+  
+    let dataFileId  = "";
+  
+    for (let i = 0; i < assetCtx.length; i++) {
+      const type = assetCtx[i]._type;
+      if (type === "data_file") {
+        dataFileId = assetCtx[i]._id;
+      }
+      const name = assetCtx[i]._name;
+      identity[type] = name;
+    }
+  
+    // Unfortunately with files we need a parent object, this non-blocking IO request
+    // in one instance but not others could cause headaches...
+    if (dataFileId !== "") {
+      getAssetPropertiesById(dataFileId, "data_file", ["path"], 1, false, function(err, resDataFile) {
+        identity.path = resDataFile.path;
+        callback(err, identity);
+        return identity;
+      });
+    } else {
+      callback(null, identity);
       return identity;
-    });
-  } else {
-    callback(null, identity);
+    }
+  
+  };
+  
+  /**
+   * Get an identity object for the provided asset
+   *
+   * @param {Object} assetObj - the asset for which to get an identity object
+   * @param {Dict} containerIdentities - a dict cache of container identities
+   * @returns {Object} the identity of this object
+   */
+  const getAssetIdentity = function(assetObj, containerIdentities) {
+    const containerId = getAssetContainerId(assetObj);
+    const containerIdentity = containerIdentities[containerId]; // this is a reference, not a copy!!!
+    const identity = {};
+    for (const key in containerIdentity) {
+      if (containerIdentity.hasOwnProperty(key)) {
+        identity[key] = containerIdentity[key];
+      }
+    }
+    identity._id = assetObj._id;
+    identity[assetObj._type] = assetObj._name;
     return identity;
-  }
-
-};
-
-/**
- * Get an identity object for the provided asset
- *
- * @param {Object} assetObj - the asset for which to get an identity object
- * @param {Dict} containerIdentities - a dict cache of container identities
- * @returns {Object} the identity of this object
- */
-exports.getAssetIdentity = function(assetObj, containerIdentities) {
-  const containerId = this.getAssetContainerId(assetObj);
-  const containerIdentity = containerIdentities[containerId]; // this is a reference, not a copy!!!
-  const identity = {};
-  for (const key in containerIdentity) {
-    if (containerIdentity.hasOwnProperty(key)) {
-      identity[key] = containerIdentity[key];
-    }
-  }
-  identity._id = assetObj._id;
-  identity[assetObj._type] = assetObj._name;
-  return identity;
-};
-
-/**
- * Constructs an asset identity string provide a REST API item (which must include '_context')
- *
- * @param {Object} restItem - a single entry from the 'items' array of a REST API response, including '_context' member
- * @param {string} [delimiter] - a delimiter to use for separating the components of the identity (default: '::')
- * @returns {string}
- */
-exports.getItemIdentityString = function(restItem, delimiter) {
-  let identity = "";
-  if (delimiter === undefined || delimiter === "") {
-    delimiter = "::";
-  }
-  const aCtx = restItem._context;
-  for (let i = 0; i < aCtx.length; i++) {
-    identity = identity + delimiter + aCtx[i]._name;
-  }
-  identity = identity + delimiter + restItem._name;
-  return identity.substring(delimiter.length);
-};
-
-/**
- * Make a request against IGC's REST API
- *
- * @see module:ibm-igc-rest.setServer
- * @see module:ibm-igc-rest.setAuth
- * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
- * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
- * @param {string} [input] - any input for the request, i.e. for PUT, POST
- * @param {string} [drillDown] - the key into which to drill-down within the response
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
- */
-exports.makeRequest = function(method, path, input, drillDown, callback) {
-
-  const bInput = (typeof input !== 'undefined' && input !== null);
-  const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
-  
-  if (bInput) {
-    input = this.prepValue(input);
-  }
-
-  if (this.auth === "" || this.host === "" || this.port === "") {
-    throw new Error("Setup incomplete: auth = " + this.auth + ", host = " + this.host + ", port = " + this.port + ".");
-  }
-
-  const opts = {
-    auth: this.auth,
-    hostname: this.host,
-    port: this.port,
-    path: path,
-    method: method,
-    rejectUnauthorized: false,
-    maxSockets: 1
   };
-  if (bInput) {
-    opts.headers = {
-      'Content-Type': 'application/json',
-      'Content-Length': input.length
+  
+  /**
+   * Constructs an asset identity string provide a REST API item (which must include '_context')
+   *
+   * @param {Object} restItem - a single entry from the 'items' array of a REST API response, including '_context' member
+   * @param {string} [delimiter] - a delimiter to use for separating the components of the identity (default: '::')
+   * @returns {string}
+   */
+  const getItemIdentityString = function(restItem, delimiter) {
+    let identity = "";
+    if (delimiter === undefined || delimiter === "") {
+      delimiter = "::";
+    }
+    const aCtx = restItem._context;
+    for (let i = 0; i < aCtx.length; i++) {
+      identity = identity + delimiter + aCtx[i]._name;
+    }
+    identity = identity + delimiter + restItem._name;
+    return identity.substring(delimiter.length);
+  };
+  
+  /**
+   * Make a request against IGC's REST API
+   *
+   * @see module:ibm-igc-rest.setServer
+   * @see module:ibm-igc-rest.setAuth
+   * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
+   * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+   * @param {string} [input] - any input for the request, i.e. for PUT, POST
+   * @param {string} [drillDown] - the key into which to drill-down within the response
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
+   */
+  const makeRequest = function(method, path, input, drillDown, callback) {
+  
+    const bInput = (typeof input !== 'undefined' && input !== null);
+    const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
+    
+    if (bInput) {
+      input = _prepValue(input);
+    }
+  
+    if (typeof _restConnect === 'undefined' || _restConnect === undefined || _restConnect === null) {
+      throw new Error("Setup incomplete: no connection found.");
+    }
+  
+    const opts = {
+      auth: _restConnect.auth,
+      hostname: _restConnect.host,
+      port: _restConnect.port,
+      path: path,
+      method: method,
+      rejectUnauthorized: false,
+      maxSockets: 1
     };
-  }
-  opts.agent = new https.Agent(opts);
-
-  const req = https.request(opts, (res) => {
-
-    let data = "";
-    res.on('data', (d) => {
-      data += d;
-    });
-    res.on('end', function() {
-      if (bDrillDown) {
-        callback(res, JSON.parse(data)[drillDown]);
-        return JSON.parse(data)[drillDown];
-      } else {
-        callback(res, JSON.parse(data));
-        return JSON.parse(data);
-      }
-    });
-  });
-  if (bInput) {
-    req.write(input);
-  }
-  req.end();
-
-  req.on('error', (e) => {
-    throw new Error(e);
-  });
-
-};
-
-/**
- * Create an asset
- *
- * @param {string} type - the type of asset to create
- * @param {Object} value - the set of values with which to create the asset
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.create = function(type, value, callback) {
-  value._type = type;
-  this.makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
-    let err = null;
-    if (res.statusCode !== 200) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
+    if (bInput) {
+      opts.headers = {
+        'Content-Type': 'application/json',
+        'Content-Length': input.length
+      };
     }
-    const rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
-    return callback(err, rid);
-  });
-};
-
-/**
- * Update a RID with a specific set of data
- *
- * @param {string} rid - the RID of the asset to update
- * @param {Object} value - the set of data with which to update the asset
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.update = function(rid, value, callback) {
-  this.makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
-    let err = null;
-    if (res.statusCode !== 200) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
-    }
-    return callback(err, resUpdate);
-  });
-};
-
-/**
- * Search IGC
- *
- * @param {Object} query - the search to run against IGC (as a JSON object)
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.search = function(query, callback) {
-  this.makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
-    let err = null;
-    if (res.statusCode !== 200) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
-    }
-    return callback(err, resSearch);
-  });
-};
-
-/**
- * Get a list of all of the IGC asset types
- *
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.getTypes = function(callback) {
-  this.makeRequest('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
-    let err = null;
-    if (res.statusCode !== 200) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
-    }
-    return callback(err, resTypes);
-  });
-};
-
-/**
- * Get a mapping of all asset types from display name to unique type id
- *
- * @param {requestCallback} callback - callback that handles the response, with an object keyed by display name and each value the unique type id for that display name
- * @throws will throw an error if the status code does not indicate success
- */
-exports.getAssetTypeNamesToIds = function(callback) {
-  exports.getTypes(function(err, resTypes) {
-    const typesToIds = {};
-    for (let i = 0; i < resTypes.length; i++) {
-      const name = resTypes[i]._name;
-      const id = resTypes[i]._id;
-      typesToIds[name] = id;
-    }
-    return callback(err, typesToIds);
-  });
-};
-
-/**
- * Make a general GET request against IGC's REST API
- *
- * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
- * @param {requestCallback} callback - callback that handles the response
- */
-exports.getOther = function(path, callback) {
-  this.makeRequest('GET', path, null, null, callback);
-};
-
-/**
- * Delete a specific asset from IGC
- *
- * @param {string} rid - the RID of the asset to delete
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.deleteAssetById = function(rid, callback) {
-  this.makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
-    let err = null;
-    if (res.statusCode !== 200) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
-    }
-    return callback(err, resDelete);
-  });
-};
-
-/**
- * Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or higher)
- * - Actual status comes from the "message" within the callback results: starts with SUCCESS, WARNING or FAILURE
- *
- * @param {string} rid - the RID of the job for which to detect lineage
- * @param {requestCallback} callback - callback that handles the response
- * @throws will throw an error if the status code does not indicate success
- */
-exports.detectLineageForJob = function(rid, callback) {
-  this.getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
-    let err = null;
-    // Result code will always be 202, actual status only comes from "message"
-    if (res.statusCode !== 202) {
-      err = "Unsuccessful request " + res.statusCode;
-      console.error(err);
-      console.error('headers: ', res.headers);
-      throw new Error(err);
-    }
-    return callback(err, resLineage);
-  });
-};
-
-/**
- * Get a listing of all of the assets in a collection
- *
- * @param {string} collectionName
- * @param {integer} maxItems - maximum number of items to retrieve
- * @param {requestCallback} callback - callback that handles the response
- */
-exports.getAssetsInCollection = function(collectionName, maxItems, callback) {
-  // The pageSize here seems to be for collections that are found -- not assets
-  // within the collection; may cause issues with larger collections?
-  const json = {
-    "pageSize": maxItems,
-    "properties" : ["assets"],
-    "types" : ["collection"],
-    "where" :
-    {
-      "conditions" :
-      [
-        {
-          "property" : "name",
-          "operator" : "=",
-          "value" : collectionName
-        }
-      ],
-      "operator" : "and"
-    }
-  };
-  this.search(json, function(err, resCollection) {
-    let assets = [];
-    if (resCollection.items.length > 1) {
-      err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
-      console.warn(err);
-    }
-    if (resCollection.items.length > 0) {
-      assets = resCollection.items[0].assets.items;
-    } else {
-      err = "WARN: No assets found in the collection '" + collectionName + "'.";
-      console.warn(err);
-    }
-    return callback(err, assets);
-  });
-};
-
-/**
- * Request all details of an asset
- *
- * NOTE: this function should be used with caution -- it will build a large object and
- * can be measurably slower (> 5x) than explicitly defining the properties and searching
- * using 'getAssetPropertiesById' instead
- *
- * @see module:ibm-igc-rest.getAssetPropertiesById
- * @param {string} rid - the RID of the asset
- * @param {requestCallback} callback - callback that handles the response
- */
-exports.getAssetById = function(rid, callback) {
-  this.getOther("/ibm/iis/igc-rest/v1/assets/" + rid, callback);
-};
-
-/**
- * Retrieve only the specified details of an asset
- *
- * @see module:ibm-igc-rest.getTypes
- * @param {string} rid - the RID of the asset
- * @param {string} type - the type of the asset
- * @param {string[]} properties - array of properties to retrieve for the asset
- * @param {integer} maxItems - maximum number of detailed properties
- * @param {boolean} bIncludeContext - whether to include contextual information (true) or drill-down just to the resulting properties (false)
- * @param {requestCallback} callback - callback that handles the response
- */
-exports.getAssetPropertiesById = function(rid, type, properties, maxItems, bIncludeContext, callback) {
+    opts.agent = new https.Agent(opts);
   
-  if (!(properties instanceof Array)) {
-    properties = [ properties ];
-  }
-/*  if (bIncludeContext) {
-    properties.push("_context");
-  } */
-
-  const json = {
-    "pageSize": maxItems,
-    "properties" : properties,
-    "types" : [ type ],
-    "where" :
-    {
-      "conditions" :
-      [
-        {
-          "property" : "_id",
-          "operator" : "=",
-          "value" : rid
+    const req = https.request(opts, (res) => {
+  
+      let data = "";
+      res.on('data', (d) => {
+        data += d;
+      });
+      res.on('end', function() {
+        if (bDrillDown) {
+          callback(res, JSON.parse(data)[drillDown]);
+          return JSON.parse(data)[drillDown];
+        } else {
+          callback(res, JSON.parse(data));
+          return JSON.parse(data);
         }
-      ],
-      "operator" : "and"
+      });
+    });
+    if (bInput) {
+      req.write(input);
     }
+    req.end();
+  
+    req.on('error', (e) => {
+      throw new Error(e);
+    });
+  
   };
-  this.search(json, function(err, results) {
-    let toReturn = {};
-    if (results.items.length > 1) {
-      err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
-      console.warn(err);
-    }
-    if (results.items.length > 0) {
-      if (bIncludeContext) {
-        toReturn = results.items[0];
-      } else {
-        for (let i = 0; i < properties.length; i++) {
-          const prop = properties[i];
-          toReturn[prop] = results.items[0][prop];
-        }
+  
+  /**
+   * Create an asset
+   *
+   * @param {string} type - the type of asset to create
+   * @param {Object} value - the set of values with which to create the asset
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const create = function(type, value, callback) {
+    value._type = type;
+    makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
       }
-    } else {
-      err = "WARN: No assets found with RID '" + rid + "'.";
-      console.warn(err);
+      const rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
+      return callback(err, rid);
+    });
+  };
+  
+  /**
+   * Update a RID with a specific set of data
+   *
+   * @param {string} rid - the RID of the asset to update
+   * @param {Object} value - the set of data with which to update the asset
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const update = function(rid, value, callback) {
+    makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      return callback(err, resUpdate);
+    });
+  };
+  
+  /**
+   * Search IGC
+   *
+   * @param {Object} query - the search to run against IGC (as a JSON object)
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const search = function(query, callback) {
+    makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      return callback(err, resSearch);
+    });
+  };
+  
+  /**
+   * Get a list of all of the IGC asset types
+   *
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const getTypes = function(callback) {
+    makeRequest('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      return callback(err, resTypes);
+    });
+  };
+  
+  /**
+   * Get a mapping of all asset types from display name to unique type id
+   *
+   * @param {requestCallback} callback - callback that handles the response, with an object keyed by display name and each value the unique type id for that display name
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const getAssetTypeNamesToIds = function(callback) {
+    exports.getTypes(function(err, resTypes) {
+      const typesToIds = {};
+      for (let i = 0; i < resTypes.length; i++) {
+        const name = resTypes[i]._name;
+        const id = resTypes[i]._id;
+        typesToIds[name] = id;
+      }
+      return callback(err, typesToIds);
+    });
+  };
+  
+  /**
+   * Make a general GET request against IGC's REST API
+   *
+   * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getOther = function(path, callback) {
+    makeRequest('GET', path, null, null, callback);
+  };
+  
+  /**
+   * Delete a specific asset from IGC
+   *
+   * @param {string} rid - the RID of the asset to delete
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const deleteAssetById = function(rid, callback) {
+    makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      return callback(err, resDelete);
+    });
+  };
+  
+  /**
+   * Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or higher)
+   * - Actual status comes from the "message" within the callback results: starts with SUCCESS, WARNING or FAILURE
+   *
+   * @param {string} rid - the RID of the job for which to detect lineage
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const detectLineageForJob = function(rid, callback) {
+    getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
+      let err = null;
+      // Result code will always be 202, actual status only comes from "message"
+      if (res.statusCode !== 202) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      return callback(err, resLineage);
+    });
+  };
+  
+  /**
+   * Get a listing of all of the assets in a collection
+   *
+   * @param {string} collectionName
+   * @param {integer} maxItems - maximum number of items to retrieve
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getAssetsInCollection = function(collectionName, maxItems, callback) {
+    // The pageSize here seems to be for collections that are found -- not assets
+    // within the collection; may cause issues with larger collections?
+    const json = {
+      "pageSize": maxItems,
+      "properties" : ["assets"],
+      "types" : ["collection"],
+      "where" :
+      {
+        "conditions" :
+        [
+          {
+            "property" : "name",
+            "operator" : "=",
+            "value" : collectionName
+          }
+        ],
+        "operator" : "and"
+      }
+    };
+    search(json, function(err, resCollection) {
+      let assets = [];
+      if (resCollection.items.length > 1) {
+        err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
+        console.warn(err);
+      }
+      if (resCollection.items.length > 0) {
+        assets = resCollection.items[0].assets.items;
+      } else {
+        err = "WARN: No assets found in the collection '" + collectionName + "'.";
+        console.warn(err);
+      }
+      return callback(err, assets);
+    });
+  };
+  
+  /**
+   * Request all details of an asset
+   *
+   * NOTE: this function should be used with caution -- it will build a large object and
+   * can be measurably slower (> 5x) than explicitly defining the properties and searching
+   * using 'getAssetPropertiesById' instead
+   *
+   * @see module:ibm-igc-rest.getAssetPropertiesById
+   * @param {string} rid - the RID of the asset
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getAssetById = function(rid, callback) {
+    getOther("/ibm/iis/igc-rest/v1/assets/" + rid, callback);
+  };
+  
+  /**
+   * Retrieve only the specified details of an asset
+   *
+   * @see module:ibm-igc-rest.getTypes
+   * @param {string} rid - the RID of the asset
+   * @param {string} type - the type of the asset
+   * @param {string[]} properties - array of properties to retrieve for the asset
+   * @param {integer} maxItems - maximum number of detailed properties
+   * @param {boolean} bIncludeContext - whether to include contextual information (true) or drill-down just to the resulting properties (false)
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getAssetPropertiesById = function(rid, type, properties, maxItems, bIncludeContext, callback) {
+    
+    if (!(properties instanceof Array)) {
+      properties = [ properties ];
     }
-    return callback(err, toReturn);
-  });
+  /*  if (bIncludeContext) {
+      properties.push("_context");
+    } */
+  
+    const json = {
+      "pageSize": maxItems,
+      "properties" : properties,
+      "types" : [ type ],
+      "where" :
+      {
+        "conditions" :
+        [
+          {
+            "property" : "_id",
+            "operator" : "=",
+            "value" : rid
+          }
+        ],
+        "operator" : "and"
+      }
+    };
+    search(json, function(err, results) {
+      let toReturn = {};
+      if (results.items.length > 1) {
+        err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
+        console.warn(err);
+      }
+      if (results.items.length > 0) {
+        if (bIncludeContext) {
+          toReturn = results.items[0];
+        } else {
+          for (let i = 0; i < properties.length; i++) {
+            const prop = properties[i];
+            toReturn[prop] = results.items[0][prop];
+          }
+        }
+      } else {
+        err = "WARN: No assets found with RID '" + rid + "'.";
+        console.warn(err);
+      }
+      return callback(err, toReturn);
+    });
+  
+  };
+  
+  /**
+   * @returns true iff the provided type is a data container
+   */
+  const isDataContainer = function(type) {
+    return hmDataContainerTypesToChildren.hasOwnProperty(type);
+  };
+  
+  /**
+   * @returns the data type name for the child object of the provided container type
+   */
+  const getDataContainerChildTypes = function(type) {
+    return hmDataContainerTypesToChildren[type];
+  };
+  
+  /**
+   * This callback is invoked as the result of an IGC REST API call, providing the response of that request.
+   * @callback requestCallback
+   * @param {string} errorMessage - any error message, or null if no errors
+   * @param {Object} responseObject - the JSON object containing the response
+   */
+  
+  /**
+   * This callback is invoked as the result of obtaining an object's identity, providing the response of that request.
+   * @callback identityCallback
+   * @param {string} errorMessage - any error message, or null if no errors
+   * @param {Object} identityObject - the JSON object containing the identity
+   */
 
-};
+  return {
+    setConnection: setConnection,
+    replaceQueryVars: replaceQueryVars,
+    replaceRelatedUpdateVars: replaceRelatedUpdateVars,
+    verifySingleItem: verifySingleItem,
+    getSingleItem: getSingleItem,
+    logUpdateResults: logUpdateResults,
+    compareObjectsForSorting: compareObjectsForSorting,
+    getAssetContainerId: getAssetContainerId,
+    getContainerIdentity: getContainerIdentity,
+    getAssetIdentity: getAssetIdentity,
+    getItemIdentityString: getItemIdentityString,
+    makeRequest: makeRequest,
+    create: create,
+    update: update,
+    search: search,
+    getTypes: getTypes,
+    getAssetTypeNamesToIds: getAssetTypeNamesToIds,
+    getOther: getOther,
+    deleteAssetById: deleteAssetById,
+    detectLineageForJob: detectLineageForJob,
+    getAssetsInCollection: getAssetsInCollection,
+    getAssetById: getAssetById,
+    getAssetPropertiesById: getAssetPropertiesById,
+    isDataContainer: isDataContainer,
+    getDataContainerChildTypes: getDataContainerChildTypes
+  };
 
-/**
- * @returns true iff the provided type is a data container
- */
-exports.isDataContainer = function(type) {
-  return hmDataContainerTypesToChildren.hasOwnProperty(type);
-};
+})();
 
-/**
- * @returns the data type name for the child object of the provided container type
- */
-exports.getDataContainerChildTypes = function(type) {
-  return hmDataContainerTypesToChildren[type];
-};
-
-/**
- * This callback is invoked as the result of an IGC REST API call, providing the response of that request.
- * @callback requestCallback
- * @param {string} errorMessage - any error message, or null if no errors
- * @param {Object} responseObject - the JSON object containing the response
- */
-
-/**
- * This callback is invoked as the result of obtaining an object's identity, providing the response of that request.
- * @callback identityCallback
- * @param {string} errorMessage - any error message, or null if no errors
- * @param {Object} identityObject - the JSON object containing the identity
- */
+module.exports = RestIGC;
