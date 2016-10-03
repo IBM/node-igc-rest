@@ -1,6 +1,6 @@
 {
   "name": "ibm-igc-rest",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Library to use IBM Information Governance Catalog REST API",
   "main": "./index.js",
   "files": [
@@ -10,7 +10,8 @@
     "LICENSE"
   ],
   "dependencies": {
-    "underscore": ">=1.8.3"
+    "underscore": ">=1.8.3",
+    "ibm-iis-commons": ">=0.0.1"
   },
   "devDependencies": {
     "jsdoc": "^3.4.0",
