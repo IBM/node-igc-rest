@@ -194,6 +194,7 @@ const RestIGC = (function() {
    */
   const getContainerIdentity = function(assetCtx, containerId, callback) {
   
+    const argsReceived = Array.prototype.splice.call(arguments, 3);
     const identity = {};
     identity._id = containerId;
   
@@ -211,14 +212,16 @@ const RestIGC = (function() {
     // Unfortunately with files we need a parent object, this non-blocking IO request
     // in one instance but not others could cause headaches...
     if (dataFileId !== "") {
-      getAssetPropertiesById(dataFileId, "data_file", ["path"], 1, false, function(err, resDataFile) {
+      argsReceived.unshift(dataFileId, "data_file", ["path"], 1, false, function(err, resDataFile) {
+        const argsReceived = Array.prototype.splice.call(arguments, 2);
         identity.path = resDataFile.path;
-        callback(err, identity);
-        return identity;
+        argsReceived.unshift(err, identity);
+        return callback.apply(this, argsReceived);
       });
+      getAssetPropertiesById.apply(this, argsReceived);
     } else {
-      callback(null, identity);
-      return identity;
+      argsReceived.unshift(null, identity);
+      return callback.apply(this, argsReceived);
     }
   
   };
@@ -278,6 +281,8 @@ const RestIGC = (function() {
    */
   const makeRequest = function(method, path, input, drillDown, callback) {
   
+    const argsReceived = Array.prototype.splice.call(arguments, 5);
+
     const bInput = (typeof input !== 'undefined' && input !== null);
     const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
     
@@ -314,11 +319,11 @@ const RestIGC = (function() {
       });
       res.on('end', function() {
         if (bDrillDown) {
-          callback(res, JSON.parse(data)[drillDown]);
-          return JSON.parse(data)[drillDown];
+          argsReceived.unshift(res, JSON.parse(data)[drillDown]);
+          return callback.apply(this, argsReceived);
         } else {
-          callback(res, JSON.parse(data));
-          return JSON.parse(data);
+          argsReceived.unshift(res, JSON.parse(data));
+          return callback.apply(this, argsReceived);
         }
       });
     });
@@ -342,8 +347,10 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const create = function(type, value, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 3);
     value._type = type;
-    makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
+      const argsReceived = Array.prototype.splice.call(arguments, 1);
       let err = null;
       if (res.statusCode !== 200) {
         err = "Unsuccessful request " + res.statusCode;
@@ -352,8 +359,10 @@ const RestIGC = (function() {
         throw new Error(err);
       }
       const rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
-      return callback(err, rid);
+      argsReceived.unshift(err, rid);
+      return callback.apply(this, argsReceived);
     });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -365,7 +374,9 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const update = function(rid, value, callback) {
-    makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
+    const argsReceived = Array.prototype.splice.call(arguments, 3);
+    argsReceived.unshift('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
         err = "Unsuccessful request " + res.statusCode;
@@ -373,8 +384,10 @@ const RestIGC = (function() {
         console.error('headers: ', res.headers);
         throw new Error(err);
       }
-      return callback(err, resUpdate);
+      argsReceived.unshift(err, resUpdate);
+      return callback.apply(this, argsReceived);
     });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -385,7 +398,9 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const search = function(query, callback) {
-    makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
         err = "Unsuccessful request " + res.statusCode;
@@ -393,8 +408,10 @@ const RestIGC = (function() {
         console.error('headers: ', res.headers);
         throw new Error(err);
       }
-      return callback(err, resSearch);
+      argsReceived.unshift(err, resSearch);
+      return callback.apply(this, argsReceived);
     });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -404,7 +421,9 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const getTypes = function(callback) {
-    makeRequest('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
+    const argsReceived = Array.prototype.splice.call(arguments, 1);
+    argsReceived.unshift('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
         err = "Unsuccessful request " + res.statusCode;
@@ -412,8 +431,10 @@ const RestIGC = (function() {
         console.error('headers: ', res.headers);
         throw new Error(err);
       }
-      return callback(err, resTypes);
+      argsReceived.unshift(err, resTypes);
+      return callback.apply(this, argsReceived);
     });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -423,15 +444,19 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const getAssetTypeNamesToIds = function(callback) {
-    exports.getTypes(function(err, resTypes) {
+    const argsReceived = Array.prototype.splice.call(arguments, 1);
+    argsReceived.unshift(function(err, resTypes) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       const typesToIds = {};
       for (let i = 0; i < resTypes.length; i++) {
         const name = resTypes[i]._name;
         const id = resTypes[i]._id;
         typesToIds[name] = id;
       }
-      return callback(err, typesToIds);
+      argsReceived.unshift(err, typesToIds);
+      return callback.apply(this, argsReceived);
     });
+    getTypes.apply(this, argsReceived);
   };
   
   /**
@@ -441,7 +466,13 @@ const RestIGC = (function() {
    * @param {requestCallback} callback - callback that handles the response
    */
   const getOther = function(path, callback) {
-    makeRequest('GET', path, null, null, callback);
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift('GET', path, null, null, function(res, resDetails) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      argsReceived.unshift(res, resDetails);
+      callback.apply(this, argsReceived);
+    });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -452,7 +483,9 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const deleteAssetById = function(rid, callback) {
-    makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
         err = "Unsuccessful request " + res.statusCode;
@@ -460,8 +493,10 @@ const RestIGC = (function() {
         console.error('headers: ', res.headers);
         throw new Error(err);
       }
-      return callback(err, resDelete);
+      argsReceived.unshift(err, resDelete);
+      return callback.apply(this, argsReceived);
     });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -473,7 +508,9 @@ const RestIGC = (function() {
    * @throws will throw an error if the status code does not indicate success
    */
   const detectLineageForJob = function(rid, callback) {
-    getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       // Result code will always be 202, actual status only comes from "message"
       if (res.statusCode !== 202) {
@@ -482,8 +519,10 @@ const RestIGC = (function() {
         console.error('headers: ', res.headers);
         throw new Error(err);
       }
-      return callback(err, resLineage);
+      argsReceived.unshift(err, resLineage);
+      return callback.apply(this, argsReceived);
     });
+    getOther.apply(this, argsReceived);
   };
   
   /**
@@ -494,6 +533,7 @@ const RestIGC = (function() {
    * @param {requestCallback} callback - callback that handles the response
    */
   const getAssetsInCollection = function(collectionName, maxItems, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 3);
     // The pageSize here seems to be for collections that are found -- not assets
     // within the collection; may cause issues with larger collections?
     const json = {
@@ -513,7 +553,8 @@ const RestIGC = (function() {
         "operator" : "and"
       }
     };
-    search(json, function(err, resCollection) {
+    argsReceived.unshift(json, function(err, resCollection) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let assets = [];
       if (resCollection.items.length > 1) {
         err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
@@ -525,8 +566,10 @@ const RestIGC = (function() {
         err = "WARN: No assets found in the collection '" + collectionName + "'.";
         console.warn(err);
       }
-      return callback(err, assets);
+      argsReceived.unshift(err, assets);
+      return callback.apply(this, argsReceived);
     });
+    search.apply(this, argsReceived);
   };
   
   /**
@@ -541,7 +584,13 @@ const RestIGC = (function() {
    * @param {requestCallback} callback - callback that handles the response
    */
   const getAssetById = function(rid, callback) {
-    getOther("/ibm/iis/igc-rest/v1/assets/" + rid, callback);
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid, function(res, resDetails) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      argsReceived.unshift(res, resDetails);
+      return callback.apply(this, argsReceived);
+    });
+    getOther.apply(this, argsReceived);
   };
   
   /**
@@ -557,6 +606,7 @@ const RestIGC = (function() {
    */
   const getAssetPropertiesById = function(rid, type, properties, maxItems, bIncludeContext, callback) {
     
+    const argsReceived = Array.prototype.splice.call(arguments, 6);
     if (!(properties instanceof Array)) {
       properties = [ properties ];
     }
@@ -581,7 +631,8 @@ const RestIGC = (function() {
         "operator" : "and"
       }
     };
-    search(json, function(err, results) {
+    argsReceived.unshift(json, function(err, results) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
       let toReturn = {};
       if (results.items.length > 1) {
         err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
@@ -600,8 +651,10 @@ const RestIGC = (function() {
         err = "WARN: No assets found with RID '" + rid + "'.";
         console.warn(err);
       }
-      return callback(err, toReturn);
+      argsReceived.unshift(err, toReturn);
+      return callback.apply(this, argsReceived);
     });
+    search.apply(this, argsReceived);
   
   };
   
