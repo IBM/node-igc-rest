@@ -16,10 +16,12 @@
 
 "use strict";
 
+const https = require('https');
+
 /**
  * @file Re-usable functions for interacting with IGC's REST API
  * @license Apache-2.0
- * @requires ibm-iis-commons
+ * @requires https
  * @example
  * // retrieves all of the "types" from IGC's REST API
  * var igcrest = require('ibm-igc-rest');
@@ -34,9 +36,6 @@
 /**
  * @module ibm-igc-rest
  */
-
-const https = require('https');
-
 const RestIGC = (function() {
 
   const hmDataContainerTypesToChildren = {
