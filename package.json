@@ -11,6 +11,7 @@
   ],
   "dependencies": {
     "underscore": ">=1.8.3",
+    "yargs": ">=6.6.0",
     "ibm-iis-commons": ">=0.9.0"
   },
   "bin": {
