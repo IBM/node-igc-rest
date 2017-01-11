@@ -32,7 +32,7 @@
 
 const fs = require('fs');
 const os = require('os');
-const igcrest = require('../');
+const igcrest = require('ibm-igc-rest');
 const commons = require('ibm-iis-commons');
 const _ = require('underscore');
 

@@ -11,7 +11,10 @@
   ],
   "dependencies": {
     "underscore": ">=1.8.3",
-    "ibm-iis-commons": ">=0.0.1"
+    "ibm-iis-commons": ">=0.9.0"
+  },
+  "bin": {
+    "generateIGCRESTDocumentation": "generateIGCRESTDocumentation.js"
   },
   "devDependencies": {
     "jsdoc": "^3.4.0",
