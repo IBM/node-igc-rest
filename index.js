@@ -63,11 +63,13 @@ const RestIGC = (function() {
    * @returns {Object}
    */
   const replaceQueryVars = function(json, variables) {
-    for (let i = 0; i < json.where.conditions.length; i++ ) {
-      let value = json.where.conditions[i].value;
-      if (value.indexOf("$") === 0) {
-        value = value.substring(1, value.length);
-        json.where.conditions[i].value = variables[value];
+    if (json.hasOwnProperty("where")) {
+      for (let i = 0; i < json.where.conditions.length; i++ ) {
+        let value = json.where.conditions[i].value;
+        if (value.indexOf("$") === 0) {
+          value = value.substring(1, value.length);
+          json.where.conditions[i].value = variables[value];
+        }
       }
     }
     return json;
@@ -297,7 +299,8 @@ const RestIGC = (function() {
       path: path,
       method: method,
       rejectUnauthorized: false,
-      maxSockets: 1
+      maxSockets: 1,
+      keepAlive: false
     };
     if (bInput) {
       opts.headers = {
@@ -314,7 +317,10 @@ const RestIGC = (function() {
         data += d;
       });
       res.on('end', function() {
-        if (bDrillDown) {
+        if (data === "") {
+          argsReceived.unshift(res, {});
+          return callback.apply(this, argsReceived);
+        } else if (bDrillDown) {
           argsReceived.unshift(res, JSON.parse(data)[drillDown]);
           return callback.apply(this, argsReceived);
         } else {
