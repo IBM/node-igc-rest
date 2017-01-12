@@ -24,10 +24,12 @@
  * @requires underscore
  * @requires ibm-igc-rest
  * @requires ibm-iis-commons
+ * @requires prompt
  * @requires yargs
+ * @see module:ibm-iis-commons~createInfoSvrAuthFile
  * @example
  * // creates a markdown file containing documentation on all of the data types and their properties
- * ./generateApiDoc.js -f ../docs/igcRestAPI.md -d hostname:9445 -u isadmin -p isadmin
+ * ./generateApiDoc.js -f igcRestAPI.md -p isadmin
  */
 
 const fs = require('fs');
@@ -35,34 +37,27 @@ const os = require('os');
 const igcrest = require('ibm-igc-rest');
 const commons = require('ibm-iis-commons');
 const _ = require('underscore');
+const prompt = require('prompt');
+prompt.colors = false;
 
 // Command-line setup
 const yargs = require('yargs');
 const argv = yargs
-    .usage('Usage: $0 -f <path> -d <host>:<port> -u <user> -p <password>')
+    .usage('Usage: $0 -f <path> -a <authfile> -p <password>')
     .option('f', {
       alias: 'file',
       describe: 'Output file into which to create the documentation',
-      default: '../docs/igcRestAPI.md',
       demand: true, requiresArg: true, type: 'string'
     })
-    .env('DS')
-    .option('d', {
-      alias: 'domain',
-      describe: 'Host and port for invoking IGC REST',
-      demand: true, requiresArg: true, type: 'string'
-    })
-    .option('u', {
-      alias: 'deployment-user',
-      describe: 'User for invoking IGC REST',
-      default: 'isadmin',
-      demand: true, requiresArg: true, type: 'string'
+    .option('a', {
+      alias: 'authfile',
+      describe: 'Authorisation file containing environment context',
+      requiresArg: true, type: 'string'
     })
     .option('p', {
-      alias: 'deployment-user-password',
-      describe: 'Password for invoking IGC REST',
-      default: 'isadmin',
-      demand: true, requiresArg: true, type: 'string'
+      alias: 'password',
+      describe: 'Password for invoking REST API',
+      demand: false, requiresArg: true, type: 'string'
     })
     .help('h')
     .alias('h', 'help')
@@ -70,9 +65,11 @@ const argv = yargs
     .argv;
 
 const filename = argv.file;
-const host_port = argv.domain.split(":");
-const restConnect = new commons.RestConnection(argv.deploymentUser, argv.deploymentUserPassword, host_port[0], host_port[1]);
-igcrest.setConnection(restConnect);
+
+const envCtx = new commons.EnvironmentContext();
+if (argv.authfile !== undefined && argv.authfile !== "") {
+  envCtx.authFile = argv.authfile;
+}
 
 const basicTypes = { 'string':0, 'boolean':0, 'datetime':0, 'number':0, 'note':0, 'external_asset_reference':0 };
 
@@ -100,15 +97,6 @@ function processTypeDetails(res, resProps) {
     outputDocumentation();
   }
 }
-
-igcrest.getTypes(function(err, resTypes) {
-  const types = _.pluck(resTypes, "_id");
-  numTypes = types.length;
-  for (let i = 0; i < types.length; i++) {
-    const type = types[i];
-    igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + type + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
-  }
-});
 
 function outputDocumentation() {
   const aAlphaKeys = Object.keys(documentation).sort();
@@ -227,3 +215,30 @@ function parsePropertiesForType(jsonProps) {
   return text;
 
 }
+
+prompt.override = argv;
+
+const inputPrompt = {
+  properties: {
+    password: {
+      hidden: true,
+      required: true,
+      message: "Please enter the password for user '" + envCtx.username + "': "
+    }
+  }
+};
+prompt.message = "";
+prompt.delimiter = "";
+
+prompt.start();
+prompt.get(inputPrompt, function (err, result) {
+  igcrest.setConnection(envCtx.getRestConnection(result.password));
+  igcrest.getTypes(function(err, resTypes) {
+    const types = _.pluck(resTypes, "_id");
+    numTypes = types.length;
+    for (let i = 0; i < types.length; i++) {
+      const type = types[i];
+      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + type + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
+    }
+  });
+});
