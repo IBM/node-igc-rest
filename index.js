@@ -19,7 +19,8 @@
 const https = require('https');
 
 /**
- * @file Re-usable functions for interacting with IGC's REST API
+ * Re-usable functions for interacting with IBM Information Governance Catalog's REST API
+ * @module ibm-igc-rest
  * @license Apache-2.0
  * @requires https
  * @example
@@ -31,10 +32,6 @@ const https = require('https');
  * igcrest.getTypes(function(err, resTypes) {
  *   // do something with the types within resTypes object
  * });
- */
-
-/**
- * @module ibm-igc-rest
  */
 const RestIGC = (function() {
 

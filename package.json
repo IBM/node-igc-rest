@@ -1,18 +1,18 @@
 {
   "name": "ibm-igc-rest",
-  "version": "1.0.0",
-  "description": "Library to use IBM Information Governance Catalog REST API",
+  "version": "0.2.0",
+  "description": "Re-usable functions for interacting with IBM Information Governance Catalog's REST API",
   "main": "./index.js",
   "files": [
     "index.js",
-    "docs",
+    "bin",
     "utils",
     "LICENSE"
   ],
   "dependencies": {
     "underscore": ">=1.8.3",
     "yargs": ">=6.6.0",
-    "ibm-iis-commons": ">=0.9.0"
+    "ibm-iis-commons": ">=0.2.0"
   },
   "bin": {
     "generateIGCRESTDocumentation": "generateIGCRESTDocumentation.js"
