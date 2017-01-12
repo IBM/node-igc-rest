@@ -15,7 +15,7 @@
     "ibm-iis-commons": ">=0.2.0"
   },
   "bin": {
-    "generateIGCRESTDocumentation": "generateIGCRESTDocumentation.js"
+    "generateIGCRESTDocumentation": "bin/generateIGCRESTDocumentation.js"
   },
   "devDependencies": {
     "jsdoc": "^3.4.0",
