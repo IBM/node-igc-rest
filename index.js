@@ -594,6 +594,23 @@ const RestIGC = (function() {
     });
     getOther.apply(this, argsReceived);
   };
+
+  /**
+   * Retrieve only the single specified property of an asset
+   *
+   * @param {string} rid - the RID of the asset
+   * @param {string} property - the property of the asset to retrieve (e.g. 'name')
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getAssetPropertyById = function(rid, property, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 3);
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid + "/" + property, function(res, resDetails) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      argsReceived.unshift(res, resDetails);
+      return callback.apply(this, argsReceived);
+    });
+    getOther.apply(this, argsReceived);
+  };
   
   /**
    * Retrieve only the specified details of an asset
@@ -659,7 +676,7 @@ const RestIGC = (function() {
     search.apply(this, argsReceived);
   
   };
-  
+
   /**
    * @returns true iff the provided type is a data container
    */
@@ -711,6 +728,7 @@ const RestIGC = (function() {
     detectLineageForJob: detectLineageForJob,
     getAssetsInCollection: getAssetsInCollection,
     getAssetById: getAssetById,
+    getAssetPropertyById: getAssetPropertyById,
     getAssetPropertiesById: getAssetPropertiesById,
     isDataContainer: isDataContainer,
     getDataContainerChildTypes: getDataContainerChildTypes

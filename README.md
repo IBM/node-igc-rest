@@ -273,6 +273,16 @@ using 'getAssetPropertiesById' instead
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
+## getAssetPropertyById
+
+Retrieve only the single specified property of an asset
+
+**Parameters**
+
+-   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset
+-   `property` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the property of the asset to retrieve (e.g. 'name')
+-   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+
 ## getAssetPropertiesById
 
 Retrieve only the specified details of an asset
