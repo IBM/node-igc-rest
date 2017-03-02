@@ -116,11 +116,6 @@ function wrapUp(rc) {
   process.exit(rc);
 }
 
-function getSubURL(type, url) {
-  const strippedURL = url.substring(21, url.length);
-  return "[" + strippedURL + "](#" + type.toLowerCase() + ")";
-}
-
 function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
 
   let outputName = name;
@@ -185,7 +180,7 @@ function parsePropertiesForType(jsonProps) {
     "## `" + id + "`\n" +
     "\n" +
     "- Displayed as: _\"" + name + "\"_\n" +
-    "- Path: " + getSubURL(id, url) + "\n";
+    "- Path: [" + url + "](#" + url + ")\n";
 
   let create = [];
   let edit = [];
@@ -238,7 +233,7 @@ prompt.get(inputPrompt, function (err, result) {
     numTypes = types.length;
     for (let i = 0; i < types.length; i++) {
       const type = types[i];
-      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + type + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
+      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
     }
   });
 });
