@@ -1,6 +1,6 @@
 {
   "name": "ibm-igc-rest",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Re-usable functions for interacting with IBM Information Governance Catalog's REST API",
   "main": "./index.js",
   "files": [
