@@ -59,12 +59,19 @@ const argv = yargs
       describe: 'Password for invoking REST API',
       demand: false, requiresArg: true, type: 'string'
     })
+    .option('t', {
+      alias: 'type',
+      describe: 'Markdown/up type (github, confluence)',
+      demand: false, requiresArg: true, type: 'string',
+      default: 'github'
+    })
     .help('h')
     .alias('h', 'help')
     .wrap(yargs.terminalWidth())
     .argv;
 
 const filename = argv.file;
+const mdtype = argv.type;
 
 const envCtx = new commons.EnvironmentContext();
 if (argv.authfile !== undefined && argv.authfile !== "") {
@@ -81,7 +88,11 @@ function readyForOutput(numTypes) {
 }
 
 const fd = fs.openSync(filename, 'w', 0o644);
-outputIt("# Information Governance Catalog REST API");
+if (mdtype === "github") {
+  outputIt("# Information Governance Catalog REST API");
+} else if (mdtype === "confluence") {
+  outputIt("h1. Information Governance Catalog REST API");
+}
 
 function processTypeDetails(res, resProps) {
   let err = null;
@@ -126,7 +137,11 @@ function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
     outputName = "_" + outputName + "_";
   }
   if (required) {
-    outputName = "**" + outputName + "**";
+    if (mdtype === "github") {
+      outputName = "**" + outputName + "**";
+    } else if (mdtype === "confluence") {
+      outputName = "_*" + outputName + "*_";
+    }
   }
 
   if (type === "enum") {
@@ -134,13 +149,25 @@ function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
     const validVals = typeObj.validValues;
     for (let i = 0; i < validVals.length; i++) {
       const valueId = validVals[i].id;
-      valuesString += "`" + valueId + "`, ";
+      if (mdtype === "github") {
+        valuesString += "`" + valueId + "`, ";
+      } else {
+        valuesString += "{{" + valueId + "}}, ";
+      }
     }
     outputDetails = outputDetails + ": " + valuesString.substring(0, valuesString.length - 2);
   } else if (typeObj.hasOwnProperty("url")) {
-    outputType = "[" + type + "](#" + type.toLowerCase() + ")";
+    if (mdtype === "github") {
+      outputType = "[" + type + "](#" + type.toLowerCase() + ")";
+    } else if (mdtype === "confluence") {
+      outputType = "[#" + type.toLowerCase() + "]";
+    }
   } else if (!basicTypes.hasOwnProperty(type)) {
-    outputDetails = outputDetails + ": UNKNOWN complexType = `" + JSON.stringify(typeObj, null, 2) + "`";
+    if (mdtype === "github") {
+      outputDetails = outputDetails + ": UNKNOWN complexType = `" + JSON.stringify(typeObj, null, 2) + "`";
+    } else if (mdtype === "confluence") {
+      outputDetails = outputDetails + ": UNKNOWN complexType = {{" + JSON.stringify(typeObj, null, 2) + "}}";
+    }
   }
   return "| " + outputName + " | " + outputType + " | " + outputDetails + " |\n";
 
@@ -161,12 +188,20 @@ function parseTableForProperties(sValidity, aProps) {
     text = text + parsePropertyRow(propName, propDisplay, propType, aProps[i].type, maxNum, required);
   }
 
-  return "\n" +
-    "#### " + sValidity + "\n" +
-    "\n" +
-    "| Name | Type | Details |\n" +
-    "| ---- | ---- | ---- |\n" +
-    text;
+  if (mdtype === "github") {
+    return "\n" +
+      "#### " + sValidity + "\n" +
+      "\n" +
+      "| Name | Type | Details |\n" +
+      "| ---- | ---- | ---- |\n" +
+      text;
+  } else if (mdtype === "confluence") {
+    return "\n" +
+      "h4. " + sValidity + "\n" +
+      "\n" +
+      "|| Name || Type || Details ||\n" +
+      text;
+  }
 
 }
 
@@ -176,11 +211,20 @@ function parsePropertiesForType(jsonProps) {
   const name = jsonProps._name;
   const url  = jsonProps._url;
 
-  let text = "\n" +
-    "## `" + id + "`\n" +
-    "\n" +
-    "- Displayed as: _\"" + name + "\"_\n" +
-    "- Path: [" + url + "](#" + url + ")\n";
+  let text = "\n";
+  if (mdtype === "github") {
+    text +=
+      "## `" + id + "`\n" +
+      "\n" +
+      "- Displayed as: _\"" + name + "\"_\n" +
+      "- Path: [" + url + "](#" + url + ")\n";
+  } else if (mdtype === "confluence") {
+    text +=
+      "h2. {{" + id + "}}\n" +
+      "\n" +
+      "- Displayed as: _\"" + name + "\"_\n" +
+      "- Path: [" + url + "]\n";
+  }
 
   let create = [];
   let edit = [];
