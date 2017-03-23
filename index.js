@@ -88,14 +88,18 @@ const RestIGC = (function() {
   
   /**
    * Prepare the provided value for use via the REST API:
+   * - if XML, leave it as-is
    * - if a string, surround it in double-quotes
    * - if an object, convert to a JSON string
    *
    * @param {Object} value - the value to prepare
+   * @param {string} [contentType] - the type of content received as input
    * @returns {Object}
    */
-  const _prepValue = function(value) {
-    if (typeof(value) === "string") {
+  const _prepValue = function(value, contentType) {
+    if (contentType !== null && (contentType === "application/xml" || contentType === "text/xml")) {
+      // Do nothing -- we should not change the value of XML...
+    } else if (typeof(value) === "string") {
       value = "\"" + value + "\"";
     } else {
       value = JSON.stringify(value);
@@ -273,11 +277,12 @@ const RestIGC = (function() {
    * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
    * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
    * @param {string} [input] - any input for the request, i.e. for PUT, POST
+   * @param {string} [contentType] - the type of content, e.g. 'application/json' or 'application/xml'
    * @param {string} [drillDown] - the key into which to drill-down within the response
    * @param {requestCallback} callback - callback that handles the response
    * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
    */
-  const makeRequest = function(method, path, input, drillDown, callback) {
+  const makeRequest = function(method, path, input, contentType, drillDown, callback) {
   
     const argsReceived = Array.prototype.splice.call(arguments, 5);
 
@@ -285,7 +290,7 @@ const RestIGC = (function() {
     const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
     
     if (bInput) {
-      input = _prepValue(input);
+      input = _prepValue(input, contentType);
     }
   
     if (typeof _restConnect === 'undefined' || _restConnect === undefined || _restConnect === null) {
@@ -304,7 +309,7 @@ const RestIGC = (function() {
     };
     if (bInput) {
       opts.headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         'Content-Length': input.length
       };
     }
@@ -351,7 +356,7 @@ const RestIGC = (function() {
   const create = function(type, value, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 3);
     value._type = type;
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/assets", value, null, function(res) {
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/assets", value, 'application/json', null, function(res) {
       const argsReceived = Array.prototype.splice.call(arguments, 1);
       let err = null;
       if (res.statusCode !== 200) {
@@ -377,7 +382,7 @@ const RestIGC = (function() {
    */
   const update = function(rid, value, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 3);
-    argsReceived.unshift('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, null, function(res, resUpdate) {
+    argsReceived.unshift('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, 'application/json', null, function(res, resUpdate) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
@@ -401,7 +406,7 @@ const RestIGC = (function() {
    */
   const search = function(query, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/search/", query, null, function(res, resSearch) {
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/search/", query, 'application/json', null, function(res, resSearch) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
@@ -424,7 +429,7 @@ const RestIGC = (function() {
    */
   const getTypes = function(callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 1);
-    argsReceived.unshift('GET', "/ibm/iis/igc-rest/v1/types/", null, null, function(res, resTypes) {
+    argsReceived.unshift('GET', "/ibm/iis/igc-rest/v1/types/", null, null, null, function(res, resTypes) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
@@ -469,7 +474,7 @@ const RestIGC = (function() {
    */
   const getOther = function(path, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('GET', path, null, null, function(res, resDetails) {
+    argsReceived.unshift('GET', path, null, null, null, function(res, resDetails) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       argsReceived.unshift(res, resDetails);
       callback.apply(this, argsReceived);
@@ -486,7 +491,7 @@ const RestIGC = (function() {
    */
   const deleteAssetById = function(rid, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, function(res, resDelete) {
+    argsReceived.unshift('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, null, function(res, resDelete) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       let err = null;
       if (res.statusCode !== 200) {
@@ -525,6 +530,30 @@ const RestIGC = (function() {
       return callback.apply(this, argsReceived);
     });
     getOther.apply(this, argsReceived);
+  };
+
+  /**
+   * Create instances of assets defined by an Open IGC bundle
+   *
+   * @param {string} xml - the flow document XML containing the asset instance definitions
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const createBundleAssets = function(xml, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/bundles/assets", xml, 'application/xml', null, function(res, resCreate) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      argsReceived.unshift(err, resCreate);
+      return callback.apply(this, argsReceived);
+    });
+    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -726,6 +755,7 @@ const RestIGC = (function() {
     getOther: getOther,
     deleteAssetById: deleteAssetById,
     detectLineageForJob: detectLineageForJob,
+    createBundleAssets: createBundleAssets,
     getAssetsInCollection: getAssetsInCollection,
     getAssetById: getAssetById,
     getAssetPropertyById: getAssetPropertyById,
