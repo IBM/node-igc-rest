@@ -53,21 +53,6 @@ Replace '$relatedObjectRID' in the query with the provided RID
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
-## \_prepValue
-
-Prepare the provided value for use via the REST API:
-
--   if XML, leave it as-is
--   if a string, surround it in double-quotes
--   if an object, convert to a JSON string
-
-**Parameters**
-
--   `value` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the value to prepare
--   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content received as input
-
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-
 ## verifySingleItem
 
 Verify that one and only one item was returned by a query
