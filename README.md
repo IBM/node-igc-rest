@@ -53,6 +53,21 @@ Replace '$relatedObjectRID' in the query with the provided RID
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
+## \_prepValue
+
+Prepare the provided value for use via the REST API:
+
+-   if XML, leave it as-is
+-   if a string, surround it in double-quotes
+-   if an object, convert to a JSON string
+
+**Parameters**
+
+-   `value` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the value to prepare
+-   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content received as input
+
+Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
 ## verifySingleItem
 
 Verify that one and only one item was returned by a query
@@ -149,6 +164,7 @@ Make a request against IGC's REST API
 -   `method` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
 -   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
 -   `input` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** any input for the request, i.e. for PUT, POST
+-   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content, e.g. 'application/json' or 'application/xml'
 -   `drillDown` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key into which to drill-down within the response
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
@@ -245,6 +261,18 @@ Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or 
 **Parameters**
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the job for which to detect lineage
+-   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+
+
+-   Throws **any** will throw an error if the status code does not indicate success
+
+## createBundleAssets
+
+Create instances of assets defined by an Open IGC bundle
+
+**Parameters**
+
+-   `xml` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the flow document XML containing the asset instance definitions
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
 
