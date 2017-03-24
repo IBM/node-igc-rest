@@ -16,13 +16,13 @@
 
 "use strict";
 
-const https = require('https');
+const request = require('request');
 
 /**
  * Re-usable functions for interacting with IBM Information Governance Catalog's REST API
  * @module ibm-igc-rest
  * @license Apache-2.0
- * @requires https
+ * @requires request
  * @example
  * // retrieves all of the "types" from IGC's REST API
  * var igcrest = require('ibm-igc-rest');
@@ -298,49 +298,35 @@ const RestIGC = (function() {
     }
   
     const opts = {
-      auth: _restConnect.auth,
-      hostname: _restConnect.host,
-      port: _restConnect.port,
-      path: path,
+      uri: _restConnect.baseURL + path,
       method: method,
-      rejectUnauthorized: false,
-      maxSockets: 1,
-      keepAlive: false
+      auth: _restConnect.auth,
+      strictSSL: false,
+      agent: _restConnect.agent
     };
     if (bInput) {
-      opts.headers = {
-        'Content-Type': contentType,
-        'Content-Length': input.length
-      };
+      if (contentType !== 'multipart/form-data') {
+        opts.headers = {
+          'Content-Type': contentType,
+          'Content-Length': input.length
+        };
+      }
+      opts.body = input;
     }
-    opts.agent = new https.Agent(opts);
-  
-    const req = https.request(opts, (res) => {
-  
-      let data = "";
-      res.on('data', (d) => {
-        data += d;
-      });
-      res.on('end', function() {
-        if (data === "") {
-          argsReceived.unshift(res, {});
-          return callback.apply(this, argsReceived);
-        } else if (bDrillDown) {
-          argsReceived.unshift(res, JSON.parse(data)[drillDown]);
-          return callback.apply(this, argsReceived);
-        } else {
-          argsReceived.unshift(res, JSON.parse(data));
-          return callback.apply(this, argsReceived);
-        }
-      });
-    });
-    if (bInput) {
-      req.write(input);
-    }
-    req.end();
-  
-    req.on('error', (e) => {
-      throw new Error(e);
+
+    request(opts, function(error, response, body) {
+
+      if (error !== null) {
+        throw new Error(error);
+      } else if (body === "") {
+        argsReceived.unshift(response, {});
+      } else if (bDrillDown) {
+        argsReceived.unshift(response, JSON.parse(body)[drillDown]);
+      } else {
+        argsReceived.unshift(response, JSON.parse(body));
+      }
+      return callback.apply(this, argsReceived);
+
     });
   
   };

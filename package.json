@@ -10,11 +10,12 @@
     "LICENSE"
   ],
   "dependencies": {
-    "underscore": ">=1.8.3",
-    "yargs": ">=6.6.0",
-    "ibm-iis-commons": ">=0.3.0",
+    "ibm-iis-commons": ">=0.4.0",
+    "pretty-data": ">=0.40.0",
     "prompt": ">=1.0.0",
-    "pretty-data": ">=0.40.0"
+    "request": "^2.81.0",
+    "underscore": ">=1.8.3",
+    "yargs": ">=6.6.0"
   },
   "bin": {
     "generateIGCRESTDocumentation": "bin/generateIGCRESTDocumentation.js",
