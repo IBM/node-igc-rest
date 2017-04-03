@@ -17,6 +17,8 @@
 "use strict";
 
 const request = require('request');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Re-usable functions for interacting with IBM Information Governance Catalog's REST API
@@ -97,8 +99,8 @@ const RestIGC = (function() {
    * @returns {Object}
    */
   const _prepValue = function(value, contentType) {
-    if (contentType !== null && (contentType === "application/xml" || contentType === "text/xml")) {
-      // Do nothing -- we should not change the value of XML...
+    if (contentType !== null && (contentType === "application/xml" || contentType === "text/xml" || contentType === "multipart/form-data")) {
+      // Do nothing -- we should not change the value of XML or multipart form data (i.e. uploaded files)...
     } else if (typeof(value) === "string") {
       value = "\"" + value + "\"";
     } else {
@@ -310,8 +312,10 @@ const RestIGC = (function() {
           'Content-Type': contentType,
           'Content-Length': input.length
         };
+        opts.body = input;
+      } else {
+        opts.formData = input;
       }
-      opts.body = input;
     }
 
     request(opts, function(error, response, body) {
@@ -516,6 +520,42 @@ const RestIGC = (function() {
       return callback.apply(this, argsReceived);
     });
     getOther.apply(this, argsReceived);
+  };
+
+  /**
+   * Create a new Open IGC bundle (asset type definition)
+   *
+   * @param {string} zipFile - the location of the zip file from which to create the bundle
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const createBundle = function(zipFile, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+
+    const formData = {
+      file: {
+        value: fs.createReadStream(zipFile),
+        options: {
+          name: 'file',
+          filename: path.posix.basename(zipFile),
+          contentType: 'application/x-zip-compressed'
+        }
+      }
+    };
+
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/bundles", formData, 'multipart/form-data', null, function(res, resCreate) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      argsReceived.unshift(err, resCreate);
+      return callback.apply(this, argsReceived);
+    });
+    makeRequest.apply(this, argsReceived);
   };
 
   /**
@@ -741,6 +781,7 @@ const RestIGC = (function() {
     getOther: getOther,
     deleteAssetById: deleteAssetById,
     detectLineageForJob: detectLineageForJob,
+    createBundle: createBundle,
     createBundleAssets: createBundleAssets,
     getAssetsInCollection: getAssetsInCollection,
     getAssetById: getAssetById,
