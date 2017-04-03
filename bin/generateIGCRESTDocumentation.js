@@ -73,10 +73,7 @@ const argv = yargs
 const filename = argv.file;
 const mdtype = argv.type;
 
-const envCtx = new commons.EnvironmentContext();
-if (argv.authfile !== undefined && argv.authfile !== "") {
-  envCtx.authFile = argv.authfile;
-}
+const envCtx = new commons.EnvironmentContext(null, argv.authfile);
 
 const basicTypes = { 'string':0, 'boolean':0, 'datetime':0, 'number':0, 'note':0, 'external_asset_reference':0 };
 

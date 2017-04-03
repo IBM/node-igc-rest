@@ -122,10 +122,7 @@ const argv = yargs
     .wrap(yargs.terminalWidth())
     .argv;
 
-const envCtx = new commons.EnvironmentContext();
-if (argv.authfile !== undefined && argv.authfile !== "") {
-  envCtx.authFile = argv.authfile;
-}
+const envCtx = new commons.EnvironmentContext(null, argv.authfile);
 
 const inputFile = argv.file;
 const checkStats = fs.statSync(inputFile);
