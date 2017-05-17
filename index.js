@@ -349,7 +349,7 @@ const RestIGC = (function() {
     argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/assets", value, 'application/json', null, function(res) {
       const argsReceived = Array.prototype.splice.call(arguments, 1);
       let err = null;
-      if (res.statusCode !== 200) {
+      if (res.statusCode !== 201) {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
