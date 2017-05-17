@@ -737,22 +737,24 @@ const RestIGC = (function() {
     argsReceived.unshift(json, function(err, results) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
       let toReturn = {};
-      if (results.items.length > 1) {
-        err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
-        console.warn(err);
-      }
-      if (results.items.length > 0) {
-        if (bIncludeContext) {
-          toReturn = results.items[0];
-        } else {
-          for (let i = 0; i < properties.length; i++) {
-            const prop = properties[i];
-            toReturn[prop] = results.items[0][prop];
-          }
+      if (!err) {
+        if (results.items.length > 1) {
+          err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
+          console.warn(err);
         }
-      } else {
-        err = "WARN: No assets found with RID '" + rid + "'.";
-        console.warn(err);
+        if (results.items.length > 0) {
+          if (bIncludeContext) {
+            toReturn = results.items[0];
+          } else {
+            for (let i = 0; i < properties.length; i++) {
+              const prop = properties[i];
+              toReturn[prop] = results.items[0][prop];
+            }
+          }
+        } else {
+          err = "WARN: No assets found with RID '" + rid + "'.";
+          console.warn(err);
+        }
       }
       argsReceived.unshift(err, toReturn);
       return callback.apply(this, argsReceived);
