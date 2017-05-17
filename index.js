@@ -47,6 +47,7 @@ const RestIGC = (function() {
   };
   
   let _restConnect = null;
+  let _throwErrors = true;
   
   /**
    * Set the connection for the REST API
@@ -55,6 +56,20 @@ const RestIGC = (function() {
    */
   const setConnection = function(restConnect) {
     _restConnect = restConnect;
+  };
+
+  /**
+   * Disables default error-handling, i.e. avoids throwing errors on connection issues
+   */
+  const disableThrowingErrors = function() {
+    _throwErrors = false;
+  };
+
+  /**
+   * Enable default error-handling, i.e. throw errors on connection issues
+   */
+  const enableThrowingErrors = function() {
+    _throwErrors = true;
   };
   
   /**
@@ -321,7 +336,9 @@ const RestIGC = (function() {
     request(opts, function(error, response, body) {
 
       if (error !== null) {
-        throw new Error(error);
+        if (_throwErrors) {
+          throw new Error(error);
+        }
       } else if (body === "") {
         argsReceived.unshift(response, {});
       } else if (bDrillDown) {
@@ -353,9 +370,19 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
-      const rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
+      let rid = "";
+      if (res.headers.hasOwnProperty("Location")) {
+        rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
+      } else if (res.headers.hasOwnProperty("location")) {
+        rid = res.headers.location.substring(res.headers.location.lastIndexOf("/"));
+      }
+      if (rid.length > 0) {
+        rid = rid.substring(1);
+      }
       argsReceived.unshift(err, rid);
       return callback.apply(this, argsReceived);
     });
@@ -379,7 +406,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resUpdate);
       return callback.apply(this, argsReceived);
@@ -403,7 +432,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resSearch);
       return callback.apply(this, argsReceived);
@@ -426,7 +457,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resTypes);
       return callback.apply(this, argsReceived);
@@ -472,7 +505,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resDetails);
       return callback.apply(this, argsReceived);
@@ -496,7 +531,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resDelete);
       return callback.apply(this, argsReceived);
@@ -546,7 +583,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resCreate);
       return callback.apply(this, argsReceived);
@@ -570,7 +609,9 @@ const RestIGC = (function() {
         err = "Unsuccessful request " + res.statusCode;
         console.error(err);
         console.error('headers: ', res.headers);
-        throw new Error(err);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
       }
       argsReceived.unshift(err, resCreate);
       return callback.apply(this, argsReceived);
@@ -750,6 +791,8 @@ const RestIGC = (function() {
 
   return {
     setConnection: setConnection,
+    disableThrowingErrors: disableThrowingErrors,
+    enableThrowingErrors: enableThrowingErrors,
     replaceQueryVars: replaceQueryVars,
     replaceRelatedUpdateVars: replaceRelatedUpdateVars,
     verifySingleItem: verifySingleItem,

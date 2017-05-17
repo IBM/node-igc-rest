@@ -31,6 +31,14 @@ Set the connection for the REST API
 
 -   `restConnect` **RestConnection** RestConnection object, from ibm-iis-commons
 
+## disableThrowingErrors
+
+Disables default error-handling, i.e. avoids throwing errors on connection issues
+
+## enableThrowingErrors
+
+Enable default error-handling, i.e. throw errors on connection issues
+
 ## replaceQueryVars
 
 Replace any variables (text that starts with '$') that show up in a query
