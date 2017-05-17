@@ -91,14 +91,7 @@ if (mdtype === "github") {
   outputIt("h1. Information Governance Catalog REST API");
 }
 
-function processTypeDetails(res, resProps) {
-  let err = null;
-  if (res.statusCode !== 200) {
-    err = "Unsuccessful request " + res.statusCode;
-    console.error(err);
-    console.error('headers: ', res.headers);
-    throw new Error(err);
-  }
+function processTypeDetails(err, resProps) {
   let type = resProps._id;
   documentation[type] = parsePropertiesForType(resProps);
   if (readyForOutput(numTypes)) {
@@ -274,7 +267,7 @@ prompt.get(inputPrompt, function (err, result) {
     numTypes = types.length;
     for (let i = 0; i < types.length; i++) {
       const type = types[i];
-      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", processTypeDetails);
+      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", 200, processTypeDetails);
     }
   });
 });
