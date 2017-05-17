@@ -460,14 +460,22 @@ const RestIGC = (function() {
    * Make a general GET request against IGC's REST API
    *
    * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+   * @param {integer} successCode - the HTTP response code that indicates success for this operation
    * @param {requestCallback} callback - callback that handles the response
    */
-  const getOther = function(path, callback) {
+  const getOther = function(path, successCode, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
     argsReceived.unshift('GET', path, null, null, null, function(res, resDetails) {
       const argsReceived = Array.prototype.splice.call(arguments, 2);
-      argsReceived.unshift(res, resDetails);
-      callback.apply(this, argsReceived);
+      let err = null;
+      if (res.statusCode !== successCode) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        throw new Error(err);
+      }
+      argsReceived.unshift(err, resDetails);
+      return callback.apply(this, argsReceived);
     });
     makeRequest.apply(this, argsReceived);
   };
@@ -506,19 +514,7 @@ const RestIGC = (function() {
    */
   const detectLineageForJob = function(rid, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, function(res, resLineage) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      // Result code will always be 202, actual status only comes from "message"
-      if (res.statusCode !== 202) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        throw new Error(err);
-      }
-      argsReceived.unshift(err, resLineage);
-      return callback.apply(this, argsReceived);
-    });
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, 202, callback);
     getOther.apply(this, argsReceived);
   };
 
@@ -642,11 +638,7 @@ const RestIGC = (function() {
    */
   const getAssetById = function(rid, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid, function(res, resDetails) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      argsReceived.unshift(res, resDetails);
-      return callback.apply(this, argsReceived);
-    });
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid, 200, callback);
     getOther.apply(this, argsReceived);
   };
 
@@ -659,11 +651,7 @@ const RestIGC = (function() {
    */
   const getAssetPropertyById = function(rid, property, callback) {
     const argsReceived = Array.prototype.splice.call(arguments, 3);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid + "/" + property, function(res, resDetails) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      argsReceived.unshift(res, resDetails);
-      return callback.apply(this, argsReceived);
-    });
+    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid + "/" + property, 200, callback);
     getOther.apply(this, argsReceived);
   };
   

@@ -223,6 +223,7 @@ Make a general GET request against IGC's REST API
 **Parameters**
 
 -   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+-   `successCode` **integer** the HTTP response code that indicates success for this operation
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
 ## deleteAssetById
