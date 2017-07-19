@@ -330,6 +330,25 @@ Retrieve only the specified details of an asset
 -   `bIncludeContext` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether to include contextual information (true) or drill-down just to the resulting properties (false)
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
+## getNextPage
+
+Retrieve the next page of information
+
+**Parameters**
+
+-   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
+-   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+
+## getAllPages
+
+Retrieve all remaining pages of information
+
+**Parameters**
+
+-   `items` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'items' sub-object of a results object
+-   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
+-   `callback` **[itemSetCallback](#itemsetcallback)** callback that provides the list of all items from all pages
+
 ## isDataContainer
 
 **Parameters**
@@ -345,6 +364,17 @@ Returns **any** true iff the provided type is a data container
 -   `type`  
 
 Returns **any** the data type name for the child object of the provided container type
+
+## itemSetCallback
+
+This callback is invoked as the result of obtaining a set of items, providing an array of items.
+
+Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
+
+**Parameters**
+
+-   `errorMessage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** any error message, or null if no errors
+-   `itemArray` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** an array of JSON objects, each being an item
 
 ## requestCallback
 

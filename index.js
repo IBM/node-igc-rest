@@ -313,9 +313,12 @@ const RestIGC = (function() {
     if (typeof _restConnect === 'undefined' || _restConnect === undefined || _restConnect === null) {
       throw new Error("Setup incomplete: no connection found.");
     }
+
+    // Only pre-pend the base REST URL if the path is not already a fully-qualified URI
+    const uri = path.startsWith('http') ? path : _restConnect.baseURL + path;
   
     const opts = {
-      uri: _restConnect.baseURL + path,
+      uri: uri,
       method: method,
       auth: _restConnect.auth,
       strictSSL: false,
@@ -764,6 +767,57 @@ const RestIGC = (function() {
   };
 
   /**
+   * Retrieve the next page of information
+   *
+   * @see module:ibm-igc-rest.search
+   * @param {Object} paging - the 'paging' sub-object of a results object
+   * @param {requestCallback} callback - callback that handles the response
+   */
+  const getNextPage = function(paging, callback) {
+
+    if (paging.hasOwnProperty('next')) {
+      console.log("Getting next page ...");
+      const nextURL = paging.next;
+      getOther(nextURL, 200, function(err, resultOfNextPage) {
+        if (err !== null) {
+          console.log("ERROR: " + err);
+          callback(err, resultOfNextPage);
+        } else {
+          console.log("... only returning next page ...");
+          callback(err, resultOfNextPage);
+        }
+      });
+    } else {
+      console.log("No more pages.");
+      callback(null, { items: [] });
+    }
+
+  };
+
+  /**
+   * Retrieve all remaining pages of information
+   *
+   * @see module:ibm-igc-rest.search
+   * @see module:ibm-igc-rest.getNextPage
+   * @param {Object} items - the 'items' sub-object of a results object
+   * @param {Object} paging - the 'paging' sub-object of a results object
+   * @param {itemSetCallback} callback - callback that provides the list of all items from all pages
+   */
+  const getAllPages = function(items, paging, callback) {
+
+    getNextPage(paging, function(err, nextPage) {
+      if (err !== null) {
+        callback(err, items);
+      } else if (nextPage.items.length > 0) {
+        getAllPages(items.concat(nextPage.items), nextPage.paging, callback);
+      } else {
+        callback(err, items.concat(nextPage.items));
+      }
+    });
+
+  };
+
+  /**
    * @returns true iff the provided type is a data container
    */
   const isDataContainer = function(type) {
@@ -777,6 +831,13 @@ const RestIGC = (function() {
     return hmDataContainerTypesToChildren[type];
   };
   
+  /**
+   * This callback is invoked as the result of obtaining a set of items, providing an array of items.
+   * @callback itemSetCallback
+   * @param {string} errorMessage - any error message, or null if no errors
+   * @param {Object[]} itemArray - an array of JSON objects, each being an item
+   */
+
   /**
    * This callback is invoked as the result of an IGC REST API call, providing the response of that request.
    * @callback requestCallback
@@ -820,6 +881,8 @@ const RestIGC = (function() {
     getAssetById: getAssetById,
     getAssetPropertyById: getAssetPropertyById,
     getAssetPropertiesById: getAssetPropertiesById,
+    getNextPage: getNextPage,
+    getAllPages: getAllPages,
     isDataContainer: isDataContainer,
     getDataContainerChildTypes: getDataContainerChildTypes
   };
