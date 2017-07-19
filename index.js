@@ -776,19 +776,8 @@ const RestIGC = (function() {
   const getNextPage = function(paging, callback) {
 
     if (paging.hasOwnProperty('next')) {
-      console.log("Getting next page ...");
-      const nextURL = paging.next;
-      getOther(nextURL, 200, function(err, resultOfNextPage) {
-        if (err !== null) {
-          console.log("ERROR: " + err);
-          callback(err, resultOfNextPage);
-        } else {
-          console.log("... only returning next page ...");
-          callback(err, resultOfNextPage);
-        }
-      });
+      getOther(paging.next, 200, callback);
     } else {
-      console.log("No more pages.");
       callback(null, { items: [] });
     }
 
