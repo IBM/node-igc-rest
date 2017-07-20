@@ -559,6 +559,32 @@ const RestIGC = (function() {
   };
 
   /**
+   * Create new lineage flow as defined by a flow XML document
+   *
+   * @param {string} xml - the flow document XML containing the lineage to upload
+   * @param {requestCallback} callback - callback that handles the response
+   * @throws will throw an error if the status code does not indicate success
+   */
+  const uploadLineageFlow = function(xml, callback) {
+    const argsReceived = Array.prototype.splice.call(arguments, 2);
+    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/flows/upload", xml, 'application/xml', null, function(res, resLineage) {
+      const argsReceived = Array.prototype.splice.call(arguments, 2);
+      let err = null;
+      if (res.statusCode !== 200) {
+        err = "Unsuccessful request " + res.statusCode;
+        console.error(err);
+        console.error('headers: ', res.headers);
+        if (_throwErrors) {
+          throw new Error(err);
+        }
+      }
+      argsReceived.unshift(err, resLineage);
+      return callback.apply(this, argsReceived);
+    });
+    makeRequest.apply(this, argsReceived);
+  };
+
+  /**
    * Create a new Open IGC bundle (asset type definition)
    *
    * @param {string} zipFile - the location of the zip file from which to create the bundle
@@ -864,6 +890,7 @@ const RestIGC = (function() {
     getOther: getOther,
     deleteAssetById: deleteAssetById,
     detectLineageForJob: detectLineageForJob,
+    uploadLineageFlow: uploadLineageFlow,
     createBundle: createBundle,
     createBundleAssets: createBundleAssets,
     getAssetsInCollection: getAssetsInCollection,

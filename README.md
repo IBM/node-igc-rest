@@ -260,6 +260,18 @@ Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or 
 
 -   Throws **any** will throw an error if the status code does not indicate success
 
+## uploadLineageFlow
+
+Create new lineage flow as defined by a flow XML document
+
+**Parameters**
+
+-   `xml` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the flow document XML containing the lineage to upload
+-   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+
+
+-   Throws **any** will throw an error if the status code does not indicate success
+
 ## createBundle
 
 Create a new Open IGC bundle (asset type definition)
