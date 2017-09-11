@@ -19,6 +19,7 @@
 const request = require('request');
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
 
 /**
  * Re-usable functions for interacting with IBM Information Governance Catalog's REST API
@@ -125,6 +126,24 @@ const RestIGC = (function() {
   };
   
   /**
+   * Checks for any error in the request, based on a non-successful status code
+   *
+   * @param {Object} res - the full response object from the request
+   * @param {integer} statusCodeSuccess - the numeric status code that indicates success
+   * @param {Function} reject - the reject function of the promise being handled
+   * @returns {string} a description of the error (if not using Promises)
+   */
+  const _checkRequestError = function(res, statusCodeSuccess, reject) {
+    let err = null;
+    if (res.statusCode !== statusCodeSuccess) {
+      err = "Unsuccessful request " + res.statusCode;
+      err += "\n   headers: " + util.inspect(res.headers);
+      reject(new Error(err));
+    }
+    return err;
+  };
+
+  /**
    * Verify that one and only one item was returned by a query
    *
    * @param {Object} json - the data returned from a query (as a JSON object)
@@ -212,7 +231,7 @@ const RestIGC = (function() {
    * @param {identityCallback} callback - callback that handles the response, since further requests may be needed
    */
   const getContainerIdentity = function(assetCtx, containerId, callback) {
-  
+
     const argsReceived = Array.prototype.splice.call(arguments, 3);
     const identity = {};
     identity._id = containerId;
@@ -300,56 +319,62 @@ const RestIGC = (function() {
    * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
    */
   const makeRequest = function(method, path, input, contentType, drillDown, callback) {
-  
-    const argsReceived = Array.prototype.splice.call(arguments, 5);
 
-    const bInput = (typeof input !== 'undefined' && input !== null);
-    const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
+    callback = callback || function () {};
+    return new Promise(function(resolve, reject) {
+
+      const bInput = (typeof input !== 'undefined' && input !== null);
+      const bDrillDown = (typeof drillDown !== 'undefined' && drillDown !== null);
+      
+      if (bInput) {
+        input = _prepValue(input, contentType);
+      }
     
-    if (bInput) {
-      input = _prepValue(input, contentType);
-    }
-  
-    if (typeof _restConnect === 'undefined' || _restConnect === undefined || _restConnect === null) {
-      throw new Error("Setup incomplete: no connection found.");
-    }
-
-    // Only pre-pend the base REST URL if the path is not already a fully-qualified URI
-    const uri = path.startsWith('http') ? path : _restConnect.baseURL + path;
-  
-    const opts = {
-      uri: uri,
-      method: method,
-      auth: _restConnect.auth,
-      strictSSL: false,
-      agent: _restConnect.agent
-    };
-    if (bInput) {
-      if (contentType !== 'multipart/form-data') {
-        opts.headers = {
-          'Content-Type': contentType,
-          'Content-Length': input.length
-        };
-        opts.body = input;
-      } else {
-        opts.formData = input;
+      if (typeof _restConnect === 'undefined' || _restConnect === undefined || _restConnect === null) {
+        reject(new Error("Setup incomplete: no connection found."));
+        return callback("Setup incomplete: no connection found.");
       }
-    }
-
-    request(opts, function(error, response, body) {
-
-      if (error !== null) {
-        if (_throwErrors) {
-          throw new Error(error);
+  
+      // Only pre-pend the base REST URL if the path is not already a fully-qualified URI
+      const uri = path.startsWith('http') ? path : _restConnect.baseURL + path;
+    
+      const opts = {
+        uri: uri,
+        method: method,
+        auth: _restConnect.auth,
+        strictSSL: false,
+        agent: _restConnect.agent
+      };
+      if (bInput) {
+        if (contentType !== 'multipart/form-data') {
+          opts.headers = {
+            'Content-Type': contentType,
+            'Content-Length': input.length
+          };
+          opts.body = input;
+        } else {
+          opts.formData = input;
         }
-      } else if (body === "") {
-        argsReceived.unshift(response, {});
-      } else if (bDrillDown) {
-        argsReceived.unshift(response, JSON.parse(body)[drillDown]);
-      } else {
-        argsReceived.unshift(response, JSON.parse(body));
       }
-      return callback.apply(this, argsReceived);
+  
+      request(opts, function(error, response, body) {
+  
+        let retVal = {};
+        retVal.res = response;
+        if (error !== null) {
+          reject(error);
+          return callback(error);
+        } else if (body === "") {
+          retVal.body = {};
+        } else if (bDrillDown) {
+          retVal.body = JSON.parse(body)[drillDown];
+        } else {
+          retVal.body = JSON.parse(body);
+        }
+        resolve(retVal);
+        return callback(retVal.res, retVal.body);
+  
+      });
 
     });
   
@@ -360,36 +385,28 @@ const RestIGC = (function() {
    *
    * @param {string} type - the type of asset to create
    * @param {Object} value - the set of values with which to create the asset
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (if not using Promises)
+   * @returns {Promise} when resolved contains the RID of the created asset
    */
   const create = function(type, value, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 3);
-    value._type = type;
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/assets", value, 'application/json', null, function(res) {
-      const argsReceived = Array.prototype.splice.call(arguments, 1);
-      let err = null;
-      if (res.statusCode !== 201) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      value._type = type;
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/assets", value, 'application/json').then(function(results) {
+        const err = _checkRequestError(results.res, 201, reject);
+        let rid = "";
+        if (results.res.headers.hasOwnProperty("Location")) {
+          rid = results.res.headers.Location.substring(results.res.headers.Location.lastIndexOf("/"));
+        } else if (results.res.headers.hasOwnProperty("location")) {
+          rid = results.res.headers.location.substring(results.res.headers.location.lastIndexOf("/"));
         }
-      }
-      let rid = "";
-      if (res.headers.hasOwnProperty("Location")) {
-        rid = res.headers.Location.substring(res.headers.Location.lastIndexOf("/"));
-      } else if (res.headers.hasOwnProperty("location")) {
-        rid = res.headers.location.substring(res.headers.location.lastIndexOf("/"));
-      }
-      if (rid.length > 0) {
-        rid = rid.substring(1);
-      }
-      argsReceived.unshift(err, rid);
-      return callback.apply(this, argsReceived);
+        if (rid.length > 0) {
+          rid = rid.substring(1);
+        }
+        resolve(rid);
+        return callback(err, rid);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -397,99 +414,78 @@ const RestIGC = (function() {
    *
    * @param {string} rid - the RID of the asset to update
    * @param {Object} value - the set of data with which to update the asset
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback to handles the response (if not using Promises)
+   * @returns {Promise} when resolved contains the results of the update
    */
   const update = function(rid, value, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 3);
-    argsReceived.unshift('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, 'application/json', null, function(res, resUpdate) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resUpdate);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('PUT', "/ibm/iis/igc-rest/v1/assets/" + rid, value, 'application/json').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
    * Search IGC
    *
    * @param {Object} query - the search to run against IGC (as a JSON object)
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (if not using Promises)
+   * @returns {Promise} when resolved contains the results of the search
    */
   const search = function(query, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/search/", query, 'application/json', null, function(res, resSearch) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resSearch);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", query, 'application/json').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
    * Get a list of all of the IGC asset types
    *
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (if not using Promises)
+   * @returns {Promise} when resolved contains the IGC types
    */
   const getTypes = function(callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 1);
-    argsReceived.unshift('GET', "/ibm/iis/igc-rest/v1/types/", null, null, null, function(res, resTypes) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resTypes);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('GET', "/ibm/iis/igc-rest/v1/types/").then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
    * Get a mapping of all asset types from display name to unique type id
    *
-   * @param {requestCallback} callback - callback that handles the response, with an object keyed by display name and each value the unique type id for that display name
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises), with an object keyed by display name and each value the unique type id for that display name
+   * @returns {Promise} when resolved contains an object keyed by display name and each value the unique type id for that display name
    */
   const getAssetTypeNamesToIds = function(callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 1);
-    argsReceived.unshift(function(err, resTypes) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      const typesToIds = {};
-      for (let i = 0; i < resTypes.length; i++) {
-        const name = resTypes[i]._name;
-        const id = resTypes[i]._id;
-        typesToIds[name] = id;
-      }
-      argsReceived.unshift(err, typesToIds);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      getTypes().then(function(resTypes) {
+        const typesToIds = {};
+        for (let i = 0; i < resTypes.length; i++) {
+          const name = resTypes[i]._name;
+          const id = resTypes[i]._id;
+          typesToIds[name] = id;
+        }
+        resolve(typesToIds);
+        return callback(null, typesToIds);
+      }, function(error) {
+        reject(error);
+        return callback(error, null);
+      });
     });
-    getTypes.apply(this, argsReceived);
   };
   
   /**
@@ -497,51 +493,36 @@ const RestIGC = (function() {
    *
    * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
    * @param {integer} successCode - the HTTP response code that indicates success for this operation
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the response body from the request
    */
   const getOther = function(path, successCode, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('GET', path, null, null, null, function(res, resDetails) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== successCode) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resDetails);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('GET', path).then(function(results) {
+        const err = _checkRequestError(results.res, successCode, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
    * Delete a specific asset from IGC
    *
    * @param {string} rid - the RID of the asset to delete
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the result of the deletion
    */
   const deleteAssetById = function(rid, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid, null, null, null, function(res, resDelete) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resDelete);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('DELETE', "/ibm/iis/igc-rest/v1/assets/" + rid).then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -549,103 +530,77 @@ const RestIGC = (function() {
    * - Actual status comes from the "message" within the callback results: starts with SUCCESS, WARNING or FAILURE
    *
    * @param {string} rid - the RID of the job for which to detect lineage
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains results of the lineage detection
    */
   const detectLineageForJob = function(rid, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, 202, callback);
-    getOther.apply(this, argsReceived);
+    return getOther("/ibm/iis/igc-rest/v1/flows/detectFlows/dsjob/" + rid, 202, callback);
   };
 
   /**
    * Create new lineage flow as defined by a flow XML document
    *
    * @param {string} xml - the flow document XML containing the lineage to upload
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the lineage flow upload
    */
   const uploadLineageFlow = function(xml, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/flows/upload", xml, 'application/xml', null, function(res, resLineage) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resLineage);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/flows/upload", xml, 'application/xml').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
 
   /**
    * Create a new Open IGC bundle (asset type definition)
    *
    * @param {string} zipFile - the location of the zip file from which to create the bundle
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the bundle upload
    */
   const createBundle = function(zipFile, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
 
-    const formData = {
-      file: {
-        value: fs.createReadStream(zipFile),
-        options: {
-          name: 'file',
-          filename: path.posix.basename(zipFile),
-          contentType: 'application/x-zip-compressed'
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      const formData = {
+        file: {
+          value: fs.createReadStream(zipFile),
+          options: {
+            name: 'file',
+            filename: path.posix.basename(zipFile),
+            contentType: 'application/x-zip-compressed'
+          }
         }
-      }
-    };
-
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/bundles", formData, 'multipart/form-data', null, function(res, resCreate) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resCreate);
-      return callback.apply(this, argsReceived);
+      };
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/bundles", formData, 'multipart/form-data').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
+
   };
 
   /**
    * Create instances of assets defined by an Open IGC bundle
    *
    * @param {string} xml - the flow document XML containing the asset instance definitions
-   * @param {requestCallback} callback - callback that handles the response
-   * @throws will throw an error if the status code does not indicate success
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the asset instantiations
    */
   const createBundleAssets = function(xml, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift('POST', "/ibm/iis/igc-rest/v1/bundles/assets", xml, 'application/xml', null, function(res, resCreate) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let err = null;
-      if (res.statusCode !== 200) {
-        err = "Unsuccessful request " + res.statusCode;
-        console.error(err);
-        console.error('headers: ', res.headers);
-        if (_throwErrors) {
-          throw new Error(err);
-        }
-      }
-      argsReceived.unshift(err, resCreate);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/bundles/assets", xml, 'application/xml').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
     });
-    makeRequest.apply(this, argsReceived);
   };
   
   /**
@@ -653,46 +608,50 @@ const RestIGC = (function() {
    *
    * @param {string} collectionName
    * @param {integer} maxItems - maximum number of items to retrieve
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the list of assets in the collection
    */
   const getAssetsInCollection = function(collectionName, maxItems, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 3);
-    // The pageSize here seems to be for collections that are found -- not assets
-    // within the collection; may cause issues with larger collections?
-    const json = {
-      "pageSize": maxItems,
-      "properties" : ["assets"],
-      "types" : ["collection"],
-      "where" :
-      {
-        "conditions" :
-        [
-          {
-            "property" : "name",
-            "operator" : "=",
-            "value" : collectionName
-          }
-        ],
-        "operator" : "and"
-      }
-    };
-    argsReceived.unshift(json, function(err, resCollection) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let assets = [];
-      if (resCollection.items.length > 1) {
-        err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
-        console.warn(err);
-      }
-      if (resCollection.items.length > 0) {
-        assets = resCollection.items[0].assets.items;
-      } else {
-        err = "WARN: No assets found in the collection '" + collectionName + "'.";
-        console.warn(err);
-      }
-      argsReceived.unshift(err, assets);
-      return callback.apply(this, argsReceived);
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      // The pageSize here seems to be for collections that are found -- not assets
+      // within the collection; may cause issues with larger collections?
+      const json = {
+        "pageSize": maxItems,
+        "properties" : ["assets"],
+        "types" : ["collection"],
+        "where" :
+        {
+          "conditions" :
+          [
+            {
+              "property" : "name",
+              "operator" : "=",
+              "value" : collectionName
+            }
+          ],
+          "operator" : "and"
+        }
+      };
+      search(json).then(function(results) {
+        let assets = [];
+        let err = null;
+        if (results.items.length > 1) {
+          err = "WARN: Found more than one collection called '" + collectionName + "' -- only taking assets from the first one.";
+          console.warn(err);
+        }
+        if (results.items.length > 0) {
+          assets = results.items[0].assets.items;
+        } else {
+          err = "WARN: No assets found in the collection '" + collectionName + "'.";
+          console.warn(err);
+        }
+        resolve(assets);
+        return callback(err, assets);
+      }, function(error) {
+        reject(error);
+      });
     });
-    search.apply(this, argsReceived);
   };
   
   /**
@@ -704,12 +663,11 @@ const RestIGC = (function() {
    *
    * @see module:ibm-igc-rest.getAssetPropertiesById
    * @param {string} rid - the RID of the asset
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains all of the asset's details
    */
   const getAssetById = function(rid, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 2);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid, 200, callback);
-    getOther.apply(this, argsReceived);
+    return getOther("/ibm/iis/igc-rest/v1/assets/" + rid, 200, callback);
   };
 
   /**
@@ -717,12 +675,11 @@ const RestIGC = (function() {
    *
    * @param {string} rid - the RID of the asset
    * @param {string} property - the property of the asset to retrieve (e.g. 'name')
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the specified property of the asset
    */
   const getAssetPropertyById = function(rid, property, callback) {
-    const argsReceived = Array.prototype.splice.call(arguments, 3);
-    argsReceived.unshift("/ibm/iis/igc-rest/v1/assets/" + rid + "/" + property, 200, callback);
-    getOther.apply(this, argsReceived);
+    return getOther("/ibm/iis/igc-rest/v1/assets/" + rid + "/" + property, 200, callback);
   };
   
   /**
@@ -734,39 +691,39 @@ const RestIGC = (function() {
    * @param {string[]} properties - array of properties to retrieve for the asset
    * @param {integer} maxItems - maximum number of detailed properties
    * @param {boolean} bIncludeContext - whether to include contextual information (true) or drill-down just to the resulting properties (false)
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the specified properties of the asset
    */
   const getAssetPropertiesById = function(rid, type, properties, maxItems, bIncludeContext, callback) {
     
-    const argsReceived = Array.prototype.splice.call(arguments, 6);
-    if (!(properties instanceof Array)) {
-      properties = [ properties ];
-    }
-  /*  if (bIncludeContext) {
-      properties.push("_context");
-    } */
-  
-    const json = {
-      "pageSize": maxItems,
-      "properties" : properties,
-      "types" : [ type ],
-      "where" :
-      {
-        "conditions" :
-        [
-          {
-            "property" : "_id",
-            "operator" : "=",
-            "value" : rid
-          }
-        ],
-        "operator" : "and"
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      
+      if (!Array.isArray(properties)) {
+        properties = [ properties ];
       }
-    };
-    argsReceived.unshift(json, function(err, results) {
-      const argsReceived = Array.prototype.splice.call(arguments, 2);
-      let toReturn = {};
-      if (!err) {
+
+      const json = {
+        "pageSize": maxItems,
+        "properties" : properties,
+        "types" : [ type ],
+        "where" :
+        {
+          "conditions" :
+          [
+            {
+              "property" : "_id",
+              "operator" : "=",
+              "value" : rid
+            }
+          ],
+          "operator" : "and"
+        }
+      };
+
+      search(json).then(function(results) {
+        let toReturn = {};
+        let err = null;
         if (results.items.length > 1) {
           err = "WARN: Found more than one asset with RID '" + rid + "' -- only returning the first one.";
           console.warn(err);
@@ -780,15 +737,14 @@ const RestIGC = (function() {
               toReturn[prop] = results.items[0][prop];
             }
           }
-        } else {
-          err = "WARN: No assets found with RID '" + rid + "'.";
-          console.warn(err);
         }
-      }
-      argsReceived.unshift(err, toReturn);
-      return callback.apply(this, argsReceived);
+        resolve(toReturn);
+        return callback(err, toReturn);
+      }, function(error) {
+        reject(new Error("No assets found with RID '" + rid + "'.\n" + error));
+      });
+
     });
-    search.apply(this, argsReceived);
   
   };
 
@@ -797,14 +753,19 @@ const RestIGC = (function() {
    *
    * @see module:ibm-igc-rest.search
    * @param {Object} paging - the 'paging' sub-object of a results object
-   * @param {requestCallback} callback - callback that handles the response
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the next page of results
    */
   const getNextPage = function(paging, callback) {
 
     if (paging.hasOwnProperty('next')) {
-      getOther(paging.next, 200, callback);
+      return getOther(paging.next, 200, callback);
     } else {
-      callback(null, { items: [] });
+      callback = callback || function() {};
+      return new Promise(function(resolve) {
+        resolve({ items: [] });
+        return callback(null, { items: [] });
+      });
     }
 
   };
@@ -816,18 +777,24 @@ const RestIGC = (function() {
    * @see module:ibm-igc-rest.getNextPage
    * @param {Object} items - the 'items' sub-object of a results object
    * @param {Object} paging - the 'paging' sub-object of a results object
-   * @param {itemSetCallback} callback - callback that provides the list of all items from all pages
+   * @param {itemSetCallback} [callback] - optional callback that provides the list of all items from all pages (when not using Promises)
+   * @returns {Promise} when resolved contains the list of all items from all pages of results
    */
   const getAllPages = function(items, paging, callback) {
 
-    getNextPage(paging, function(err, nextPage) {
-      if (err !== null) {
-        callback(err, items);
-      } else if (nextPage.items.length > 0) {
-        getAllPages(items.concat(nextPage.items), nextPage.paging, callback);
-      } else {
-        callback(err, items.concat(nextPage.items));
-      }
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      getNextPage(paging).then(function(results) {
+        if (results.items.length > 0) {
+          resolve(getAllPages(items.concat(results.items), results.paging, callback));
+        } else {
+          resolve(items.concat(results.items));
+          return callback(null, items.concat(results.items));
+        }
+      }, function(error) {
+        reject(error);
+        return callback(error, items);
+      });
     });
 
   };
