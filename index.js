@@ -48,7 +48,6 @@ const RestIGC = (function() {
   };
   
   let _restConnect = null;
-  let _throwErrors = true;
   
   /**
    * Set the connection for the REST API
@@ -59,20 +58,6 @@ const RestIGC = (function() {
     _restConnect = restConnect;
   };
 
-  /**
-   * Disables default error-handling, i.e. avoids throwing errors on connection issues
-   */
-  const disableThrowingErrors = function() {
-    _throwErrors = false;
-  };
-
-  /**
-   * Enable default error-handling, i.e. throw errors on connection issues
-   */
-  const enableThrowingErrors = function() {
-    _throwErrors = true;
-  };
-  
   /**
    * Replace any variables (text that starts with '$') that show up in a query
    *
@@ -836,8 +821,6 @@ const RestIGC = (function() {
 
   return {
     setConnection: setConnection,
-    disableThrowingErrors: disableThrowingErrors,
-    enableThrowingErrors: enableThrowingErrors,
     replaceQueryVars: replaceQueryVars,
     replaceRelatedUpdateVars: replaceRelatedUpdateVars,
     verifySingleItem: verifySingleItem,
