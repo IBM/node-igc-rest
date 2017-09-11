@@ -261,8 +261,8 @@ prompt.delimiter = "";
 
 prompt.start();
 prompt.get(inputPrompt, function (err, result) {
-  igcrest.setConnection(envCtx.getRestConnection(result.password));
-  igcrest.getTypes(function(err, resTypes) {
+  igcrest.setConnection(envCtx.getRestConnection(result.password, 1));
+  igcrest.getTypes().then(function(resTypes) {
     const types = _.pluck(resTypes, "_id");
     numTypes = types.length;
     for (let i = 0; i < types.length; i++) {

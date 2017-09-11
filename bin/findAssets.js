@@ -164,22 +164,20 @@ function logActionResult(err, result) {
 prompt.start();
 prompt.get(inputPrompt, function (err, result) {
   igcrest.setConnection(envCtx.getRestConnection(result.password));
-  igcrest.search(reqQueryJSON, function(err, resSearch) {
-    if (err !== null) {
-      console.error("Action failed: " + err);
+  igcrest.search(reqQueryJSON).then(function(resSearch) {
+    if (!bIsUpdate && !bIsDelete) {
+      fs.writeFileSync(outputFile, pd.json(JSON.stringify(resSearch.items)), 'utf8');
     } else {
-      if (!bIsUpdate && !bIsDelete) {
-        fs.writeFileSync(outputFile, pd.json(JSON.stringify(resSearch.items)), 'utf8');
-      } else {
-        for (let i = 0; i < resSearch.items.length; i++) {
-          const itemDetails = resSearch.items[i];
-          if (bIsDelete) {
-            igcrest.deleteAssetById(itemDetails._id, logActionResult);
-          } else if (bIsUpdate) {
-            igcrest.update(itemDetails._id, reqJSON.update.value, logActionResult);
-          }
+      for (let i = 0; i < resSearch.items.length; i++) {
+        const itemDetails = resSearch.items[i];
+        if (bIsDelete) {
+          igcrest.deleteAssetById(itemDetails._id, logActionResult);
+        } else if (bIsUpdate) {
+          igcrest.update(itemDetails._id, reqJSON.update.value, logActionResult);
         }
       }
     }
+  }, function(error) {
+    console.error(error);
   });
 });
