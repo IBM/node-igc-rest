@@ -31,14 +31,6 @@ Set the connection for the REST API
 
 -   `restConnect` **RestConnection** RestConnection object, from ibm-iis-commons
 
-## disableThrowingErrors
-
-Disables default error-handling, i.e. avoids throwing errors on connection issues
-
-## enableThrowingErrors
-
-Enable default error-handling, i.e. throw errors on connection issues
-
 ## replaceQueryVars
 
 Replace any variables (text that starts with '$') that show up in a query
@@ -172,10 +164,9 @@ Create an asset
 
 -   `type` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the type of asset to create
 -   `value` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the set of values with which to create the asset
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (if not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the RID of the created asset
 
 ## update
 
@@ -185,10 +176,9 @@ Update a RID with a specific set of data
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset to update
 -   `value` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the set of data with which to update the asset
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback to handles the response (if not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the update
 
 ## search
 
@@ -197,10 +187,9 @@ Search IGC
 **Parameters**
 
 -   `query` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the search to run against IGC (as a JSON object)
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (if not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the search
 
 ## getTypes
 
@@ -208,10 +197,9 @@ Get a list of all of the IGC asset types
 
 **Parameters**
 
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (if not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the IGC types
 
 ## getAssetTypeNamesToIds
 
@@ -219,10 +207,9 @@ Get a mapping of all asset types from display name to unique type id
 
 **Parameters**
 
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response, with an object keyed by display name and each value the unique type id for that display name
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises), with an object keyed by display name and each value the unique type id for that display name
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains an object keyed by display name and each value the unique type id for that display name
 
 ## getOther
 
@@ -232,7 +219,9 @@ Make a general GET request against IGC's REST API
 
 -   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
 -   `successCode` **integer** the HTTP response code that indicates success for this operation
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the response body from the request
 
 ## deleteAssetById
 
@@ -241,10 +230,9 @@ Delete a specific asset from IGC
 **Parameters**
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset to delete
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the result of the deletion
 
 ## detectLineageForJob
 
@@ -255,10 +243,9 @@ Request IGC to detect lineage for a specific job (requires v11.5.0.1 GOVRUP3 or 
 **Parameters**
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the job for which to detect lineage
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains results of the lineage detection
 
 ## uploadLineageFlow
 
@@ -267,10 +254,9 @@ Create new lineage flow as defined by a flow XML document
 **Parameters**
 
 -   `xml` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the flow document XML containing the lineage to upload
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the lineage flow upload
 
 ## createBundle
 
@@ -279,10 +265,9 @@ Create a new Open IGC bundle (asset type definition)
 **Parameters**
 
 -   `zipFile` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the location of the zip file from which to create the bundle
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the bundle upload
 
 ## createBundleAssets
 
@@ -291,10 +276,9 @@ Create instances of assets defined by an Open IGC bundle
 **Parameters**
 
 -   `xml` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the flow document XML containing the asset instance definitions
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-
--   Throws **any** will throw an error if the status code does not indicate success
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the asset instantiations
 
 ## getAssetsInCollection
 
@@ -304,7 +288,9 @@ Get a listing of all of the assets in a collection
 
 -   `collectionName` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `maxItems` **integer** maximum number of items to retrieve
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the list of assets in the collection
 
 ## getAssetById
 
@@ -317,7 +303,9 @@ using 'getAssetPropertiesById' instead
 **Parameters**
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains all of the asset's details
 
 ## getAssetPropertyById
 
@@ -327,7 +315,9 @@ Retrieve only the single specified property of an asset
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset
 -   `property` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the property of the asset to retrieve (e.g. 'name')
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the specified property of the asset
 
 ## getAssetPropertiesById
 
@@ -340,7 +330,9 @@ Retrieve only the specified details of an asset
 -   `properties` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** array of properties to retrieve for the asset
 -   `maxItems` **integer** maximum number of detailed properties
 -   `bIncludeContext` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether to include contextual information (true) or drill-down just to the resulting properties (false)
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the specified properties of the asset
 
 ## getNextPage
 
@@ -349,7 +341,9 @@ Retrieve the next page of information
 **Parameters**
 
 -   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
--   `callback` **[requestCallback](#requestcallback)** callback that handles the response
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the next page of results
 
 ## getAllPages
 
@@ -359,7 +353,9 @@ Retrieve all remaining pages of information
 
 -   `items` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'items' sub-object of a results object
 -   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
--   `callback` **[itemSetCallback](#itemsetcallback)** callback that provides the list of all items from all pages
+-   `callback` **[itemSetCallback](#itemsetcallback)?** optional callback that provides the list of all items from all pages (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the list of all items from all pages of results
 
 ## isDataContainer
 
