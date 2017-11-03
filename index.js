@@ -68,10 +68,12 @@ const RestIGC = (function() {
   const replaceQueryVars = function(json, variables) {
     if (json.hasOwnProperty("where")) {
       for (let i = 0; i < json.where.conditions.length; i++ ) {
-        let value = json.where.conditions[i].value;
-        if (value.indexOf("$") === 0) {
-          value = value.substring(1, value.length);
-          json.where.conditions[i].value = variables[value];
+        if (json.where.conditions[i].hasOwnProperty("value")) {
+          let value = json.where.conditions[i].value;
+          if (value.indexOf("$") === 0) {
+            value = value.substring(1, value.length);
+            json.where.conditions[i].value = variables[value];
+          }
         }
       }
     }

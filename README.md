@@ -142,6 +142,9 @@ Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## makeRequest
 
+-   **See: module:ibm-igc-rest.setServer**
+-   **See: module:ibm-igc-rest.setAuth**
+
 Make a request against IGC's REST API
 
 **Parameters**
@@ -294,6 +297,8 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## getAssetById
 
+-   **See: module:ibm-igc-rest.getAssetPropertiesById**
+
 Request all details of an asset
 
 NOTE: this function should be used with caution -- it will build a large object and
@@ -321,6 +326,8 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## getAssetPropertiesById
 
+-   **See: module:ibm-igc-rest.getTypes**
+
 Retrieve only the specified details of an asset
 
 **Parameters**
@@ -336,6 +343,8 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## getNextPage
 
+-   **See: module:ibm-igc-rest.search**
+
 Retrieve the next page of information
 
 **Parameters**
@@ -346,6 +355,9 @@ Retrieve the next page of information
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the next page of results
 
 ## getAllPages
+
+-   **See: module:ibm-igc-rest.search**
+-   **See: module:ibm-igc-rest.getNextPage**
 
 Retrieve all remaining pages of information
 
