@@ -343,7 +343,7 @@ const RestIGC = (function() {
           opts.formData = input;
         }
       }
-  
+
       request(opts, function(error, response, body) {
   
         let retVal = {};
@@ -546,7 +546,7 @@ const RestIGC = (function() {
    * Get list of bundles (asset type definitions) already deployed
    *
    * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
-   * @returns {Promise} when resolved contains the a String[] of bundle names
+   * @returns {Promise} when resolved contains a String[] of bundle names
    */
   const getBundles = function(callback) {
     return getOther("/ibm/iis/igc-rest/v1/bundles/", 200, callback);
@@ -628,6 +628,58 @@ const RestIGC = (function() {
         return callback(err, results.body);
       });
     });
+  };
+
+  /**
+   * Create a new Custom Attribute (available in v11.7 onwards only)
+   *
+   * @param {Object} json - the JSON object which describes the custom attribute
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the custom attribute creation
+   */
+  const createCustomAttribute = function(json, callback) {
+
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/administration/attributes", json, 'application/json').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
+    });
+
+  };
+
+  /**
+   * Update a new Custom Attribute (available in v11.7 onwards only)
+   *
+   * @param {string} rid - the RID of the custom attribute to update
+   * @param {Object} json - the JSON object which describes the custom attribute
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the custom attribute update
+   */
+  const updateCustomAttribute = function(rid, json, callback) {
+
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      makeRequest('PUT', "/ibm/iis/igc-rest/v1/administration/attributes/" + rid, json, 'application/json').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
+    });
+
+  };
+
+  /**
+   * Get list of custom attributes already deployed
+   *
+   * @param {integer} maxItems - maximum number of custom attributes to retrieve
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains an array of objects with custom attribute definitions: "id", "name", "attributeType", and "appliesTo"[]
+   */
+  const getCustomAttributes = function(maxItems, callback) {
+    return getOther("/ibm/iis/igc-rest/v1/administration/attributes/?begin=0&pageSize=" + maxItems, 200, callback);
   };
   
   /**
@@ -887,6 +939,9 @@ const RestIGC = (function() {
     createBundle: createBundle,
     updateBundle: updateBundle,
     createBundleAssets: createBundleAssets,
+    getCustomAttributes: getCustomAttributes,
+    createCustomAttribute: createCustomAttribute,
+    updateCustomAttribute: updateCustomAttribute,
     getAssetsInCollection: getAssetsInCollection,
     getAssetById: getAssetById,
     getAssetPropertyById: getAssetPropertyById,

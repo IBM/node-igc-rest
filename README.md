@@ -269,7 +269,7 @@ Get list of bundles (asset type definitions) already deployed
 
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the a String\[] of bundle names
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains a String\[] of bundle names
 
 ## createBundle
 
@@ -303,6 +303,40 @@ Create instances of assets defined by an Open IGC bundle
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the asset instantiations
+
+## createCustomAttribute
+
+Create a new Custom Attribute (available in v11.7 onwards only)
+
+**Parameters**
+
+-   `json` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the JSON object which describes the custom attribute
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the custom attribute creation
+
+## updateCustomAttribute
+
+Update a new Custom Attribute (available in v11.7 onwards only)
+
+**Parameters**
+
+-   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the custom attribute to update
+-   `json` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the JSON object which describes the custom attribute
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the custom attribute update
+
+## getCustomAttributes
+
+Get list of custom attributes already deployed
+
+**Parameters**
+
+-   `maxItems` **integer** maximum number of custom attributes to retrieve
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains an array of objects with custom attribute definitions: "id", "name", "attributeType", and "appliesTo"\[]
 
 ## getAssetsInCollection
 
