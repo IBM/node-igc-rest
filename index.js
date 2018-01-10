@@ -543,6 +543,16 @@ const RestIGC = (function() {
   };
 
   /**
+   * Get list of bundles (asset type definitions) already deployed
+   *
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the a String[] of bundle names
+   */
+  const getBundles = function(callback) {
+    return getOther("/ibm/iis/igc-rest/v1/bundles/", 200, callback);
+  };
+
+  /**
    * Create a new Open IGC bundle (asset type definition)
    *
    * @param {string} zipFile - the location of the zip file from which to create the bundle
@@ -564,6 +574,36 @@ const RestIGC = (function() {
         }
       };
       makeRequest('POST', "/ibm/iis/igc-rest/v1/bundles", formData, 'multipart/form-data').then(function(results) {
+        const err = _checkRequestError(results.res, 200, reject);
+        resolve(results.body);
+        return callback(err, results.body);
+      });
+    });
+
+  };
+
+  /**
+   * Update an existing Open IGC bundle (asset type definition)
+   *
+   * @param {string} zipFile - the location of the zip file from which to create the bundle
+   * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
+   * @returns {Promise} when resolved contains the results of the bundle upload
+   */
+  const updateBundle = function(zipFile, callback) {
+
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+      const formData = {
+        file: {
+          value: fs.createReadStream(zipFile),
+          options: {
+            name: 'file',
+            filename: path.posix.basename(zipFile),
+            contentType: 'application/x-zip-compressed'
+          }
+        }
+      };
+      makeRequest('PUT', "/ibm/iis/igc-rest/v1/bundles", formData, 'multipart/form-data').then(function(results) {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
@@ -843,7 +883,9 @@ const RestIGC = (function() {
     deleteAssetById: deleteAssetById,
     detectLineageForJob: detectLineageForJob,
     uploadLineageFlow: uploadLineageFlow,
+    getBundles: getBundles,
     createBundle: createBundle,
+    updateBundle: updateBundle,
     createBundleAssets: createBundleAssets,
     getAssetsInCollection: getAssetsInCollection,
     getAssetById: getAssetById,

@@ -261,9 +261,30 @@ Create new lineage flow as defined by a flow XML document
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the lineage flow upload
 
+## getBundles
+
+Get list of bundles (asset type definitions) already deployed
+
+**Parameters**
+
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the a String\[] of bundle names
+
 ## createBundle
 
 Create a new Open IGC bundle (asset type definition)
+
+**Parameters**
+
+-   `zipFile` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the location of the zip file from which to create the bundle
+-   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the results of the bundle upload
+
+## updateBundle
+
+Update an existing Open IGC bundle (asset type definition)
 
 **Parameters**
 
