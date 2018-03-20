@@ -44,27 +44,12 @@ prompt.colors = false;
 const yargs = require('yargs');
 const argv = yargs
     .usage('Usage: $0 -f <path> -a <authfile> -p <password>')
-    .option('f', {
-      alias: 'file',
-      describe: 'Output file into which to create the documentation',
-      demand: true, requiresArg: true, type: 'string'
-    })
-    .option('a', {
-      alias: 'authfile',
-      describe: 'Authorisation file containing environment context',
-      requiresArg: true, type: 'string'
-    })
-    .option('p', {
-      alias: 'password',
-      describe: 'Password for invoking REST API',
-      demand: false, requiresArg: true, type: 'string'
-    })
-    .option('t', {
-      alias: 'type',
-      describe: 'Markdown/up type (github, confluence)',
-      demand: false, requiresArg: true, type: 'string',
-      default: 'github'
-    })
+    .example('$0 -f igcRestAPI.md -p isadmin', 'creates a markdown file containing documentation on all of the data types and their properties')
+    .alias('f', 'file').nargs('f', 1).describe('f', 'Output file into which to create the documentation')
+    .alias('a', 'authfile').nargs('a', 1).describe('a', 'Authorisation file containing environment context')
+    .alias('p', 'password').nargs('p', 1).describe('p', 'Password for invoking REST API')
+    .alias('t', 'type').nargs('t', 1).describe('t', 'Markdown/up type (github, confluence)').default('t', 'github')
+    .demandOption(['f'])
     .help('h')
     .alias('h', 'help')
     .wrap(yargs.terminalWidth())
