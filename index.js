@@ -16,7 +16,7 @@
 
 "use strict";
 
-const request = require('request');
+const request = require('request').defaults({jar: true});
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -56,6 +56,28 @@ const RestIGC = (function() {
    */
   const setConnection = function(restConnect) {
     _restConnect = restConnect;
+  };
+
+  /**
+   * Setup a re-usable session against the IGC REST API -- a connection must first
+   * be setup
+   * @see module:ibm-igc-rest.setConnection
+   *
+   * @returns {Promise} when resolved contains the opened sessionId
+   */
+  const openSession = function() {
+    return new Promise(function(resolve, reject) {
+      // basically we'll setup a new session by running a very simple search,
+      // and picking up the session cookie from the returned response
+      makeRequest('POST', "/ibm/iis/igc-rest/v1/search/", {"types":['label'],"properties":['name']}, 'application/json').then(function(results) {
+        if (results.res.hasOwnProperty("headers") && results.res.headers.hasOwnProperty("set-cookie")) {
+          _restConnect.markSessionOpen();
+          resolve();
+        } else {
+          reject("ERROR: Unable to open a session.");
+        }
+      });
+    });
   };
 
   /**
@@ -324,14 +346,20 @@ const RestIGC = (function() {
   
       // Only pre-pend the base REST URL if the path is not already a fully-qualified URI
       const uri = path.startsWith('http') ? path : _restConnect.baseURL + path;
-    
+
       const opts = {
         uri: uri,
         method: method,
-        auth: _restConnect.auth,
         strictSSL: false,
         agent: _restConnect.agent
       };
+
+      if (!_restConnect.sessionStatus) {
+        // Authorisation header should only be included the first time
+        // (when session has not been created); if a session exists, use it instead
+        opts.auth = _restConnect.auth;
+      }
+
       if (bInput) {
         if (contentType !== 'multipart/form-data') {
           opts.headers = {
@@ -345,7 +373,7 @@ const RestIGC = (function() {
       }
 
       request(opts, function(error, response, body) {
-  
+
         let retVal = {};
         retVal.res = response;
         if (error !== null) {
@@ -915,6 +943,7 @@ const RestIGC = (function() {
 
   return {
     setConnection: setConnection,
+    openSession: openSession,
     replaceQueryVars: replaceQueryVars,
     replaceRelatedUpdateVars: replaceRelatedUpdateVars,
     verifySingleItem: verifySingleItem,

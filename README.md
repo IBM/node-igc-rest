@@ -31,6 +31,15 @@ Set the connection for the REST API
 
 -   `restConnect` **RestConnection** RestConnection object, from ibm-iis-commons
 
+## openSession
+
+-   **See: module:ibm-igc-rest.setConnection**
+
+Setup a re-usable session against the IGC REST API -- a connection must first
+be setup
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the opened sessionId
+
 ## replaceQueryVars
 
 Replace any variables (text that starts with '$') that show up in a query
