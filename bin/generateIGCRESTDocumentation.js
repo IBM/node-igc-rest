@@ -63,11 +63,6 @@ const envCtx = new commons.EnvironmentContext(null, argv.authfile);
 const basicTypes = { 'string':0, 'boolean':0, 'datetime':0, 'number':0, 'note':0, 'external_asset_reference':0 };
 
 const documentation = {};
-let numTypes = -1;
-
-function readyForOutput(numTypes) {
-  return (Object.keys(documentation).length === numTypes);
-}
 
 const fd = fs.openSync(filename, 'w', 0o644);
 if (mdtype === "github") {
@@ -76,13 +71,59 @@ if (mdtype === "github") {
   outputIt("h1. Information Governance Catalog REST API");
 }
 
-function processTypeDetails(err, resProps) {
-  let type = resProps._id;
-  documentation[type] = parsePropertiesForType(resProps);
-  if (readyForOutput(numTypes)) {
-    outputDocumentation();
+prompt.override = argv;
+
+const inputPrompt = {
+  properties: {
+    password: {
+      hidden: true,
+      required: true,
+      message: "Please enter the password for user '" + envCtx.username + "': "
+    }
   }
-}
+};
+prompt.message = "";
+prompt.delimiter = "";
+
+prompt.start();
+prompt.get(inputPrompt, function (err, result) {
+  
+  igcrest.setConnection(envCtx.getRestConnection(result.password));
+  igcrest.openSession().then(function() {
+
+    const igcGetTypes = new Promise(function(resolve, reject) {
+      console.log("1 - getting all types");
+      igcrest.getTypes().then(function(resTypes) {
+        const types = _.pluck(resTypes, "_id");
+        resolve(types);
+      });
+    });
+
+    igcGetTypes.then(function(aTypes) {
+      const igcPropertiesForTypes = aTypes.map(function(type) {
+        return new Promise(function(resolve, reject) {
+          igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", 200).then(function(props) {
+            documentation[props._id] = parsePropertiesForType(props);
+            resolve();
+          });
+        });
+      });
+      console.log("2 - getting properties for each type");
+      return Promise.all(igcPropertiesForTypes);
+    }).then(function() {
+      igcrest.closeSession().then(function() {
+        console.log("REST API documentation generated in '" + argv.file + "'.");
+        outputDocumentation();
+      }, function(failure) {
+        console.log("REST API documentation generated in '" + argv.file + "', but unable to close session: " + JSON.stringify(failure));
+        outputDocumentation();
+      });
+    })
+    .catch(console.error);
+
+  });
+
+});
 
 function outputDocumentation() {
   const aAlphaKeys = Object.keys(documentation).sort();
@@ -90,16 +131,12 @@ function outputDocumentation() {
     const type = aAlphaKeys[i];
     outputIt(documentation[type]);
   }
-  wrapUp(0);
+  fs.closeSync(fd);
+  process.exit(0);
 }
 
 function outputIt(someString) {
   fs.appendFileSync(filename, someString + os.EOL);
-}
-
-function wrapUp(rc) {
-  fs.closeSync(fd);
-  process.exit(rc);
 }
 
 function parsePropertyRow(name, displayName, type, typeObj, maxNum, required) {
@@ -229,30 +266,3 @@ function parsePropertiesForType(jsonProps) {
   return text;
 
 }
-
-prompt.override = argv;
-
-const inputPrompt = {
-  properties: {
-    password: {
-      hidden: true,
-      required: true,
-      message: "Please enter the password for user '" + envCtx.username + "': "
-    }
-  }
-};
-prompt.message = "";
-prompt.delimiter = "";
-
-prompt.start();
-prompt.get(inputPrompt, function (err, result) {
-  igcrest.setConnection(envCtx.getRestConnection(result.password, 1));
-  igcrest.getTypes().then(function(resTypes) {
-    const types = _.pluck(resTypes, "_id");
-    numTypes = types.length;
-    for (let i = 0; i < types.length; i++) {
-      const type = types[i];
-      igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showEditProperties=true&showViewProperties=true&showCreateProperties=true", 200, processTypeDetails);
-    }
-  });
-});

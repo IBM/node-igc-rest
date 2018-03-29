@@ -102,21 +102,11 @@ prompt.colors = false;
 const yargs = require('yargs');
 const argv = yargs
     .usage('Usage: $0 -f <path>')
-    .option('f', {
-      alias: 'file',
-      describe: 'JSON file containing query and delete to be made',
-      demand: true, requiresArg: true, type: 'string'
-    })
-    .option('a', {
-      alias: 'authfile',
-      describe: 'Authorisation file containing environment context',
-      requiresArg: true, type: 'string'
-    })
-    .option('p', {
-      alias: 'password',
-      describe: 'Password for invoking REST API',
-      demand: false, requiresArg: true, type: 'string'
-    })
+    .example('$0 -f myQuery.json', 'queries IGC based on the contents of the file myQuery.json')
+    .alias('f', 'file').nargs('f', 1).describe('f', 'JSON file containing query and any action to be taken')
+    .alias('a', 'authfile').nargs('a', 1).describe('a', 'Authorisation file containing environment context')
+    .alias('p', 'password').nargs('p', 1).describe('p', 'Password for invoking REST API')
+    .demandOption(['f'])
     .help('h')
     .alias('h', 'help')
     .wrap(yargs.terminalWidth())
@@ -163,21 +153,55 @@ function logActionResult(err, result) {
 
 prompt.start();
 prompt.get(inputPrompt, function (err, result) {
+
   igcrest.setConnection(envCtx.getRestConnection(result.password));
-  igcrest.search(reqQueryJSON).then(function(resSearch) {
-    if (!bIsUpdate && !bIsDelete) {
-      fs.writeFileSync(outputFile, pd.json(JSON.stringify(resSearch.items)), 'utf8');
-    } else {
-      for (let i = 0; i < resSearch.items.length; i++) {
-        const itemDetails = resSearch.items[i];
-        if (bIsDelete) {
-          igcrest.deleteAssetById(itemDetails._id, logActionResult);
-        } else if (bIsUpdate) {
-          igcrest.update(itemDetails._id, reqJSON.update.value, logActionResult);
-        }
+  igcrest.openSession().then(function() {
+
+    const getAllResults = new Promise(function(resolve, reject) {
+      igcrest.search(reqQueryJSON).then(function(resSearch) {
+        igcrest.getAllPages(resSearch.items, resSearch.paging).then(function(allResults) {
+          resolve(allResults);
+        });
+      });
+    });
+
+    getAllResults.then(function(allResults) {
+      if (!bIsUpdate && !bIsDelete) {
+        return new Promise(function(resolve, reject) {
+          fs.writeFileSync(outputFile, pd.json(JSON.stringify(allResults)), 'utf8');
+          resolve();
+        });
+      } else {
+        const takeAction = allResults.map(function(itemDetails) {
+          return new Promise(function(resolve, reject) {
+            if (bIsDelete) {
+              igcrest.deleteAssetById(itemDetails._id).then(function(success) {
+                igcrest.logUpdateResults(success);
+                resolve(success);
+              }, function(failure) {
+                reject(failure);
+              });
+            } else if (bIsUpdate) {
+              igcrest.update(itemDetails._id, reqJSON.update.value).then(function(success) {
+                igcrest.logUpdateResults(success);
+                resolve(success);
+              }, function(failure) {
+                reject(failure);
+              });
+            }
+          });
+        });
+        return Promise.all(takeAction);
       }
-    }
-  }, function(error) {
-    console.error(error);
+    }).then(function() {
+      igcrest.closeSession().then(function() {
+        console.log("Completed query and any action in '" + argv.file + "'.");
+      }, function(failure) {
+        console.log("Completed query and any action in '" + argv.file + "', but unable to close session: " + JSON.stringify(failure));
+      });
+    })
+    .catch(console.error);
+
   });
+
 });
