@@ -34,11 +34,21 @@ Set the connection for the REST API
 ## openSession
 
 -   **See: module:ibm-igc-rest.setConnection**
+-   **See: module:ibm-igc-rest.closeSession**
 
 Setup a re-usable session against the IGC REST API -- a connection must first
 be setup
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the opened sessionId
+
+## closeSession
+
+-   **See: module:ibm-igc-rest.setConnection**
+-   **See: module:ibm-igc-rest.openSession**
+
+Logout of (close) a re-usable session against the IGC REST API
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved will have logged out / closed the session
 
 ## replaceQueryVars
 

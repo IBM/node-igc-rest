@@ -62,6 +62,7 @@ const RestIGC = (function() {
    * Setup a re-usable session against the IGC REST API -- a connection must first
    * be setup
    * @see module:ibm-igc-rest.setConnection
+   * @see module:ibm-igc-rest.closeSession
    *
    * @returns {Promise} when resolved contains the opened sessionId
    */
@@ -76,6 +77,24 @@ const RestIGC = (function() {
         } else {
           reject("ERROR: Unable to open a session.");
         }
+      });
+    });
+  };
+
+  /**
+   * Logout of (close) a re-usable session against the IGC REST API
+   * @see module:ibm-igc-rest.setConnection
+   * @see module:ibm-igc-rest.openSession
+   *
+   * @returns {Promise} when resolved will have logged out / closed the session
+   */
+  const closeSession = function() {
+    return new Promise(function(resolve, reject) {
+      getOther("/ibm/iis/igc-rest/v1/logout/", 200).then(function(success) {
+        _restConnect.markSessionClosed();
+        resolve();
+      }, function(failure) {
+        reject("ERROR: Unable to close session -- " + JSON.stringify(failure));
       });
     });
   };
@@ -944,6 +963,7 @@ const RestIGC = (function() {
   return {
     setConnection: setConnection,
     openSession: openSession,
+    closeSession: closeSession,
     replaceQueryVars: replaceQueryVars,
     replaceRelatedUpdateVars: replaceRelatedUpdateVars,
     verifySingleItem: verifySingleItem,
