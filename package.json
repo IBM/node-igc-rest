@@ -6,7 +6,6 @@
   "files": [
     "index.js",
     "bin",
-    "utils",
     "LICENSE"
   ],
   "dependencies": {
@@ -53,10 +52,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cmgrote/ibm-igc-rest.git"
+    "url": "https://github.com/IBM/node-igc-rest.git"
   },
   "bugs": {
-    "url": "https://github.com/cmgrote/ibm-igc-rest/issues"
+    "url": "https://github.com/IBM/node-igc-rest/issues"
   },
-  "homepage": "https://github.com/cmgrote/ibm-igc-rest"
+  "homepage": "https://github.com/IBM/node-igc-rest"
 }
