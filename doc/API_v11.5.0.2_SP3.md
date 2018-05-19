@@ -1,4 +1,4 @@
-# Information Governance Catalog REST API
+# Information Governance Catalog REST API - v11.5.0.2 SP3
 
 ## `Rule_Execution_Result`
 
