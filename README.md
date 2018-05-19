@@ -78,6 +78,8 @@ By default (if not specified using the optional `-a` parameter), the utility wil
 
 The authorisation file can be generated using the <https://npmjs.com/package/ibm-iis-commons> module.  Refer to the `createInfoSvrAuthFile.js` utility there for more details.s
 
+Example output of running this against various versions of vanilla (uncustomised) Information Server environments can be found under the [`doc/`](https://github.com/IBM/node-igc-rest/tree/master/doc) directory of this GitHub repository.  Note that because these are vanilla (uncustomised) environments, they will not contain any details about custom attributes or OpenIGC objects that you may have in your own environment -- to see those details, run this utility against your own environment.
+
 ##### Examples:
 
 ```shell
