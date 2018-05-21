@@ -19,7 +19,7 @@ Searches IGC based on the query conditions defined in the provided file; and if 
 
 By default (if not specified using the optional `-a` parameter), the utility will look for environment details in `~/.infosvrauth` and will prompt the user for a password.
 
-The authorisation file can be generated using the <https://npmjs.com/package/ibm-iis-commons> module.  Refer to the `createInfoSvrAuthFile.js` utility there for more details.s
+The authorisation file can be generated using the <https://npmjs.com/package/ibm-iis-commons> module.  Refer to the `createInfoSvrAuthFile.js` utility there for more details.
 
 ##### Examples:
 
@@ -76,7 +76,7 @@ Creates a markdown file in the location provided by the file parameter, by defau
 
 By default (if not specified using the optional `-a` parameter), the utility will look for environment details in `~/.infosvrauth` and will prompt the user for a password.
 
-The authorisation file can be generated using the <https://npmjs.com/package/ibm-iis-commons> module.  Refer to the `createInfoSvrAuthFile.js` utility there for more details.s
+The authorisation file can be generated using the <https://npmjs.com/package/ibm-iis-commons> module.  Refer to the `createInfoSvrAuthFile.js` utility there for more details.
 
 Example output of running this against various versions of vanilla (uncustomised) Information Server environments can be found under the [`doc/`](https://github.com/IBM/node-igc-rest/tree/master/doc) directory of this GitHub repository.  Note that because these are vanilla (uncustomised) environments, they will not contain any details about custom attributes or OpenIGC objects that you may have in your own environment -- to see those details, run this utility against your own environment.
 
@@ -87,7 +87,7 @@ node ./generateIGCRESTDocumentation.js
 	-f IGC_REST.md
 ```
 
-Creates markdown documentation in IGC_REST.md covering all of the data types and their properties that are available for use in the IGC REST API.
+Creates markdown documentation in `IGC_REST.md` covering all of the data types and their properties that are available for use in the IGC REST API.
 
 # API
 
@@ -540,7 +540,7 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 -   `type`  
 
-Returns **any** true iff the provided type is a data container
+Returns **any** true if the provided type is a data container
 
 ## getDataContainerChildTypes
 
