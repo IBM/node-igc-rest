@@ -221,9 +221,9 @@ prompt.get(inputPrompt, function (err, result) {
       });
       return Promise.all(exportResult);
 
-    }).then(function(something) {
+    }).then(function(assetsWithCtx) {
       console.log("    ---> " + relnCount + " " + argv.relationship + " relationships retrieved.");
-      fs.writeFileSync(argv.output, pd.json(JSON.stringify(something)), 'utf8');
+      fs.writeFileSync(argv.output, pd.json(JSON.stringify(assetsWithCtx)), 'utf8');
       igcrest.closeSession().then(function() {
         console.log("Relationships exported to '" + argv.output + "'.");
       }, function(failure) {
