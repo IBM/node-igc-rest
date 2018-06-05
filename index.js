@@ -20,6 +20,8 @@ const request = require('request').defaults({jar: true});
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const _ = require('underscore');
+const Conversion = require('./classes/conversion');
 
 /**
  * Re-usable functions for interacting with IBM Information Governance Catalog's REST API
@@ -77,6 +79,8 @@ const RestIGC = (function() {
         } else {
           reject("ERROR: Unable to open a session.");
         }
+      }, function(failure) {
+        reject(failure);
       });
     });
   };
@@ -164,9 +168,10 @@ const RestIGC = (function() {
   const _checkRequestError = function(res, statusCodeSuccess, reject) {
     let err = null;
     if (res.statusCode !== statusCodeSuccess) {
-      err = "Unsuccessful request " + res.statusCode;
-      err += "\n   headers: " + util.inspect(res.headers);
-      reject(new Error(err));
+      err = 'Unsuccessful request ' + res.statusCode;
+      err += '\n   response: ' + res.body;
+      err += '\n   request : ' + res.request.body;
+      reject(err);
     }
     return err;
   };
@@ -333,6 +338,242 @@ const RestIGC = (function() {
     return identity.substring(delimiter.length);
   };
   
+  const _getCtxQueryParamName = function(assetType, ctxType) {
+    let newType = ctxType;
+    if (ctxType === 'host_(engine)' && assetType.startsWith('data_file')) {
+      // data file-related objects have 'host_(engine)' but need to search by 'host'
+      newType = "host";
+    } else if (ctxType === 'category') {
+      // categories are always referred to as 'parent_category' as search properties
+      newType = "parent_category";
+    } else if (ctxType === 'data_class') {
+      // hierarchical data classes refer to 'parent_data_class' as search properties
+      newType = "parent_data_class";
+    } else if (ctxType === 'bi_root_folder' || ctxType === 'bi_server') {
+      // BI object relationships are insufficient for this kind of search, so drop these highest-level qualifiers
+      // (TODO: at risk of returning multiple objects (warning elsewhere when that occurs)...)
+      newType = "";
+    } else if (ctxType.startsWith("$")) {
+      // OpenIGC objects need to have their precedeing '$BundleID-' removed
+      newType = '$' + ctxType.substring(ctxType.indexOf("-") + 1);
+    }
+    return newType;
+  };
+
+  /**
+   * Retrieves an asset's RID based on its '_context' and name (ie. in a different environment)
+   *
+   * @param {Object} restItem - a single entry from an 'items' array of a REST API response, including '_context' member
+   * @param {Object} replacements - a dict keyed by REST type whose value should be the replacement value for the corresponding type in the '_context' provided
+   * @returns {Promise} when resolved contains the RID of the asset
+   */
+  const getRIDFromItem = function(restItem, replacements) {
+    
+    return new Promise(function(resolve, reject) {
+      
+      const q = {
+        "properties": [ "name" ],
+        "types": [ restItem._type ],
+        "pageSize": 2,
+        "where": {
+          "conditions": [{
+            "value": restItem._name,
+            "operator": "=",
+            "property": "name"
+          }],
+          "operator": "and"
+        }
+      };
+
+      let ctxPath = "";
+      let folderPath = "";
+      let preHostPath = "";
+      for (let i = restItem._context.length - 1; i >= 0; i--) {
+        const ctxEntry = restItem._context[i];
+        let ctxType = ctxEntry._type;
+        let ctxValue = ctxEntry._name;
+        if (ctxType === 'data_file_folder') {
+          folderPath = ctxValue + "/" + folderPath
+        } else {
+          if (replacements.hasOwnProperty(ctxType)) {
+            ctxValue = replacements[ctxType];
+          }
+          if (ctxType === 'host_(engine)' && restItem._type.startsWith("data_file")) {
+            preHostPath = ctxPath;
+          }
+          ctxType = _getCtxQueryParamName(restItem._type, ctxType);
+          if (i === (restItem._context.length -1)) {
+            ctxPath = ctxType;
+          } else {
+            ctxPath = ctxPath + "." + ctxType;
+          }
+          if (ctxType !== '') {
+            q.where.conditions.push({
+              "value": ctxValue,
+              "operator": "=",
+              "property": ctxPath + ".name"
+            });
+          }
+        }
+      }
+
+      if (folderPath !== "") {
+        // Strip off the preceding and trailing '/' of the folderPath
+        q.where.conditions.push({
+          "value": folderPath.substring(1, folderPath.length-1),
+          "operator": "=",
+          "property": preHostPath + ".path"
+        });
+      }
+
+      //console.log("Querying mapped item with: " + JSON.stringify(q));
+      search(q).then(function(resSearch) {
+        if (resSearch.items.length === 1) {
+          resolve(resSearch.items[0]._id);
+        } else if (resSearch.items.length > 1) {
+          console.log("WARN: Multiple items found with query -- returning first item.  " + JSON.stringify(q));
+          resolve(resSearch.items[0]._id);
+        } else {
+          reject("No items found with query: " + JSON.stringify(q));
+        }
+      });
+
+    });
+
+  }
+
+  /**
+   * Retrieves an asset's '_context' based on its RID and type
+   *
+   * @param {string} rid - the IGC RID of the asset
+   * @param {string} type - the IGC REST type of the asset
+   * @returns {Promise} when resolved contains the '_context' of the asset
+   */
+  const getContextForItem = function(rid, type) {
+    return new Promise(function(resolve, reject) {
+      const q = {
+        "properties": [ "name" ],
+        "types": [ type ],
+        "where": {
+          "conditions": [{
+            "value": rid,
+            "operator": "=",
+            "property": "_id"
+          }],
+          "operator": "and"
+        },
+        "pageSize": 2
+      };
+      search(q).then(function(itemWithCtx) {
+        if (itemWithCtx.items.length === 1) {
+          resolve(itemWithCtx.items[0]._context);
+        } else if (itemWithCtx.items.length > 1) {
+          console.log("WARN: Multiple items found with RID '" + rid + "' -- returning first item.");
+          resolve(itemWithCtx.items[0]._context);
+        } else {
+          reject("No items found with RID: " + rid);
+        }
+      }, function(failure) {
+        reject(failure);
+      });
+    });
+  }
+
+  /**
+   * Adds a relationship to the provided asset
+   *
+   * @param {Object} fromAsset - the IGC asset (as REST item response) to which to add the relationship
+   * @param {string[]} toAssetRIDs - the IGC RIDs of the assets to which to relate
+   * @param {string} relnProperty - the property of the fromAssetRID against which to add the relationship
+   * @param {string} mode - how to add the relationship [ APPEND, REPLACE_ALL, REPLACE_SOME ]
+   * @param {string} [replaceType] - the IGC REST type of object relationships to replace (for REPLACE_SOME)
+   * @param {Object[]} [conditions] - array of conditions objects (property, operator, value) defining what relationships to replace (for REPLACE_SOME)
+   * @param {integer} [batch] - how many relationships to retrieve at a time (default = 100)
+   * @returns {Promise} when resolved contains the result of the relationship processing
+   */
+  const addRelationshipToAsset = function(fromAsset, toAssetRIDs, relnProperty, mode, replaceType, conditions, batch) {
+
+    const qAll = {
+      "properties": [ relnProperty ],
+      "types": [ fromAsset._type ],
+      "where": {
+        "conditions": [{
+          "value": fromAsset._id,
+          "operator": "=",
+          "property": "_id"
+        }],
+        "operator": "and"
+      },
+      "pageSize": (batch ? batch : 100)
+    };
+
+    const qReplace = {
+      "properties": [ "name" ],
+      "types": [ replaceType ],
+      "where": {
+        "conditions": conditions,
+        "operator": "and"
+      },
+      "pageSize": (batch ? batch : 100)
+    };
+
+    if (mode === "REPLACE_SOME") {
+      // If only replacing some of the relationships, we need to splice together the update ourselves
+      return new Promise(function(resolve, reject) {
+        //console.log("Querying all items with: " + JSON.stringify(qAll));
+        search(qAll).then(function(resItem) {
+          // First get all of the existing relationships
+          getAllPages(resItem[relnProperty].items, resItem[relnProperty].paging).then(function(allRelns) {
+            // Focus only on the subset of these that have the type we need to replace
+            const aReplacementTypeRIDs = [];
+            const aAllRelnRIDs = [];
+            for (let i = 0; i < allRelns.length; i++) {
+              if (replaceType === allRelns[i]._type) {
+                aReplacementTypeRIDs.push(allRelns[i]._id);
+              }
+              aAllRelnRIDs.push(allRelns[i]._id);
+            }
+            // Further restrict replacement search by these RIDs
+            qReplace.conditions.push({
+              "value": aReplacementTypeRIDs,
+              "operator": "in",
+              "property": "_id"
+            });
+            // Then find out which ones should be replaced
+            //console.log("Querying replacement items with: " + JSON.stringify(qReplace));
+            search(qReplace).then(function(resReplace) {
+              getAllPages(resReplace.items, resReplace.paging).then(function(allReplace) {
+                const u = {};
+                u[relnProperty] = {
+                  "items": [],
+                  "mode": "replace"
+                };
+                const aRIDsToDrop = _.pluck(allReplace, "_id");
+                u[relnProperty].items = _.difference(aAllRelnRIDs, aRIDsToDrop);
+                //console.log(" --> would update '" + fromAsset._id + "' with: " + JSON.stringify(u));
+                update(fromAsset._id, u).then(function(updateResult) {
+                  resolve(updateResult);
+                }, function (failure) {
+                  reject(failure);
+                });
+              });
+            });
+          });
+        });
+      });
+    } else {
+      // If a simple append or replace all, just do the update directly
+      const u = {};
+      u[relnProperty] = {
+        "items": toAssetRIDs,
+        "mode": (mode === "REPLACE_ALL" ? "replace" : "append")
+      };
+      //console.log(" --> would update '" + fromAsset._id + "' with: " + JSON.stringify(u));
+      return update(fromAsset._id, u);
+    }
+
+  }
+
   /**
    * Make a request against IGC's REST API
    *
@@ -439,6 +680,9 @@ const RestIGC = (function() {
         }
         resolve(rid);
         return callback(err, rid);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -458,6 +702,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -476,6 +723,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -493,6 +743,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -537,6 +790,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, successCode, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -555,6 +811,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -585,6 +844,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -624,6 +886,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
 
@@ -654,6 +919,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
 
@@ -673,6 +941,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
   };
@@ -692,6 +963,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
 
@@ -713,6 +987,9 @@ const RestIGC = (function() {
         const err = _checkRequestError(results.res, 200, reject);
         resolve(results.body);
         return callback(err, results.body);
+      }, function(failure) {
+        reject(failure);
+        return callback(failure);
       });
     });
 
@@ -974,6 +1251,9 @@ const RestIGC = (function() {
     getContainerIdentity: getContainerIdentity,
     getAssetIdentity: getAssetIdentity,
     getItemIdentityString: getItemIdentityString,
+    getRIDFromItem: getRIDFromItem,
+    getContextForItem: getContextForItem,
+    addRelationshipToAsset: addRelationshipToAsset,
     makeRequest: makeRequest,
     create: create,
     update: update,
@@ -1004,3 +1284,7 @@ const RestIGC = (function() {
 })();
 
 module.exports = RestIGC;
+
+if (typeof require === 'function') {
+  module.exports.Conversion = Conversion;
+}

@@ -28,65 +28,8 @@
  * @requires yargs
  * @see module:ibm-iis-commons~createInfoSvrAuthFile
  * @example
- * // Given a file 'assetsAssignedToTerms.json' with the following contents...
- * // {
- * //   "query":
- * //   {
- * //     "properties": ["assigned_assets"],
- * //     "types": ["term"],
- * //     "where":
- * //     {
- * //       "operator": "and",
- * //       "conditions": [
- * //         {
- * //           "property": "category_path._id",
- * //           "operator": "=",
- * //           "value": "6662c0f2.e1b1ec6c.svu583pvk.3sr7b7n.mq748u.ru37pccq07437ncqvhvjs"
- * //         }
- * //       ]
- * //     }
- * //   },
- * //   "limitTo":
- * //   {
- * //     
- * //   }
- * // }
- * // ... this command queries IGC for any terms under the category with RID "6662c0f2.e1b1ec6c.svu583pvk.3sr7b7n.mq748u.ru37pccq07437ncqvhvjs" and extracts full contextual details for all of their 'assigned_assets'
- * findAssets -f assignTermToMyDbTable.json
- * @example
- * // Given a file 'deleteMyDbTable.json' with the following contents...
- * // {
- * //   "query":
- * //   {
- * //     "properties": ["name"],
- * //     "types": ["database_table"],
- * //     "where":
- * //     {
- * //       "operator": "and",
- * //       "conditions": [
- * //         {
- * //           "property": "name",
- * //           "operator": "=",
- * //           "value": "$DB_NAME"
- * //         }
- * //       ]
- * //     }
- * //   },
- * //   "delete": true
- * // }
- * findAssets -f deleteMyDbTable.json
- * // ... this command queries IGC for any databsae tables whose name matches an environment variable $DB_NAME's value, and deletes them from IGC
- * @example
- * // Given a file 'findDbTables.json' with the following contents...
- * // {
- * //   "query":
- * //   {
- * //     "properties": ["name"],
- * //     "types": ["database_table"]
- * //   }
- * // }
- * findAssets -f findDbTables.json -p isadmin
- * // ... this command queries IGC for all database tables, and outputs the results into 'findDbTables.json.results', using the password 'isadmin' for the details taken from the default authorisation file (~/.infosvrauth)
+ * // exports all assigned_assets relationships for terms to the file 'all.json', batching REST calls in 100 objects at a time
+ * ./exportRelationships.js -t term -r assigned_assets -o all.json -b 100
  */
 
 const fs = require('fs');
@@ -108,7 +51,7 @@ const argv = yargs
     .alias('b', 'batchsize').nargs('b', 1).describe('b', 'The number of objects that should be retrieved each REST call')
     .alias('a', 'authfile').nargs('a', 1).describe('a', 'Authorisation file containing environment context')
     .alias('p', 'password').nargs('p', 1).describe('p', 'Password for invoking REST API')
-    .demandOption(['t', 'r'])
+    .demandOption(['t', 'r', 'o'])
     .help('h')
     .alias('h', 'help')
     .wrap(yargs.terminalWidth())
@@ -176,35 +119,22 @@ prompt.get(inputPrompt, function (err, result) {
           igcrest.getAllPages(asset[argv.relationship].items, asset[argv.relationship].paging).then(function(allRelnForAsset) {
 
             const getRelationshipContext = allRelnForAsset.map(function(relnWithoutCtx) {
-              return new Promise(function(resolveCtx, rejectCtx) {
+              return new Promise(function(resolve, reject) {
                 if (bLimit && argv.limit !== relnWithoutCtx._type) {
                   // Not a type we're interested in, so just resolve
                   resolveCtx({});
                 } else {
-                  const reqRelationship = {
-                    "properties": [ "name" ],
-                    "types": [ relnWithoutCtx._type ],
-                    "where": {
-                      "conditions": [{
-                        "value": relnWithoutCtx._id,
-                        "operator": "=",
-                        "property": "_id"
-                      }],
-                      "operator": "and"
-                    }
-                  };
-                  igcrest.search(reqRelationship).then(function(relnWithCtx) {
-                    const relnRID = relnWithCtx.items[0]._id;
+                  igcrest.getContextForItem(relnWithoutCtx._id, relnWithoutCtx._type).then(function(ctx) {
                     for (let i = 0; i < asset[argv.relationship].items.length; i++) {
                       const reln = asset[argv.relationship].items[i];
-                      if (reln._id === relnRID) {
-                        reln._context = relnWithCtx.items[0]._context;
+                      if (reln._id === relnWithoutCtx._id) {
+                        reln._context = ctx;
                         relnCount++;
-                        resolveCtx(reln);
+                        resolve(reln);
                       }
                     }
                   }, function(failure) {
-                    rejectCtx(failure);
+                    reject(failure);
                   });
                 }
               });
