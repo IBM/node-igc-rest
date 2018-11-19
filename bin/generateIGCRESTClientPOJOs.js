@@ -75,6 +75,18 @@ const invalidNamingCharacters = ['\(', '\)', '\/', '&',' '];
 const reInvalids = new RegExp('[' + invalidNamingCharacters.join('') + ']', 'g');
 const reservedWords = [ 'package', 'final', 'abstract', 'default' ];
 
+// Unfortunately there are some non-unique types in IGC...
+const nonUniqueClassNames = {
+  "valid_value_list": "ValidValueList",
+  "validvaluelist": "ValidValueList2",
+  "valid_value_range": "ValidValueRange",
+  "validvaluerange": "ValidValueRange2",
+  "parameter_set": "ParameterSet",
+  "parameterset": "ParameterSet2",
+  "function_call": "FunctionCall",
+  "functioncall": "FunctionCall2"
+}
+
 prompt.override = argv;
 
 const inputPrompt = {
@@ -129,7 +141,34 @@ prompt.get(inputPrompt, function (err, result) {
 
 });
 
-function getPropertyDetailForPOJO(name, typeObj, maxNum) {
+function getPropertyHeading(propertyId, propertyDisplayName, typeObj, javaType) {
+  let heading = ""
+        + "    /**" + os.EOL
+        + "     * The '" + _.escape(propertyId) + "' property, displayed as '" + _.escape(propertyDisplayName) + "' in the IGC UI." + os.EOL;
+  if (typeObj.hasOwnProperty("url")) {
+    heading += "     * <br><br>" + os.EOL;
+    if (javaType === "ReferenceList") {
+      heading += "     * Will be a ReferenceList of '" + getClassName(typeObj.name) + "' objects." + os.EOL;
+    } else if (javaType === "Reference") {
+      heading += "     * Will be a single Reference to a '" + getClassName(typeObj.name) + "' object." + os.EOL;
+    }
+    heading += "     * @see " + getClassName(typeObj.name) + os.EOL;
+  } else if (typeObj.name === "enum") {
+    const validValues = typeObj.validValues;
+    if (validValues.length > 0) {
+      heading += "     * <br><br>" + os.EOL
+              + "     * Can be one of the following values:" + os.EOL
+              + "     * <ul>" + os.EOL;
+      for (let i = 0; i < validValues.length; i++) {
+        heading += "     *     <li>" + validValues[i].id + " (displayed in the UI as '" + validValues[i].displayName + "')</li>" + os.EOL;
+      }
+      heading += "     * </ul>" + os.EOL;
+    }
+  }
+  return heading + "     */" + os.EOL;
+}
+
+function getPropertyDetailForPOJO(name, typeObj, maxNum, displayName) {
 
   let declMember = "";
   let declGetterSetter = "";
@@ -162,17 +201,18 @@ function getPropertyDetailForPOJO(name, typeObj, maxNum) {
   }
 
   let propName = name;
+  declMember = getPropertyHeading(name, displayName, typeObj, javaType);
   if (propName.search(reInvalids) >= 0) {
     propName = propName.replace(reInvalids, "_");
 //    fs.appendFileSync(filename, "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL);
-    declMember = "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL;
+    declMember += "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL;
   } else if (reservedWords.includes(propName)) {
     propName = "__" + propName;
 //    fs.appendFileSync(filename, "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL);
-    declMember = "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL;
+    declMember += "    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";" + os.EOL;
   } else {
 //    fs.appendFileSync(filename, "    protected " + javaType + " " + propName + ";" + os.EOL);
-    declMember = "    protected " + javaType + " " + propName + ";" + os.EOL;
+    declMember += "    protected " + javaType + " " + propName + ";" + os.EOL;
   }
 
   let ccName = camelCase(propName, {pascalCase: true});
@@ -180,9 +220,9 @@ function getPropertyDetailForPOJO(name, typeObj, maxNum) {
     ccName = camelCase("the_" + propName, {pascalCase: true});
   }
 
-  declGetterSetter = "    @JsonProperty(\"" + name + "\")" + os.EOL
-                   + "    public " + javaType + " get" + ccName + "() { return this." + propName + "; }" + os.EOL
-                   + "    public void set" + ccName + "(" + javaType + " " + propName + ") { this." + propName + " = " + propName + "; }" + os.EOL
+  const getSetPrepend = "    /** @see #" + propName + " */ @JsonProperty(\"" + name + "\") ";
+  declGetterSetter = getSetPrepend + " public " + javaType + " get" + ccName + "() { return this." + propName + "; }" + os.EOL
+                   + getSetPrepend + " public void set" + ccName + "(" + javaType + " " + propName + ") { this." + propName + " = " + propName + "; }" + os.EOL
                    + os.EOL;
 
   return { "member": declMember, "getSet": declGetterSetter };
@@ -202,7 +242,7 @@ function addPropertiesToPOJO(filename, properties) {
       if (properties[i].hasOwnProperty("maxCardinality")) {
         maxNum = properties[i].maxCardinality;
       }
-      const details = getPropertyDetailForPOJO(propName, typeObj, maxNum);
+      const details = getPropertyDetailForPOJO(propName, typeObj, maxNum, properties[i].displayName);
       if (details != null) {
         members.push(details.member);
         getterSetters.push(details.getSet);
@@ -211,7 +251,7 @@ function addPropertiesToPOJO(filename, properties) {
   }
 
   for (let j = 0; j < members.length; j++) {
-    fs.appendFileSync(filename, members[j]);
+    fs.appendFileSync(filename, members[j] + os.EOL);
   }
   fs.appendFileSync(filename, os.EOL);
   for (let k = 0; k < getterSetters.length; k++) {
@@ -228,7 +268,8 @@ function createPOJOForType(jsonProps, directory, packageName) {
 
   if (!ignoreTypes.includes(id)) {
 
-    const className = name.replace(reInvalids, "");
+    const className = getClassName(id);
+//    const className = name.replace(reInvalids, "");
     const filename = directory + path.sep + className + ".java";
   
     const fd = fs.openSync(filename, 'w', 0o644);
@@ -265,10 +306,18 @@ function createPOJOForType(jsonProps, directory, packageName) {
 function getClassHeading(displayName, typeName) {
   return ""
         + "/**" + os.EOL
-        + " * POJO for the '" + typeName + "' asset type in IGC, displayed as '" + displayName + "'." + os.EOL
-        + " *" + os.EOL
+        + " * POJO for the '" + typeName + "' asset type in IGC, displayed as '" + displayName + "' in the IGC UI." + os.EOL
+        + " * <br><br>" + os.EOL
         + " * (this code has been generated based on out-of-the-box IGC metadata types;" + os.EOL
         + " *  if modifications are needed, eg. to handle custom attributes," + os.EOL
         + " *  extending from this class in your own custom class is the best approach.)" + os.EOL
         + " */" + os.EOL;
+}
+
+function getClassName(fromName) {
+  if (nonUniqueClassNames.hasOwnProperty(fromName)) {
+    return nonUniqueClassNames[fromName];
+  } else {
+    return camelCase(fromName.replace(reInvalids, "_"), {pascalCase: true});
+  }
 }
