@@ -148,11 +148,10 @@ function getPropertyHeading(propertyId, propertyDisplayName, typeObj, javaType) 
   if (typeObj.hasOwnProperty("url")) {
     heading += "     * <br><br>" + os.EOL;
     if (javaType === "ReferenceList") {
-      heading += "     * Will be a ReferenceList of '" + getClassName(typeObj.name) + "' objects." + os.EOL;
+      heading += "     * Will be a {@link ReferenceList} of {@link " + getClassName(typeObj.name) + "} objects." + os.EOL;
     } else if (javaType === "Reference") {
-      heading += "     * Will be a single Reference to a '" + getClassName(typeObj.name) + "' object." + os.EOL;
+      heading += "     * Will be a single {@link Reference} to a {@link " + getClassName(typeObj.name) + "} object." + os.EOL;
     }
-    heading += "     * @see " + getClassName(typeObj.name) + os.EOL;
   } else if (typeObj.name === "enum") {
     const validValues = typeObj.validValues;
     if (validValues.length > 0) {
@@ -275,8 +274,9 @@ function createPOJOForType(jsonProps, directory, packageName) {
     const fd = fs.openSync(filename, 'w', 0o644);
   
     fs.appendFileSync(filename, "/* SPDX-License-Identifier: Apache-2.0 */" + os.EOL);
+    fs.appendFileSync(filename, "/* Copyright Contributors to the ODPi Egeria project. */" + os.EOL);
     fs.appendFileSync(filename, "package " + packageName + ";" + os.EOL + os.EOL);
-    fs.appendFileSync(filename, "import com.ibm.infosvr.restclient.model.*;" + os.EOL);
+    fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
     fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
@@ -285,7 +285,8 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, getClassHeading(name, id));
     fs.appendFileSync(filename, "@JsonIgnoreProperties(ignoreUnknown=true)" + os.EOL);
     fs.appendFileSync(filename, "public class " + className + " extends MainObject {" + os.EOL + os.EOL);
-  
+    fs.appendFileSync(filename, "    public static final String IGC_TYPE_ID = \"" + id + "\";" + os.EOL + os.EOL);
+
     let view = [];
     if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
       view = jsonProps.viewInfo.properties;
