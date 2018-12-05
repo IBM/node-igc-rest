@@ -276,7 +276,7 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, "/* SPDX-License-Identifier: Apache-2.0 */" + os.EOL);
     fs.appendFileSync(filename, "/* Copyright Contributors to the ODPi Egeria project. */" + os.EOL);
     fs.appendFileSync(filename, "package " + packageName + ";" + os.EOL + os.EOL);
-    fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;" + os.EOL);
+    fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
     fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
