@@ -59,11 +59,11 @@ const argv = yargs
 
 const envCtx = new commons.EnvironmentContext(null, argv.authfile);
 
-// Ignore these types and pseudo-types -- they do not follow the MainObject
-// inheritance that 99% of the objects otherwise follow
-const ignoreTypes = [ "label", "main_object", "information_asset" ];
-const ignoreProperties = [ "_name", "_type", "_url", "_id", "_context", "name", "short_description", "long_description", "labels", "stewards", "assigned_to_terms", "implements_rules", "governed_by_rules", "created_by", "created_on", "modified_by", "modified_on", "notes" ];
-const qualifyProperties = [ "id", "type", "url", "context" ];
+// Ignore these types and pseudo-types -- they are not actual asset types that can be accessed
+const ignoreTypes = [ "main_object", "information_asset" ];
+//const ignoreProperties = [ "_name", "_type", "_url", "_id", "_context", "name", "short_description", "long_description", "labels", "stewards", "assigned_to_terms", "implements_rules", "governed_by_rules", "created_by", "created_on", "modified_by", "modified_on", "notes" ];
+const ignoreProperties = [ "_name", "_type", "_url", "_id", "_context", "notes" ];
+const qualifyProperties = [ "name", "type", "url", "id", "context" ];
 const basicTypeToJavaType = {
   "string": "String",
   "boolean": "Boolean",
@@ -277,6 +277,7 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, "/* Copyright Contributors to the ODPi Egeria project. */" + os.EOL);
     fs.appendFileSync(filename, "package " + packageName + ";" + os.EOL + os.EOL);
     fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
+    fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnore;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
     fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
@@ -284,8 +285,8 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, os.EOL);
     fs.appendFileSync(filename, getClassHeading(name, id));
     fs.appendFileSync(filename, "@JsonIgnoreProperties(ignoreUnknown=true)" + os.EOL);
-    fs.appendFileSync(filename, "public class " + className + " extends MainObject {" + os.EOL + os.EOL);
-    fs.appendFileSync(filename, "    public static final String IGC_TYPE_ID = \"" + id + "\";" + os.EOL + os.EOL);
+    fs.appendFileSync(filename, "public class " + className + " extends Reference {" + os.EOL + os.EOL);
+    fs.appendFileSync(filename, "    @JsonIgnore public static final String IGC_TYPE_ID = \"" + id + "\";" + os.EOL + os.EOL);
 
     let view = [];
     if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
