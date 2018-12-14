@@ -277,7 +277,6 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, "/* Copyright Contributors to the ODPi Egeria project. */" + os.EOL);
     fs.appendFileSync(filename, "package " + packageName + ";" + os.EOL + os.EOL);
     fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
-    fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnore;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
     fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
@@ -286,7 +285,7 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, getClassHeading(name, id));
     fs.appendFileSync(filename, "@JsonIgnoreProperties(ignoreUnknown=true)" + os.EOL);
     fs.appendFileSync(filename, "public class " + className + " extends Reference {" + os.EOL + os.EOL);
-    fs.appendFileSync(filename, "    @JsonIgnore public static final String IGC_TYPE_ID = \"" + id + "\";" + os.EOL + os.EOL);
+    fs.appendFileSync(filename, "    public static String getIgcTypeId() { return \"" + id + "\"; }" + os.EOL + os.EOL);
 
     let view = [];
     if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
