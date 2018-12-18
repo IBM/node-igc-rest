@@ -236,6 +236,8 @@ function addPropertiesToPOJO(filename, properties) {
   const members = [];
   const getterSetters = [];
 
+  let bHasModDetails = false;
+
   for (let i = 0; i < properties.length; i++) {
     const propName = properties[i].name;
     if (propName !== null && !ignoreProperties.includes(propName)) {
@@ -249,6 +251,9 @@ function addPropertiesToPOJO(filename, properties) {
         members.push(details.member);
         getterSetters.push(details.getSet);
       }
+      if (propName === "modified_on") {
+        bHasModDetails = true;
+      }
     }
   }
 
@@ -259,6 +264,8 @@ function addPropertiesToPOJO(filename, properties) {
   for (let k = 0; k < getterSetters.length; k++) {
     fs.appendFileSync(filename, getterSetters[k]);
   }
+
+  return bHasModDetails;
 
 }
 
@@ -271,7 +278,6 @@ function createPOJOForType(jsonProps, directory, packageName) {
   if (!ignoreTypes.includes(id)) {
 
     const className = getClassName(id);
-//    const className = name.replace(reInvalids, "");
     const filename = directory + path.sep + className + ".java";
   
     const fd = fs.openSync(filename, 'w', 0o644);
@@ -298,13 +304,15 @@ function createPOJOForType(jsonProps, directory, packageName) {
 
     // Only add the list of properties if this object isn't simply an alias for another
     if (!aliasObjects.hasOwnProperty(id)) {
+      let bModDetails = false;
       let view = [];
       if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
         view = jsonProps.viewInfo.properties;
       }
       if (view.length > 0) {
-        addPropertiesToPOJO(filename, view);
+        bModDetails = addPropertiesToPOJO(filename, view);
       }
+      fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + bModDetails + "; }" + os.EOL);
     }
  
     fs.appendFileSync(filename, "    public static final Boolean is" + className + "(Object obj) { return (obj.getClass() == " + className + ".class); }" + os.EOL);
