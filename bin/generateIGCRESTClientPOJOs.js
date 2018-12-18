@@ -74,6 +74,9 @@ const basicTypeToJavaType = {
 const invalidNamingCharacters = ['\(', '\)', '\/', '&',' '];
 const reInvalids = new RegExp('[' + invalidNamingCharacters.join('') + ']', 'g');
 const reservedWords = [ 'package', 'final', 'abstract', 'default' ];
+const aliasObjects = {
+  "host_(engine)": "host"
+}
 
 // Unfortunately there are some non-unique types in IGC...
 const nonUniqueClassNames = {
@@ -276,26 +279,35 @@ function createPOJOForType(jsonProps, directory, packageName) {
     fs.appendFileSync(filename, "/* SPDX-License-Identifier: Apache-2.0 */" + os.EOL);
     fs.appendFileSync(filename, "/* Copyright Contributors to the ODPi Egeria project. */" + os.EOL);
     fs.appendFileSync(filename, "package " + packageName + ";" + os.EOL + os.EOL);
-    fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
     fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;" + os.EOL);
-    fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
-    fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
-    fs.appendFileSync(filename, "import java.util.ArrayList;" + os.EOL);
+    if (!aliasObjects.hasOwnProperty(id)) {
+      fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
+      fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
+      fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
+      fs.appendFileSync(filename, "import java.util.ArrayList;" + os.EOL);
+    }
     fs.appendFileSync(filename, os.EOL);
     fs.appendFileSync(filename, getClassHeading(name, id));
     fs.appendFileSync(filename, "@JsonIgnoreProperties(ignoreUnknown=true)" + os.EOL);
-    fs.appendFileSync(filename, "public class " + className + " extends Reference {" + os.EOL + os.EOL);
+    if (aliasObjects.hasOwnProperty(id)) {
+      fs.appendFileSync(filename, "public class " + className + " extends " + getClassName(aliasObjects[id]) + " {" + os.EOL + os.EOL);
+    } else {
+      fs.appendFileSync(filename, "public class " + className + " extends Reference {" + os.EOL + os.EOL);
+    }
     fs.appendFileSync(filename, "    public static String getIgcTypeId() { return \"" + id + "\"; }" + os.EOL + os.EOL);
 
-    let view = [];
-    if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
-      view = jsonProps.viewInfo.properties;
-    }
-    if (view.length > 0) {
-      addPropertiesToPOJO(filename, view);
+    // Only add the list of properties if this object isn't simply an alias for another
+    if (!aliasObjects.hasOwnProperty(id)) {
+      let view = [];
+      if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
+        view = jsonProps.viewInfo.properties;
+      }
+      if (view.length > 0) {
+        addPropertiesToPOJO(filename, view);
+      }
     }
  
-    fs.appendFileSync(filename, os.EOL + "    public static final Boolean is" + className + "(Object obj) { return (obj.getClass() == " + className + ".class); }" + os.EOL);
+    fs.appendFileSync(filename, "    public static final Boolean is" + className + "(Object obj) { return (obj.getClass() == " + className + ".class); }" + os.EOL);
 
     fs.appendFileSync(filename, os.EOL + "}" + os.EOL);
     fs.closeSync(fd);
