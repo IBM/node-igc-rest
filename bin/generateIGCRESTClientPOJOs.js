@@ -121,7 +121,7 @@ prompt.get(inputPrompt, function (err, result) {
     igcGetTypes.then(function(aTypes) {
       const igcPropertiesForTypes = aTypes.map(function(type) {
         return new Promise(function(resolve, reject) {
-          igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showViewProperties=true", 200).then(function(props) {
+          igcrest.getOther("/ibm/iis/igc-rest/v1/types/" + encodeURIComponent(type) + "?showViewProperties=true&showCreateProperties=true", 200).then(function(props) {
             createPOJOForType(props, argv.directory, argv.pkgname);
             resolve();
           });
@@ -227,7 +227,7 @@ function getPropertyDetailForPOJO(name, typeObj, maxNum, displayName) {
                    + getSetPrepend + " public void set" + ccName + "(" + javaType + " " + propName + ") { this." + propName + " = " + propName + "; }" + os.EOL
                    + os.EOL;
 
-  return { "member": declMember, "getSet": declGetterSetter };
+  return { "member": declMember, "getSet": declGetterSetter, "javaType": javaType };
 
 }
 
@@ -236,7 +236,7 @@ function addPropertiesToPOJO(filename, properties) {
   const members = [];
   const getterSetters = [];
 
-  let bHasModDetails = false;
+  const aNonRelationshipProperties = [];
 
   for (let i = 0; i < properties.length; i++) {
     const propName = properties[i].name;
@@ -250,9 +250,9 @@ function addPropertiesToPOJO(filename, properties) {
       if (details != null) {
         members.push(details.member);
         getterSetters.push(details.getSet);
-      }
-      if (propName === "modified_on") {
-        bHasModDetails = true;
+        if (!details.javaType.includes("Reference")) {
+          aNonRelationshipProperties.push(propName);
+        }
       }
     }
   }
@@ -265,7 +265,7 @@ function addPropertiesToPOJO(filename, properties) {
     fs.appendFileSync(filename, getterSetters[k]);
   }
 
-  return bHasModDetails;
+  return aNonRelationshipProperties;
 
 }
 
@@ -290,6 +290,7 @@ function createPOJOForType(jsonProps, directory, packageName) {
       fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
       fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
       fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
+      fs.appendFileSync(filename, "import java.util.List;" + os.EOL);
       fs.appendFileSync(filename, "import java.util.ArrayList;" + os.EOL);
     }
     fs.appendFileSync(filename, os.EOL);
@@ -300,21 +301,33 @@ function createPOJOForType(jsonProps, directory, packageName) {
     } else {
       fs.appendFileSync(filename, "public class " + className + " extends Reference {" + os.EOL + os.EOL);
     }
-    fs.appendFileSync(filename, "    public static String getIgcTypeId() { return \"" + id + "\"; }" + os.EOL + os.EOL);
+    fs.appendFileSync(filename, "    public static String getIgcTypeId() { return \"" + id + "\"; }" + os.EOL);
+    fs.appendFileSync(filename, "    public static String getIgcTypeDisplayName() { return \"" + name + "\"; }" + os.EOL + os.EOL);
 
     // Only add the list of properties if this object isn't simply an alias for another
     if (!aliasObjects.hasOwnProperty(id)) {
-      let bModDetails = false;
+      let aNonRelationshipProperties = [];
       let view = [];
       if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
         view = jsonProps.viewInfo.properties;
       }
       if (view.length > 0) {
-        bModDetails = addPropertiesToPOJO(filename, view);
+        aNonRelationshipProperties = addPropertiesToPOJO(filename, view);
       }
-      fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + bModDetails + "; }" + os.EOL);
+      fs.appendFileSync(filename, "    public static final Boolean canBeCreated() { return " + jsonProps.hasOwnProperty("createInfo") + "; }" + os.EOL);
+      fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + aNonRelationshipProperties.includes("modified_on") + "; }" + os.EOL);
+      if (aNonRelationshipProperties.length > 0) {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
+        for (let i = 0; i < aNonRelationshipProperties.length; i++) {
+          fs.appendFileSync(filename, "        add(\"" + aNonRelationshipProperties[i] + "\");" +os.EOL);
+        }
+        fs.appendFileSync(filename, "    }};" + os.EOL);
+      } else {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();" + os.EOL);
+      }
+      fs.appendFileSync(filename, "    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }" + os.EOL);
     }
- 
+
     fs.appendFileSync(filename, "    public static final Boolean is" + className + "(Object obj) { return (obj.getClass() == " + className + ".class); }" + os.EOL);
 
     fs.appendFileSync(filename, os.EOL + "}" + os.EOL);
