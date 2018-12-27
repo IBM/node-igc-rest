@@ -236,7 +236,11 @@ function addPropertiesToPOJO(filename, properties) {
   const members = [];
   const getterSetters = [];
 
-  const aNonRelationshipProperties = [];
+  const hmPropertyLists = {
+    "nonRelationship": [],
+    "relationshipLists": [],
+    "allProperties": []
+  };
 
   for (let i = 0; i < properties.length; i++) {
     const propName = properties[i].name;
@@ -250,8 +254,11 @@ function addPropertiesToPOJO(filename, properties) {
       if (details != null) {
         members.push(details.member);
         getterSetters.push(details.getSet);
+        hmPropertyLists.allProperties.push(propName);
         if (!details.javaType.includes("Reference")) {
-          aNonRelationshipProperties.push(propName);
+          hmPropertyLists.nonRelationship.push(propName);
+        } else if (details.javaType.includes("ReferenceList")) {
+          hmPropertyLists.relationshipLists.push(propName);
         }
       }
     }
@@ -265,7 +272,7 @@ function addPropertiesToPOJO(filename, properties) {
     fs.appendFileSync(filename, getterSetters[k]);
   }
 
-  return aNonRelationshipProperties;
+  return hmPropertyLists;
 
 }
 
@@ -306,26 +313,46 @@ function createPOJOForType(jsonProps, directory, packageName) {
 
     // Only add the list of properties if this object isn't simply an alias for another
     if (!aliasObjects.hasOwnProperty(id)) {
-      let aNonRelationshipProperties = [];
+      let hmPropertyLists = [];
       let view = [];
       if (jsonProps.hasOwnProperty("viewInfo") && jsonProps.viewInfo.hasOwnProperty("properties")) {
         view = jsonProps.viewInfo.properties;
       }
       if (view.length > 0) {
-        aNonRelationshipProperties = addPropertiesToPOJO(filename, view);
+        hmPropertyLists = addPropertiesToPOJO(filename, view);
       }
       fs.appendFileSync(filename, "    public static final Boolean canBeCreated() { return " + jsonProps.hasOwnProperty("createInfo") + "; }" + os.EOL);
-      fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + aNonRelationshipProperties.includes("modified_on") + "; }" + os.EOL);
-      if (aNonRelationshipProperties.length > 0) {
+      fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + (hmPropertyLists.hasOwnProperty("nonRelationship") && hmPropertyLists.nonRelationship.includes("modified_on")) + "; }" + os.EOL);
+      if (hmPropertyLists.hasOwnProperty("nonRelationship") && hmPropertyLists.nonRelationship.length > 0) {
         fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
-        for (let i = 0; i < aNonRelationshipProperties.length; i++) {
-          fs.appendFileSync(filename, "        add(\"" + aNonRelationshipProperties[i] + "\");" +os.EOL);
+        for (let i = 0; i < hmPropertyLists.nonRelationship.length; i++) {
+          fs.appendFileSync(filename, "        add(\"" + hmPropertyLists.nonRelationship[i] + "\");" +os.EOL);
         }
         fs.appendFileSync(filename, "    }};" + os.EOL);
       } else {
         fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();" + os.EOL);
       }
+      if (hmPropertyLists.hasOwnProperty("relationshipLists") && hmPropertyLists.relationshipLists.length > 0) {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
+        for (let i = 0; i < hmPropertyLists.relationshipLists.length; i++) {
+          fs.appendFileSync(filename, "        add(\"" + hmPropertyLists.relationshipLists[i] + "\");" +os.EOL);
+        }
+        fs.appendFileSync(filename, "    }};" + os.EOL);
+      } else {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();" + os.EOL);
+      }
+      if (hmPropertyLists.hasOwnProperty("allProperties") && hmPropertyLists.allProperties.length > 0) {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
+        for (let i = 0; i < hmPropertyLists.allProperties.length; i++) {
+          fs.appendFileSync(filename, "        add(\"" + hmPropertyLists.allProperties[i] + "\");" +os.EOL);
+        }
+        fs.appendFileSync(filename, "    }};" + os.EOL);
+      } else {
+        fs.appendFileSync(filename, "    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<>();" + os.EOL);
+      }
       fs.appendFileSync(filename, "    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }" + os.EOL);
+      fs.appendFileSync(filename, "    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }" + os.EOL);
+      fs.appendFileSync(filename, "    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }" + os.EOL);
     }
 
     fs.appendFileSync(filename, "    public static final Boolean is" + className + "(Object obj) { return (obj.getClass() == " + className + ".class); }" + os.EOL);
