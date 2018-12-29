@@ -6,7 +6,7 @@ Objective of this module is to provide re-usable functionality and utilities for
 
 ## findAssets.js
 
-Run a query for IGC assets and (optionally) take action against the results.  Usage:
+Run a query for IGC assets and (optionally) take action against the results. Usage:
 
 ```shell
 node ./findAssets.js
@@ -62,7 +62,7 @@ node ./findAssets.js
 
 ## generateIGCRESTDocumentation.js
 
-Create documentation on the various types (and their properties) available within the Information Governance Catalog REST API.  Usage:
+Create documentation on the various types (and their properties) available within the Information Governance Catalog REST API. Usage:
 
 ```shell
 node ./generateIGCRESTDocumentation.js
@@ -112,7 +112,7 @@ igcrest.getTypes(function(err, resTypes) {
 
 **Meta**
 
--   **license**: Apache-2.0
+-   **License**: Apache-2.0
 
 ## setConnection
 
@@ -143,7 +143,7 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## replaceQueryVars
 
-Replace any variables (text that starts with '$') that show up in a query
+Replace any variables (text that starts with `$`) that show up in a query
 
 **Parameters**
 
@@ -154,7 +154,7 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## replaceRelatedUpdateVars
 
-Replace '$relatedObjectRID' in the query with the provided RID
+Replace `$relatedObjectRID` in the query with the provided RID
 
 **Parameters**
 
@@ -241,12 +241,12 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## getItemIdentityString
 
-Constructs an asset identity string provide a REST API item (which must include '\_context')
+Constructs an asset identity string provide a REST API item (which must include `\_context`)
 
 **Parameters**
 
--   `restItem` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a single entry from the 'items' array of a REST API response, including '\_context' member
--   `delimiter` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** a delimiter to use for separating the components of the identity (default: '::')
+-   `restItem` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a single entry from the 'items' array of a REST API response, including `\_context member
+-   `delimiter` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** a delimiter to use for separating the components of the identity (default: `::`)
 
 Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
@@ -260,7 +260,7 @@ Make a request against IGC's REST API
 **Parameters**
 
 -   `method` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
--   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+-   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/`...)
 -   `input` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** any input for the request, i.e. for PUT, POST
 -   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content, e.g. 'application/json' or 'application/xml'
 -   `drillDown` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key into which to drill-down within the response
@@ -330,7 +330,7 @@ Make a general GET request against IGC's REST API
 
 **Parameters**
 
--   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+-   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/`...)
 -   `successCode` **integer** the HTTP response code that indicates success for this operation
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
@@ -468,7 +468,7 @@ Request all details of an asset
 
 NOTE: this function should be used with caution -- it will build a large object and
 can be measurably slower (> 5x) than explicitly defining the properties and searching
-using 'getAssetPropertiesById' instead
+using `getAssetPropertiesById` instead
 
 **Parameters**
 
@@ -514,7 +514,7 @@ Retrieve the next page of information
 
 **Parameters**
 
--   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
+-   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the `paging` sub-object of a results object
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the next page of results
