@@ -296,6 +296,7 @@ function createPOJOForType(jsonProps, directory, packageName) {
     if (!aliasObjects.hasOwnProperty(id)) {
       fs.appendFileSync(filename, "import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;" + os.EOL);
       fs.appendFileSync(filename, "import com.fasterxml.jackson.annotation.JsonProperty;" + os.EOL);
+      fs.appendFileSync(filename, "import java.util.Arrays;" + os.EOL);
       fs.appendFileSync(filename, "import java.util.Date;" + os.EOL);
       fs.appendFileSync(filename, "import java.util.List;" + os.EOL);
       fs.appendFileSync(filename, "import java.util.ArrayList;" + os.EOL);
@@ -324,13 +325,14 @@ function createPOJOForType(jsonProps, directory, packageName) {
       fs.appendFileSync(filename, "    public static final Boolean canBeCreated() { return " + jsonProps.hasOwnProperty("createInfo") + "; }" + os.EOL);
       fs.appendFileSync(filename, "    public static final Boolean includesModificationDetails() { return " + (hmPropertyLists.hasOwnProperty("nonRelationship") && hmPropertyLists.nonRelationship.includes("modified_on")) + "; }" + os.EOL);
       if (hmPropertyLists.hasOwnProperty("nonRelationship") && hmPropertyLists.nonRelationship.length > 0) {
-        fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
-        for (let i = 0; i < hmPropertyLists.nonRelationship.length; i++) {
-          fs.appendFileSync(filename, "        add(\"" + hmPropertyLists.nonRelationship[i] + "\");" +os.EOL);
+        fs.appendFileSync(filename, "    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(" + os.EOL);
+        for (let i = 0; i < hmPropertyLists.nonRelationship.length - 1; i++) {
+          fs.appendFileSync(filename, "        \"" + hmPropertyLists.nonRelationship[i] + "\"," +os.EOL);
         }
-        fs.appendFileSync(filename, "    }};" + os.EOL);
+        fs.appendFileSync(filename, "        \"" + hmPropertyLists.nonRelationship[hmPropertyLists.nonRelationship.length - 1] + "\"" +os.EOL);
+        fs.appendFileSync(filename, "    );" + os.EOL);
       } else {
-        fs.appendFileSync(filename, "    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();" + os.EOL);
+        fs.appendFileSync(filename, "    private static final List<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();" + os.EOL);
       }
       if (hmPropertyLists.hasOwnProperty("relationshipLists") && hmPropertyLists.relationshipLists.length > 0) {
         fs.appendFileSync(filename, "    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{" + os.EOL);
