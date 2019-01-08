@@ -104,7 +104,7 @@ const RestIGC = (function() {
   };
 
   /**
-   * Replace any variables (text that starts with '$') that show up in a query
+   * Replace any variables (text that starts with `$`) that show up in a query
    *
    * @param {Object} json - the query (as a JSON object)
    * @param {Dict} variables - a dictionary indexed by variable name
@@ -126,7 +126,7 @@ const RestIGC = (function() {
   };
   
   /**
-   * Replace '$relatedObjectRID' in the query with the provided RID
+   * Replace `$relatedObjectRID` in the query with the provided RID
    *
    * @param {Object} json - the query (as a JSON object)
    * @param {string} rid - the RID to inject into the query
@@ -319,10 +319,10 @@ const RestIGC = (function() {
   };
   
   /**
-   * Constructs an asset identity string provide a REST API item (which must include '_context')
+   * Constructs an asset identity string provide a REST API item (which must include `_context`)
    *
-   * @param {Object} restItem - a single entry from the 'items' array of a REST API response, including '_context' member
-   * @param {string} [delimiter] - a delimiter to use for separating the components of the identity (default: '::')
+   * @param {Object} restItem - a single entry from the `items` array of a REST API response, including `_context` member
+   * @param {string} [delimiter] - a delimiter to use for separating the components of the identity (default: `::`)
    * @returns {string}
    */
   const getItemIdentityString = function(restItem, delimiter) {
@@ -361,10 +361,10 @@ const RestIGC = (function() {
   };
 
   /**
-   * Retrieves an asset's RID based on its '_context' and name (ie. in a different environment)
+   * Retrieves an asset's RID based on its `_context` and name (ie. in a different environment)
    *
-   * @param {Object} restItem - a single entry from an 'items' array of a REST API response, including '_context' member
-   * @param {Object} replacements - a dict keyed by REST type whose value should be the replacement value for the corresponding type in the '_context' provided
+   * @param {Object} restItem - a single entry from an `items` array of a REST API response, including `_context` member
+   * @param {Object} replacements - a dict keyed by REST type whose value should be the replacement value for the corresponding type in the `_context` provided
    * @returns {Promise} when resolved contains the RID of the asset
    */
   const getRIDFromItem = function(restItem, replacements) {
@@ -443,11 +443,11 @@ const RestIGC = (function() {
   }
 
   /**
-   * Retrieves an asset's '_context' based on its RID and type
+   * Retrieves an asset's `_context` based on its RID and type
    *
    * @param {string} rid - the IGC RID of the asset
    * @param {string} type - the IGC REST type of the asset
-   * @returns {Promise} when resolved contains the '_context' of the asset
+   * @returns {Promise} when resolved contains the `_context` of the asset
    */
   const getContextForItem = function(rid, type) {
     return new Promise(function(resolve, reject) {
@@ -579,10 +579,10 @@ const RestIGC = (function() {
    *
    * @see module:ibm-igc-rest.setServer
    * @see module:ibm-igc-rest.setAuth
-   * @param {string} method - type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
-   * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+   * @param {string} method - type of request, one of [`GET`, `PUT`, `POST`, `DELETE`]
+   * @param {string} path - the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/...`)
    * @param {string} [input] - any input for the request, i.e. for PUT, POST
-   * @param {string} [contentType] - the type of content, e.g. 'application/json' or 'application/xml'
+   * @param {string} [contentType] - the type of content, e.g. `application/json` or `application/xml`
    * @param {string} [drillDown] - the key into which to drill-down within the response
    * @param {requestCallback} callback - callback that handles the response
    * @throws will throw an error if connectivity details are incomplete or there is a fatal error during the request
@@ -778,7 +778,7 @@ const RestIGC = (function() {
   /**
    * Make a general GET request against IGC's REST API
    *
-   * @param {string} path - the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+   * @param {string} path - the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/...`)
    * @param {integer} successCode - the HTTP response code that indicates success for this operation
    * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
    * @returns {Promise} when resolved contains the response body from the request
@@ -1062,7 +1062,7 @@ const RestIGC = (function() {
    *
    * NOTE: this function should be used with caution -- it will build a large object and
    * can be measurably slower (> 5x) than explicitly defining the properties and searching
-   * using 'getAssetPropertiesById' instead
+   * using `getAssetPropertiesById` instead
    *
    * @see module:ibm-igc-rest.getAssetPropertiesById
    * @param {string} rid - the RID of the asset
@@ -1077,7 +1077,7 @@ const RestIGC = (function() {
    * Retrieve only the single specified property of an asset
    *
    * @param {string} rid - the RID of the asset
-   * @param {string} property - the property of the asset to retrieve (e.g. 'name')
+   * @param {string} property - the property of the asset to retrieve (e.g. `name`)
    * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
    * @returns {Promise} when resolved contains the specified property of the asset
    */
@@ -1155,7 +1155,7 @@ const RestIGC = (function() {
    * Retrieve the next page of information
    *
    * @see module:ibm-igc-rest.search
-   * @param {Object} paging - the 'paging' sub-object of a results object
+   * @param {Object} paging - the `paging` sub-object of a results object
    * @param {requestCallback} [callback] - optional callback that handles the response (when not using Promises)
    * @returns {Promise} when resolved contains the next page of results
    */
@@ -1178,8 +1178,8 @@ const RestIGC = (function() {
    *
    * @see module:ibm-igc-rest.search
    * @see module:ibm-igc-rest.getNextPage
-   * @param {Object} items - the 'items' sub-object of a results object
-   * @param {Object} paging - the 'paging' sub-object of a results object
+   * @param {Object} items - the `items` sub-object of a results object
+   * @param {Object} paging - the `paging` sub-object of a results object
    * @param {itemSetCallback} [callback] - optional callback that provides the list of all items from all pages (when not using Promises)
    * @returns {Promise} when resolved contains the list of all items from all pages of results
    */

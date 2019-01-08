@@ -6,7 +6,7 @@ Objective of this module is to provide re-usable functionality and utilities for
 
 ## findAssets.js
 
-Run a query for IGC assets and (optionally) take action against the results.  Usage:
+Run a query for IGC assets and (optionally) take action against the results. Usage:
 
 ```shell
 node ./findAssets.js
@@ -62,7 +62,7 @@ node ./findAssets.js
 
 ## generateIGCRESTDocumentation.js
 
-Create documentation on the various types (and their properties) available within the Information Governance Catalog REST API.  Usage:
+Create documentation on the various types (and their properties) available within the Information Governance Catalog REST API. Usage:
 
 ```shell
 node ./generateIGCRESTDocumentation.js
@@ -143,7 +143,7 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## replaceQueryVars
 
-Replace any variables (text that starts with '$') that show up in a query
+Replace any variables (text that starts with `$`) that show up in a query
 
 **Parameters**
 
@@ -154,7 +154,7 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## replaceRelatedUpdateVars
 
-Replace '$relatedObjectRID' in the query with the provided RID
+Replace `$relatedObjectRID` in the query with the provided RID
 
 **Parameters**
 
@@ -241,14 +241,52 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## getItemIdentityString
 
-Constructs an asset identity string provide a REST API item (which must include '\_context')
+Constructs an asset identity string provide a REST API item (which must include `_context`)
 
 **Parameters**
 
--   `restItem` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a single entry from the 'items' array of a REST API response, including '\_context' member
--   `delimiter` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** a delimiter to use for separating the components of the identity (default: '::')
+-   `restItem` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a single entry from the `items` array of a REST API response, including `_context` member
+-   `delimiter` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** a delimiter to use for separating the components of the identity (default: `::`)
 
 Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+## getRIDFromItem
+
+Retrieves an asset's RID based on its `_context` and name (ie. in a different environment)
+
+**Parameters**
+
+-   `restItem` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a single entry from an `items` array of a REST API response, including `_context` member
+-   `replacements` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** a dict keyed by REST type whose value should be the replacement value for the corresponding type in the `_context` provided
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the RID of the asset
+
+## getContextForItem
+
+Retrieves an asset's `_context` based on its RID and type
+
+**Parameters**
+
+-   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the IGC RID of the asset
+-   `type` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the IGC REST type of the asset
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the `_context` of the asset
+
+## addRelationshipToAsset
+
+Adds a relationship to the provided asset
+
+**Parameters**
+
+-   `fromAsset` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the IGC asset (as REST item response) to which to add the relationship
+-   `toAssetRIDs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** the IGC RIDs of the assets to which to relate
+-   `relnProperty` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the property of the fromAssetRID against which to add the relationship
+-   `mode` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** how to add the relationship [ APPEND, REPLACE_ALL, REPLACE_SOME ]
+-   `replaceType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the IGC REST type of object relationships to replace (for REPLACE_SOME)
+-   `conditions` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>?** array of conditions objects (property, operator, value) defining what relationships to replace (for REPLACE_SOME)
+-   `batch` **integer?** how many relationships to retrieve at a time (default = 100)
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the result of the relationship processing
 
 ## makeRequest
 
@@ -259,10 +297,10 @@ Make a request against IGC's REST API
 
 **Parameters**
 
--   `method` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** type of request, one of ['GET', 'PUT', 'POST', 'DELETE']
--   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+-   `method` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** type of request, one of [`GET`, `PUT`, `POST`, `DELETE`]
+-   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/...`)
 -   `input` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** any input for the request, i.e. for PUT, POST
--   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content, e.g. 'application/json' or 'application/xml'
+-   `contentType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the type of content, e.g. `application/json` or `application/xml`
 -   `drillDown` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key into which to drill-down within the response
 -   `callback` **[requestCallback](#requestcallback)** callback that handles the response
 
@@ -330,7 +368,7 @@ Make a general GET request against IGC's REST API
 
 **Parameters**
 
--   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. /ibm/iis/igc-rest/v1/...)
+-   `path` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to the end-point (e.g. `/ibm/iis/igc-rest/v1/...`)
 -   `successCode` **integer** the HTTP response code that indicates success for this operation
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
@@ -468,7 +506,7 @@ Request all details of an asset
 
 NOTE: this function should be used with caution -- it will build a large object and
 can be measurably slower (> 5x) than explicitly defining the properties and searching
-using 'getAssetPropertiesById' instead
+using `getAssetPropertiesById` instead
 
 **Parameters**
 
@@ -484,7 +522,7 @@ Retrieve only the single specified property of an asset
 **Parameters**
 
 -   `rid` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the RID of the asset
--   `property` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the property of the asset to retrieve (e.g. 'name')
+-   `property` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the property of the asset to retrieve (e.g. `name`)
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the specified property of the asset
@@ -514,7 +552,7 @@ Retrieve the next page of information
 
 **Parameters**
 
--   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
+-   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the `paging` sub-object of a results object
 -   `callback` **[requestCallback](#requestcallback)?** optional callback that handles the response (when not using Promises)
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the next page of results
@@ -528,8 +566,8 @@ Retrieve all remaining pages of information
 
 **Parameters**
 
--   `items` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'items' sub-object of a results object
--   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the 'paging' sub-object of a results object
+-   `items` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the `items` sub-object of a results object
+-   `paging` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the `paging` sub-object of a results object
 -   `callback` **[itemSetCallback](#itemsetcallback)?** optional callback that provides the list of all items from all pages (when not using Promises)
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** when resolved contains the list of all items from all pages of results
@@ -550,17 +588,6 @@ Returns **any** true iff the provided type is a data container
 
 Returns **any** the data type name for the child object of the provided container type
 
-## itemSetCallback
-
-This callback is invoked as the result of obtaining a set of items, providing an array of items.
-
-Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
-
-**Parameters**
-
--   `errorMessage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** any error message, or null if no errors
--   `itemArray` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** an array of JSON objects, each being an item
-
 ## requestCallback
 
 This callback is invoked as the result of an IGC REST API call, providing the response of that request.
@@ -572,6 +599,17 @@ Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referen
 -   `errorMessage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** any error message, or null if no errors
 -   `responseObject` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the JSON object containing the response
 
+## itemSetCallback
+
+This callback is invoked as the result of obtaining a set of items, providing an array of items.
+
+Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
+
+**Parameters**
+
+-   `errorMessage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** any error message, or null if no errors
+-   `itemArray` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** an array of JSON objects, each being an item
+
 ## identityCallback
 
 This callback is invoked as the result of obtaining an object's identity, providing the response of that request.
@@ -582,3 +620,27 @@ Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referen
 
 -   `errorMessage` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** any error message, or null if no errors
 -   `identityObject` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the JSON object containing the identity
+
+## Conversion
+
+Conversion class -- for encapsulating mapping / transformation information between REST concepts and other representations
+
+### getRESTTypeFromSchemaType
+
+Retrieves the IGC REST type equivalent for the provided schema type
+
+**Parameters**
+
+-   `schemaType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the xmeta schema type (eg. 'ASCLModel.DatabaseField')
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the REST type (eg. 'database_column')
+
+### getSchemaTypeFromRESTType
+
+Retrieves the xmeta schema type equivalent for the provided REST type
+
+**Parameters**
+
+-   `restType` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the REST type (eg. 'database_column')
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the xmeta schema type (eg. 'ASCLModel.DatabaseField')
